@@ -7,7 +7,7 @@ import Register from "./js/Register";
 
 export default function App() {
   return (
-    <div className="App">
+    <div>
       <Router>
         <Routes>
           <Route path="/" element={<Card />} />

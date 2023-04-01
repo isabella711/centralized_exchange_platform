@@ -116,6 +116,6 @@ body {
   .productList{
 	display: flex;
 	justify-content: space-evenly;
-	margin-top: 5rem;
 	width: 100vw;
+	margin: 200px 0px 0px;
   }
