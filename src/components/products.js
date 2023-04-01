@@ -1,10 +1,9 @@
 import { FaShoppingCart } from "react-icons/fa";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useUpdateCoin } from "../hooks/useUpdateCoin";
-
 import { useGetPriceChange } from "../hooks/useGetPriceChange";
-
 import { Link, useNavigate } from "react-router-dom";
+import { Card, Image, Text } from "@mantine/core";
 
 export function Products(props) {
   const coin = useUpdateCoin(props.ticket);
@@ -13,33 +12,25 @@ export function Products(props) {
   const navigate = useNavigate();
 
   return (
-    <div className="productList">
-      <div key={props.id} className="productCard">
-        {
-          <img
-            src={props.image}
-            alt="product-img"
-            className="productImage"
-          ></img>
-        }
+    <Card
+      shadow="sm"
+      padding="xl"
+      component="a"
+      // href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      // target="_blank"
+    >
+      <Card.Section>
+        <Image src={props.image} height={300} />
+      </Card.Section>
 
-        {/* <FaShoppingCart className={"productCard__cart"} /> */}
+      <Text weight={500} size="xl" mt="xl">
+        {props.name}
+      </Text>
 
-        <div className="productCard__content">
-          <h3 className="productName">{props.name}</h3>
-          <div className="displayStack__1"></div>
-          <div className="productPrice">Current Price: ${coinTrim}</div>
-          <div>
-            <h2>24h Price Change: {priceChange}%</h2>
-          </div>
-        </div>
-      </div>
-      <p>
-        <Link to={`/payment/${props.details}`}>
-          <button>Buy</button>
-        </Link>
-        <button onClick={() => navigate("/Xrp")}>To Xrp</button>
-      </p>
-    </div>
+      <Text mt="xl" color="dimmed" size="xl">
+        Current Price: ${coinTrim}
+        24h Price Change: {priceChange}%
+      </Text>
+    </Card>
   );
 }

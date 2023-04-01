@@ -112,3 +112,10 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
   }
+
+  .productList{
+	display: flex;
+	justify-content: space-evenly;
+	margin-top: 5rem;
+	width: 100vw;
+  }

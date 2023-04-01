@@ -2,11 +2,12 @@ import React from "react";
 import { Products } from "../components/products";
 import contents from "../js/content";
 import { Link, useNavigate } from "react-router-dom";
+import "../css/App.css";
 
 export default function Card() {
   const navigate = useNavigate();
   return (
-    <div className="App">
+    <div className="productList">
       {contents.map((contents) => (
         <Products
           key={contents.id}
