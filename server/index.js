@@ -4,6 +4,7 @@ require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const getResult = require("../server/sql/service");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -13,8 +14,10 @@ app.use(cors());
 app.get("/testing", cors(), async (req, res) => {
   try {
     console.log(`no....`);
+    const result = await getResult.getResult();
+    console.log(`>>>result`, result);
     res.json({
-      message: "successful",
+      message: result.rows,
       success: true,
     });
   } catch (error) {
