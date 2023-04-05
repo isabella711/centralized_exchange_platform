@@ -4,8 +4,11 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@mantine/core": "^6.0.5",
     "@mantine/hooks": "^6.0.5",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.11.16",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.52.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -52,15 +55,18 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
+    "autoprefixer": "^10.4.14",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
+    "postcss": "^8.4.21",
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1",
     "ripple-lib": "^1.10.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "tailwindcss": "^3.3.1",
     "url": "^0.11.0"
   }
 }

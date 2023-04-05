@@ -10,6 +10,46 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
+app.get("/testing", cors(), async (req, res) => {
+  try {
+    console.log(`no....`);
+    res.json({
+      message: "successful",
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
+});
+
+app.post("/testing", cors(), async (req, res) => {
+  let { amount, id } = req.body;
+  try {
+    console.log(`yes....`);
+    res.json({
+      message: "successful",
+      payload: { amount: amount, id: id },
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
+});
+
+app.put("/testing", cors(), async (req, res) => {
+  let { amount, id, type } = req.body;
+  try {
+    console.log(`put....`);
+    res.json({
+      message: "successful",
+      payload: { amount: amount, id: id, type: type },
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
+});
+
 app.post("/payment", cors(), async (req, res) => {
   let { amount, id } = req.body;
   try {

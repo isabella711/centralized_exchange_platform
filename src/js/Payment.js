@@ -19,24 +19,30 @@ const PaymentCont = (props) => {
   const amount = Number(useGetAmount(id)).toFixed(2);
   const coinTrim = Number(coin).toFixed(2);
   return (
-    <div className="App">
+    <div>
       <h1>Details</h1>
-      <div className="productCard__content">
-        <div className="displayStack__1"></div>
-        <div className="productPrice">Current Price: ${coinTrim}</div>
-        <div>
-          <h2>24h Lowest Price: ${lowPrice}</h2>
-        </div>
-        <div>
-          <h2>24h Highestst Price: ${highPrice}</h2>
-        </div>
-        <div>
-          <h2>24h Price Change: {priceChange}%</h2>
-        </div>
-        <div>
-          <h2>24h Total Amount: ${amount}</h2>
-        </div>
-      </div>
+      <table class="center">
+        <tr>
+          <th>Current Price</th>
+          <th>${coinTrim}</th>
+        </tr>
+        <tr>
+          <th>24h Lowest Price</th>
+          <th>${lowPrice}</th>
+        </tr>
+        <tr>
+          <th>24h Highestst Price</th>
+          <th>${highPrice}</th>
+        </tr>
+        <tr>
+          <th>24h Price Change</th>
+          <th>{priceChange}%</th>
+        </tr>
+        <tr>
+          <th>24h Total Amount</th>
+          <th>${amount}</th>
+        </tr>
+      </table>
     </div>
   );
 };
