@@ -4,8 +4,10 @@ require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const getResult = require("../server/sql/service");
+const { getResult, create } = require("../server/sql/service");
 
+const xrpGen = require("../server/walletGenerater/xrpGen");
+// xrpGen();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -14,12 +16,8 @@ app.use(cors());
 app.get("/testing", cors(), async (req, res) => {
   try {
     console.log(`no....`);
-    const result = await getResult.getResult();
-    console.log(`>>>result`, result);
-    res.json({
-      message: result.rows,
-      success: true,
-    });
+    const result = await getResult();
+    res.json(result.rows);
   } catch (error) {
     console.log("Error", error);
   }
@@ -28,7 +26,8 @@ app.get("/testing", cors(), async (req, res) => {
 app.post("/testing", cors(), async (req, res) => {
   let { amount, id } = req.body;
   try {
-    console.log(`yes....`);
+    const result = await create();
+    console.log(`result>>>,`, result);
     res.json({
       message: "successful",
       payload: { amount: amount, id: id },
@@ -65,6 +64,8 @@ app.post("/payment", cors(), async (req, res) => {
     });
 
     console.log("Payment", payment);
+
+    // TODO: DB query
     res.json({
       message: "Payment successful",
       success: true,
