@@ -4,7 +4,7 @@ import Xrp from "./js/Xrp";
 import Payment from "./js/Payment";
 import Card from "./js/Card";
 import Register from "./js/Register";
-import { callApi,callExternalApi } from "./api";
+import { callApi, callExternalApi } from "./api";
 
 export default function App() {
   useEffect(() => {
