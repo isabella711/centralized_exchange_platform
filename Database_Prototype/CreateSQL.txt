@@ -1,0 +1,63 @@
+CREATE DATABASE cryptoexchange;
+USE DATABASE cryptoexchange;
+CREATE TABLE `Users` (
+  `user_id` INT NOT NULL,
+  `user_name` VARCHAR(50) NULL,
+  `user_wallet_id` VARCHAR(255) NULL,
+  `user_balance` DOUBLE NULL COMMENT 'Fiat Currency',
+  `personal_info` TEXT NULL,
+  `user_icon` VARCHAR(255) NULL,
+  `user_create_date` DATETIME NOT NULL,
+  `email_address` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`user_id`));
+
+CREATE TABLE `Wallets` (
+  `wallet_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `wallet_create_date` DATETIME NOT NULL,
+  PRIMARY KEY (`wallet_id`),
+  INDEX `user_id_idx` (`user_id` ASC),
+  CONSTRAINT `user_id`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `Users` (`user_id`)
+    ON DELETE NO RESTRICT
+    ON UPDATE NO RESTRICT);
+
+CREATE TABLE `Fiat` (
+  `fiat_id` INT NOT NULL,
+  `customer_id` INT NOT NULL,
+  `order_date` DATETIME NOT NULL,
+  `status` VARCHAR(5) NULL,
+  `amount` DOUBLE NULL,
+  PRIMARY KEY (`fiat_id`),
+  INDEX `user_id_idx` (`customer_id` ASC),
+  CONSTRAINT `user_id`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `Users` (`user_id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT);
+
+CREATE TABLE `Transactions` (
+  `transaction_id` INT NOT NULL,
+  `buyer_id` VARCHAR(255) NOT NULL,
+  `transaction_date` DATETIME NOT NULL,
+  `status` VARCHAR(5) NULL,
+  PRIMARY KEY (`transaction_id`),
+  INDEX `users_id_idx` (`buyer_id` ASC),
+  CONSTRAINT `users_id`
+    FOREIGN KEY (`buyer_id`)
+    REFERENCES Users` (`user_name`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT);
+
+CREATE DATABASE user_auth_db;
+USE user_auth_db;
+
+
+ CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
