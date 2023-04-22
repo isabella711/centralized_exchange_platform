@@ -9,7 +9,7 @@ import { callApi, callExternalApi } from "./api";
 
 export default function App() {
   useEffect(() => {
-    callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
+    callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol");
   }, []);
   return (
     <div>

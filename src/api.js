@@ -74,7 +74,8 @@ export const callExternalApi = async (address, type) => {
           ],
         })
         .then((res) => {
-          console.log(res.data);
+          console.log("api", res.data.result.value);
+          return res.data.result.value;
         });
     } catch (error) {
       console.log("Error", error);
