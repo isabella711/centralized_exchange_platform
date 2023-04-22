@@ -9,15 +9,17 @@ import { useGetLowPrice } from "../hooks/useGetLowPrice";
 import { useGetHighPrice } from "../hooks/useGetHighPrice";
 import { useGetPriceChange } from "../hooks/useGetPriceChange";
 import { useGetAmount } from "../hooks/useGetAmount";
+import  useWebSocket  from "../hooks/useWebSocket";
 
 const PaymentCont = (props) => {
   const { id } = props;
-  const coin = useUpdateCoin(id);
-  const lowPrice = Number(useGetLowPrice(id)).toFixed(2);
-  const highPrice = Number(useGetHighPrice(id)).toFixed(2);
-  const priceChange = Number(useGetPriceChange(id)).toFixed(2);
-  const amount = Number(useGetAmount(id)).toFixed(2);
-  const coinTrim = Number(coin).toFixed(2);
+  const {coinInfo} = useWebSocket(id);
+  // const lowPrice = Number(useGetLowPrice(id)).toFixed(2);
+  // const highPrice = Number(useGetHighPrice(id)).toFixed(2);
+  // const priceChange = Number(useGetPriceChange(id)).toFixed(2);
+  // const amount = Number(useGetAmount(id)).toFixed(2);
+  const coinTrim = Number(coinInfo).toFixed(2);
+
   return (
     <div>
       <h1>Details</h1>
@@ -28,19 +30,19 @@ const PaymentCont = (props) => {
         </tr>
         <tr>
           <th>24h Lowest Price</th>
-          <th>${lowPrice}</th>
+          {/* <th>${lowPrice}</th> */}
         </tr>
         <tr>
           <th>24h Highestst Price</th>
-          <th>${highPrice}</th>
+          {/* <th>${highPrice}</th> */}
         </tr>
         <tr>
           <th>24h Price Change</th>
-          <th>{priceChange}%</th>
+          {/* <th>{priceChange}%</th> */}
         </tr>
         <tr>
           <th>24h Total Amount</th>
-          <th>${amount}</th>
+          {/* <th>${amount}</th> */}
         </tr>
       </table>
     </div>
