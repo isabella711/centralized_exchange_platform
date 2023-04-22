@@ -90,6 +90,7 @@ button:active {
 }
 
 .button5 {
+	text-align: center;
 	background-color: white;
 	color: black;
 	border: 2px solid #555555;

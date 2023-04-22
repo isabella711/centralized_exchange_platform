@@ -4,11 +4,12 @@ import Xrp from "./js/Xrp";
 import Payment from "./js/Payment";
 import Card from "./js/Card";
 import Register from "./js/Register";
-import { callApi,callExternalApi } from "./api";
+import UserProfile from "./js/UserProfile";
+import { callApi, callExternalApi } from "./api";
 
 export default function App() {
   useEffect(() => {
-    callExternalApi('rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt','xrp');
+    callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
   }, []);
   return (
     <div>
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/payment/:id" element={<Payment />} />
           <Route path="/Xrp" element={<Xrp />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/UserProfile" element={<UserProfile />} />
         </Routes>
       </Router>
     </div>
