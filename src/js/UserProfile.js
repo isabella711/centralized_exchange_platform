@@ -8,22 +8,15 @@ import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
 
 export default function UserProfile() {
-  // useEffect(() => {
-  //   const sol = callExternalApi(
-  //     "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
-  //     "sol"
-  //   );
-  //   //console.log(typeof sol);
-  //   //const value = JSON.parse(sol).value;
-  //   console.log("sol.value", sol);
-  // }, []);
+  const [solBalance, setSolBalance] = useState()
   useEffect(() => {
-    const value = callExternalApi(
+    callExternalApi(
       "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
       "sol"
-    );
-    console.log("sol.value", value.data);
+    ).then(res=>{setSolBalance(res.data.result.value)})
+
   }, []);
+  
 
   // sol=JSON.parse(sol);
   // const value = sol.result.value;
@@ -169,7 +162,7 @@ export default function UserProfile() {
                           <tr>
                             <th>Type</th>
                             <th>Date</th>
-                            <th>Amount</th>
+                            <th>Amount{solBalance}</th>
                             <th>User Name</th>
                             <th>Address</th>
                             <th>Status</th>

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { callExternalApi } from "../api";
 
-const fetchUserById = createAsyncThunk(
-  "users/fetchByIdStatus",
-  async (userId, thunkAPI) => {
-    const response = await userAPI.fetchById(userId);
+export const fetchSolBalance = createAsyncThunk(
+  "sol/fetchSolBalance",
+  async (address, type) => {
+    const response = await callExternalApi(address, type);
     return response.data;
   }
 );

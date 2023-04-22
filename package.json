@@ -9,6 +9,7 @@
     "@mantine/hooks": "^6.0.5",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.16",
+    "@reduxjs/toolkit": "^1.9.5",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.52.0",
     "@testing-library/jest-dom": "^5.16.5",
