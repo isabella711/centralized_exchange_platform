@@ -29,12 +29,12 @@ const bs58 = require('bs58');
       console.log(res);
     })
   );
-  // const airdropSignature = await connection.requestAirdrop(
-  //   from.publicKey,
-  //   web3.LAMPORTS_PER_SOL
-  // );
+  const airdropSignature = await connection.requestAirdrop(
+    from.publicKey,
+    web3.LAMPORTS_PER_SOL
+  );
 
-  // await connection.confirmTransaction(airdropSignature);
+  await connection.confirmTransaction(airdropSignature);
 
   //   // Generate a new random public key
   //   const to = web3.Keypair.generate();

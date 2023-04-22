@@ -6,11 +6,13 @@ async function getResult() {
   return { rows };
 }
 
-async function getUser() {
-  const rows = await db.query(`SELECT * FROM joehocom_21010627g.Users WHERE user_id=1`);
+async function getUser(id) {
+  const rows = await db.query(`SELECT * FROM joehocom_21010627g.Users WHERE user_id=${id}`);
 
   return { rows };
 }
+
+
 
 
 async function createTransaction(content) {
