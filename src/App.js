@@ -4,11 +4,11 @@ import Xrp from "./js/Xrp";
 import Payment from "./js/Payment";
 import Card from "./js/Card";
 import Register from "./js/Register";
-import { callApi } from "./api";
+import { callApi,callExternalApi } from "./api";
 
 export default function App() {
   useEffect(() => {
-    callApi();
+    callExternalApi('rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt','xrp');
   }, []);
   return (
     <div>

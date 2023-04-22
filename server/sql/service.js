@@ -6,7 +6,16 @@ async function getResult() {
   return { rows };
 }
 
-async function create(content) {
+async function getUser() {
+  const rows = await db.query(`SELECT * FROM joehocom_21010627g.Users WHERE user_id=1`);
+
+  return { rows };
+}
+
+
+async function createTransaction(content) {
+  // TODO: add transaction on testnet
+
   const result = await db.query(
     `INSERT INTO programming_languages 
     (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
@@ -22,5 +31,6 @@ async function create(content) {
 
 module.exports = {
   getResult,
-  create,
+  createTransaction,
+  getUser
 };
