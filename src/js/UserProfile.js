@@ -14,12 +14,8 @@ export default function UserProfile() {
       "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
       "sol"
     ).then(res=>{setSolBalance(res.data.result.value)})
-
   }, []);
   
-
-  // sol=JSON.parse(sol);
-  // const value = sol.result.value;
 
   return (
     <div className="maincontainer">
