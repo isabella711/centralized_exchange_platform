@@ -12,6 +12,7 @@ module.exports = function xrpGen() {
       .wallet;
     console.log("Got a wallet.");
     console.log(my_wallet.address);
+    console.log(my_wallet.privateKey,`publicKey`,my_wallet.publicKey )
     client.disconnect();
   };
   console.log(createNewWallet());

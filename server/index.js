@@ -7,7 +7,7 @@ const cors = require("cors");
 const { getResult, create } = require("../server/sql/service");
 
 const xrpGen = require("../server/walletGenerater/xrpGen");
-// xrpGen();
+xrpGen();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
