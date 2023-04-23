@@ -17,31 +17,32 @@ const Register = () => {
 
     if (response.status === 201) {
       alert('User registered successfully');
-    } else {
-      alert('Registration failed');
-    }
+    } else
+	{
+        alert('Registration failed');
+      }
+    };
+
+    return (
+      <div>
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    );
   };
 
-  return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  );
-};
-
-export default Register;
+  export default Register;

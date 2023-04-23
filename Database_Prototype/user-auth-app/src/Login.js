@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (response.status === 200) {
-      alert('Login successful');
-    } else {
-      alert('Incorrect email or password');
+    try {
+      await login(email, password);
+      alert('Logged in successfully');
+    } catch (error) {
+      alert('Invalid credentials');
     }
   };
 

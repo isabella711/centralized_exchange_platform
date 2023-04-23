@@ -1,0 +1,8 @@
+$url = "http://localhost:5000/Register"
+$jsonData = @{
+    "email" = "test333@example.com"
+    "password" = "test_password"
+} | ConvertTo-Json
+
+$response = Invoke-WebRequest -Uri $url -Method POST -ContentType "application/json" -Body $jsonData
+echo $response.Content
