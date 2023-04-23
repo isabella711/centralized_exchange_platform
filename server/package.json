@@ -4,19 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "find ./node_modules/**/node_modules -type d -name 'bitcore-lib' -exec rm -r {} + && echo 'Deleted duplicate bitcore-libs'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@solana/web3.js": "^1.75.0",
+    "bip32": "^4.0.0",
+    "bip39": "^3.1.0",
+    "bitcoin-transaction": "^1.2.1",
+    "bitcoinjs-lib": "^6.1.0",
+    "bitcore-explorers": "^1.0.1",
+    "bitcore-lib": "^10.0.5",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.2.0",
-    "stripe": "^8.131.1"
+    "stripe": "^8.131.1",
+    "tiny-secp256k1": "^2.2.1"
   }
 }
