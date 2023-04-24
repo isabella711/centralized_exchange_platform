@@ -8,14 +8,19 @@ import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
 
 export default function UserProfile() {
-  const [solBalance, setSolBalance] = useState()
   useEffect(() => {
-    callExternalApi(
-      "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
-      "sol"
-    ).then(res=>{setSolBalance(res.data.result.value)})
+    callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
+    console.log("UserProfile");
   }, []);
-  
+
+  // const [solBalance, setSolBalance] = useState();
+  // useEffect(() => {
+  //   callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol").then(
+  //     (res) => {
+  //       setSolBalance(res.data.result.value / 1000000000);
+  //     }
+  //   );
+  // }, []);
 
   return (
     <div className="maincontainer">
@@ -120,6 +125,28 @@ export default function UserProfile() {
                     </Link>
                   </p>
                 </div>
+
+                <hr class="my-2" />
+
+                <div class="media">
+                  <img
+                    src="https://finvesting.net/wp-content/uploads/2022/03/xrp-icon-freelogovectors.net_.png"
+                    width="56"
+                    height="56"
+                    class="rounded-circle mr-2"
+                    alt=""
+                  />
+                  <div class="media-body">
+                    <p class="my-1">
+                      <strong>XRP</strong>
+                    </p>
+                  </div>
+                  <p>
+                    <Link to={``}>
+                      <button class="button button5">See Details</button>
+                    </Link>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -139,7 +166,7 @@ export default function UserProfile() {
                           <h1 class="card-title mb-0">Balance</h1>
                         </div>
                         <div class="card-body text-center">
-                          <h2>Amount</h2>
+                          {/* <h2>{solBalance}</h2> */}
                         </div>
                       </div>
                     </div>
@@ -158,7 +185,7 @@ export default function UserProfile() {
                           <tr>
                             <th>Type</th>
                             <th>Date</th>
-                            <th>Amount{solBalance}</th>
+                            <th>Amount</th>
                             <th>User Name</th>
                             <th>Address</th>
                             <th>Status</th>
