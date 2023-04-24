@@ -1,6 +1,6 @@
 const xrpl = require("xrpl");
 
-module.exports = function xrpGen() {
+function xrpGen() {
   const net = "wss://s.altnet.rippletest.net:51233";
   const client = new xrpl.Client(net);
   let faucetHost = null;
@@ -18,3 +18,27 @@ module.exports = function xrpGen() {
   console.log(createNewWallet());
   return;
 };
+
+function xrpFetch() {
+  const net = "wss://s.altnet.rippletest.net:51233";
+  const client = new xrpl.Client(net);
+
+  const xrpWallet = async () => {
+    await client.connect();
+    console.log("Connected, funding wallet.");
+    const response = await client.request({
+      command: "account_info",
+      account: "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
+      ledger_index: "validated",
+    });
+
+    console.log(`xrp ++++response>>>`, response);
+    client.disconnect();
+  };
+
+  console.log(`rey>>>>`, xrpWallet());
+  return;
+};
+
+
+module.exports ={xrpGen,xrpFetch}

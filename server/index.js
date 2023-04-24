@@ -1,3 +1,4 @@
+const {xrpFetch}=  require("./walletGenerater/xrpGen")
 const express = require("express");
 const app = express();
 require("dotenv").config();
@@ -11,7 +12,7 @@ const {
   login,
   register,
 } = require("../server/sql/service");
-
+xrpFetch()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
