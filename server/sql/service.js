@@ -1,4 +1,11 @@
 const db = require("./db");
+var crypto = require("crypto");
+
+var generate_key = function () {
+  // 16 bytes is likely to be more than enough,
+  // but you may tweak it to your needs
+  return crypto.randomBytes(16).toString("base64");
+};
 
 async function getResult() {
   const rows = await db.query(`SELECT * FROM joehocom_21010627g.Users`);
@@ -7,13 +14,30 @@ async function getResult() {
 }
 
 async function getUser(id) {
-  const rows = await db.query(`SELECT * FROM joehocom_21010627g.Users WHERE user_id=${id}`);
+  const rows = await db.query(
+    `SELECT * FROM joehocom_21010627g.Users WHERE user_id=${id}`
+  );
 
   return { rows };
 }
 
+async function login(email, password) {
+  const query = await db.query(
+    `SELECT * FROM users WHERE email = ${email} AND password = ${password}`
+  );
+  const sessionId = generate_key();
 
+  const insert = await db.query();
 
+  return { query };
+}
+
+async function register(email, password) {
+  const query = await db.query(
+    `INSERT INTO joehocom_21010627g.Users (email, password) VALUES (${email}, ${password})`
+  );
+  return { query };
+}
 
 async function createTransaction(content) {
   // TODO: add transaction on testnet
@@ -34,5 +58,7 @@ async function createTransaction(content) {
 module.exports = {
   getResult,
   createTransaction,
-  getUser
+  getUser,
+  register,
+  login,
 };

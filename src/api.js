@@ -91,16 +91,39 @@ export const callExternalApi = async (address, type) => {
   // }
 
   if (type === "xrp") {
-    console.log("type === xrp");
-    const res = await axios.get(
-      "http://rest.cryptoapis.io/blockchain-data/xrp/testnet/addresses/rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt/balance?context=yourExampleString",
-      {
+    try {
+      let config = {
         headers: {
           "X-Api-Key": "707430bfc2710166ada57a17c1c0baaf06a8b631",
-          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Access-Control-Allow-Headers": "*",
         },
-      }
-    );
-    console.log(res.data);
+        data: {},
+      };
+      await axios
+        .get(
+          `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
+          // "https://rest.cryptoapis.io/blockchain-data/ethereum/goerli/addresses/0x0902a667d6a3f287835e0a4593cae4167384abc6/balance?context=yourExampleString",
+          config
+        )
+        .then((res) => {
+          console.log(`....res>>>`, res.data);
+        });
+
+      // fetch(
+      //   `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
+      //   config
+      // )
+      //   .then((response) => {
+      //     response.json();
+      //     console.log(`response>>>`, response);
+      //   }) // one extra step
+      //   .then((data) => {
+      //     console.log(`>>>>`, data);
+      //   });
+    } catch (error) {
+      console.log("Error", error);
+    }
   }
 };
