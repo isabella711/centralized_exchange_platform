@@ -1,4 +1,5 @@
 import axios from "axios";
+const xrpl = require("xrpl");
 
 export const callApi = async () => {
   try {
@@ -78,14 +79,20 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
-  if (type ==="eth"){
+  if (type === "eth") {
     try {
-      const etherscanApi = require('etherscan-api').init('4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC', 'sepolia');
-      const call=etherscanApi.account.balance(address).then(balance => {
-        return (balance.result)/10e17;
+      console.log("eth called");
+      const etherscanApi = require("etherscan-api").init(
+        "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+        "sepolia"
+      );
+      const call = etherscanApi.account.balance(address).then((balance) => {
+        return balance.result / 10e17;
       });
       return call;
-    } catch(error){console.log("Error",error);}
+    } catch (error) {
+      console.log("Error", error);
+    }
   }
 
   // if (type === "btc") {
@@ -99,41 +106,27 @@ export const callExternalApi = async (address, type) => {
   //     console.log("Error", error);
   //   }
   // }
+};
 
-  if (type === "xrp") {
-    try {
-      let config = {
-        headers: {
-          "X-Api-Key": "707430bfc2710166ada57a17c1c0baaf06a8b631",
-          Accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Headers": "*",
-        },
-        data: {},
-      };
-      await axios
-        .get(
-          `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
-          // "https://rest.cryptoapis.io/blockchain-data/ethereum/goerli/addresses/0x0902a667d6a3f287835e0a4593cae4167384abc6/balance?context=yourExampleString",
-          config
-        )
-        .then((res) => {
-          console.log(`....res>>>`, res.data);
-        });
+export const xrpFetch = async () => {
+  try {
+    const net = "wss://s.altnet.rippletest.net:51233";
+    const client = new xrpl.Client(net);
 
-      // fetch(
-      //   `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
-      //   config
-      // )
-      //   .then((response) => {
-      //     response.json();
-      //     console.log(`response>>>`, response);
-      //   }) // one extra step
-      //   .then((data) => {
-      //     console.log(`>>>>`, data);
-      //   });
-    } catch (error) {
-      console.log("Error", error);
-    }
+    const xrpWallet = async () => {
+      await client.connect();
+      console.log("Connected, funding wallet.");
+      const response = await client.request({
+        command: "account_info",
+        account: "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
+        ledger_index: "validated",
+      });
+      console.log(`xrp ++++response>>>`, response.result.account_data.Balance);
+      client.disconnect();
+    };
+
+    console.log(`rey>>>>`, xrpWallet());
+  } catch (error) {
+    console.log("Error", error);
   }
 };

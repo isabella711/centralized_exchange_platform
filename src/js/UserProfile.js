@@ -6,20 +6,25 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { Link, useNavigate } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
+const { xrpFetch } = require("../api");
 
 export default function UserProfile() {
-  useEffect(() => {
-    callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
-    console.log("UserProfile");
-  }, []);
+  //XRP
+  console.log("xrpresult:", xrpFetch());
 
+  //SOL
   // const [solBalance, setSolBalance] = useState();
   // useEffect(() => {
-  //   callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol").then(
-  //     (res) => {
-  //       setSolBalance(res.data.result.value / 1000000000);
-  //     }
-  //   );
+  //   callExternalApi(
+  //     "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
+  //     "sol"
+  //   ).then(res=>{setSolBalance(res.data.result.value)})
+  // }, []);
+
+  //ETH
+  // useEffect(() => {
+  //   const result = callExternalApi("4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC", "eth");
+  //   console.log("result", result);
   // }, []);
 
   return (
