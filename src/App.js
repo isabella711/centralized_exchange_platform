@@ -9,7 +9,7 @@ import Login from "./js/Login";
 import UserProfile from "./js/UserProfile";
 import Header from "./js/Header";
 import { MenuAppBar } from "./js/AppBar";
-import { userLogin, userRegister,xrpFetch } from "./api";
+import { userLogin, userRegister,xrpFetch,ethFetch } from "./api";
 import { callApi, callExternalApi } from "./api";
 import { fetchSolBalance } from "./reducers/usersReducer";
 import store from "./store/store";
@@ -25,7 +25,14 @@ export default function App() {
     // userRegister("edan@gmail.com", "12345678").then((res) => {
     //   console.log(`res.>>from app`, res);
     // });
-    xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
+    // callExternalApi(
+    //   "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
+    //   "sol"
+    // ).then(res=>{
+    //   console.log(`sol>>>`,res.data.result.value)
+    //   })
+
+    // xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
   }, []);
   console.log(`user>>>`, user);
   const users = useSelector((state) => state.users);
