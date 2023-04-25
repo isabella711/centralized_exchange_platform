@@ -1,0 +1,26 @@
+rem Must install and turn it on
+rem Download Litecoin core
+rem https://litecoin.org/
+
+rem Add Path "C:\Program Files\Litecoin\daemon" to Environmental settings of Windows
+rem Add "litecoind -regtest" to StartUp Folders
+
+cd "C:\Program Files\Litecoin\daemon"
+
+litecoind -regtest 
+
+litecoin-cli -regtest -named createwallet wallet_name=exchange1 descriptors=false
+
+litecoin-cli -regtest loadwallet exchange1 
+
+litecoin-cli -regtest settxfee 0.0001
+
+litecoin-cli -regtest -generate 100
+
+litecoin-cli -regtest getbalance
+
+litecoin-cli -regtest -generate 1
+
+litecoin-cli -regtest getbalance
+
+

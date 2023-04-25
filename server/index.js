@@ -1,4 +1,4 @@
-const {xrpFetch}=  require("./walletGenerater/xrpGen")
+const { xrpFetch } = require("./walletGenerater/xrpGen");
 const express = require("express");
 const app = express();
 require("dotenv").config();
@@ -12,7 +12,6 @@ const {
   login,
   register,
 } = require("../server/sql/service");
-xrpFetch()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -86,15 +85,15 @@ app.post("/payment", cors(), async (req, res) => {
 
 app.post("/register", async (req, res) => {
   const { email, password } = req.body;
-  const userRegister = await register(email, password);
   // Insert a new user into the MySQL database
   try {
-    userRegister.then((res) => {
-      res.json({
-        message: "successful",
-        payload: {},
-        success: true,
-      });
+    register(email, password).then((result) => {
+      if (result.length > 0) {
+        const userData = result[0];
+        res.status(200).send(userData);
+      } else {
+        res.status(404).send({ msg: "account already exist" });
+      }
     });
   } catch (err) {
     if (err) {
@@ -107,17 +106,10 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const userLogin = await login(email, password);
-
-  // Check if the user exists and the password matches
   try {
-    userLogin.then((result) => {
+    login(email, password).then((result) => {
       if (result.length > 0) {
-        const userData = {
-          id: result[0].id,
-          email: email,
-          name: result[0].name,
-        };
+        const userData = result[0];
         res.status(200).send(userData);
       } else {
         res.status(401).send("Incorrect email or password");

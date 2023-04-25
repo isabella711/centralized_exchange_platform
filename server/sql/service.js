@@ -1,5 +1,6 @@
 const db = require("./db");
 var crypto = require("crypto");
+const createMultiWallet = require("../walletGenerater/multiGen");
 
 var generate_key = function () {
   // 16 bytes is likely to be more than enough,
@@ -15,7 +16,7 @@ async function getResult() {
 
 async function getUser(id) {
   const rows = await db.query(
-    `SELECT * FROM joehocom_21010627g.Users WHERE user_id=${id}`
+    `SELECT user_id user_name, user_balance, email_address FROM joehocom_21010627g.Users WHERE user_id=${id}`
   );
 
   return { rows };
@@ -23,20 +24,100 @@ async function getUser(id) {
 
 async function login(email, password) {
   const query = await db.query(
-    `SELECT * FROM users WHERE email = ${email} AND password = ${password}`
+    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND password = ?`,
+    [email, password]
   );
-  const sessionId = generate_key();
+  let userId = query.find((col) => col.email_address === email).user_id;
+  let key = email + password + Date.now().toString();
+  const sessionId = generate_key(key);
 
-  const insert = await db.query();
+  if (query) {
+    await db.query(
+      `UPDATE joehocom_21010627g.Users SET session = ? WHERE user_id = ?`,
+      [sessionId, userId]
+    );
+  }
 
-  return { query };
+  const result = await db.query(
+    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
+    [email, sessionId]
+  );
+
+  return result;
 }
 
 async function register(email, password) {
   const query = await db.query(
-    `INSERT INTO joehocom_21010627g.Users (email, password) VALUES (${email}, ${password})`
+    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ?`,
+    [email]
   );
-  return { query };
+  let userId =
+    query.find((col) => col.email_address === email)?.user_id ?? null;
+  if (userId) {
+    console.log("account already exist");
+    return { msg: "account already exist" };
+  }
+  let key = email + password + Date.now().toString();
+  const sessionId = generate_key(key);
+  console.log([email, password, sessionId]);
+  // if(!userId){
+  await db.query(
+    `INSERT INTO joehocom_21010627g.Users (email_address, password, session) VALUES (?, ?, ?)`,
+    [email, password, sessionId]
+  );
+
+  const result = await db.query(
+    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
+    [email, sessionId]
+  );
+  const createdUserId = result.find(
+    (col) => col.email_address === email
+  )?.user_id;
+  if (email && password && sessionId) {
+    const wallets = await createMultiWallet();
+    const { solAccount, ethAccount, xrpAccount } = wallets;
+    console.log(`wallets.>>>`, { solAccount, ethAccount, xrpAccount });
+    if (solAccount && ethAccount && xrpAccount) {
+      console.log(
+        createdUserId,
+        "SOL",
+        Date.now().toString(),
+        solAccount.publicKey.toString(),
+        solAccount.privateKey.toString()
+      );
+      await db.query(
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type, wallet_create_date,wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
+        [
+          createdUserId,
+          "SOL",
+          Date.now().toString(),
+          solAccount.publicKey.toString(),
+          solAccount.privateKey.toString(),
+        ]
+      );
+      await db.query(
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type, wallet_create_date ,wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
+        [
+          createdUserId,
+          "ETH",
+          Date.now().toString(),
+          solAccount.publicKey,
+          solAccount.privateKey,
+        ]
+      );
+      await db.query(
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type,wallet_create_date , wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
+        [
+          createdUserId,
+          "XRP",
+          Date.now().toString(),
+          solAccount.publicKey,
+          solAccount.privateKey,
+        ]
+      );
+    }
+  }
+  return result;
 }
 
 async function createTransaction(content) {
@@ -54,7 +135,6 @@ async function createTransaction(content) {
   }
   return { message };
 }
-
 module.exports = {
   getResult,
   createTransaction,

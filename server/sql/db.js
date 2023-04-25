@@ -11,7 +11,14 @@ async function query(sql, params) {
   const [results] = await connection.execute(sql, params);
   return results;
 }
-async function getTable() {
+
+async function queryBulk(sql, params, isBulk) {
+  const connection = await mysql.createConnection(config);
+  const [results] = await connection.query(sql, params, isBulk);
+  return results;
+}
+
+async function getTables() {
   const connection = await mysql.createConnection(config);
 
   const [results] = await connection.execute(
@@ -22,20 +29,24 @@ async function getTable() {
   );
   return results;
 }
+
 async function addColumn() {
   const connection = await mysql.createConnection(config);
   const [results] = await connection.execute(
-    `ALTER TABLE 'joehocom_21010627g.Users' `
+    `ALTER TABLE joehocom_21010627g.Users ADD password varchar(255)`
   );
   return results;
 }
 
-getTable().then((res) => {
-  console.log(`getTable>>>`, res);
-});
+// getTable().then((res) => {
+//   console.log(`getTable>>>`, res);
+// });
+
+// addColumn();
 
 module.exports = {
   query,
+  queryBulk,
 };
 
 // const user_id = () => {
