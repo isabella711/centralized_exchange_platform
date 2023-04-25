@@ -34,5 +34,14 @@ const contents = [
     ticket: "xrpusdt@trade",
     details: "xrpusdt@ticker",
   },
+  {
+  id: 5,
+    name: "LTC",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/e/e3/Litecoin_Logo.jpg",
+    price: 220,
+    ticket: "ltcusdt@trade",
+    details: "ltcpusdt@ticker",
+  }
 ];
 export default contents;
