@@ -25,7 +25,7 @@ export default function App() {
     // userRegister("edan@gmail.com", "12345678").then((res) => {
     //   console.log(`res.>>from app`, res);
     // });
-    xrpFetch().then(res=>{console.log(`xrpFetch>>>`,res)})
+    xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
   }, []);
   console.log(`user>>>`, user);
   const users = useSelector((state) => state.users);

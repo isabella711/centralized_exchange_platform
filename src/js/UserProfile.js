@@ -12,7 +12,7 @@ export default function UserProfile() {
   const [xrpBalance, setXrpBalance] =useState(0)
   //XRP
   useEffect(()=>{
-    xrpFetch().then(res=>{
+    xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{
       let balance = res.result.account_data
       setXrpBalance(balance)
     })

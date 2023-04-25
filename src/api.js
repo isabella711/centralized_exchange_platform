@@ -135,7 +135,7 @@ export const callExternalApi = async (address, type) => {
   // }
 };
 
-export const xrpFetch = async () => {
+export const xrpFetch = async (account) => {
   try {
     const net = "wss://s.altnet.rippletest.net:51233";
     const client = new xrpl.Client(net);
@@ -144,7 +144,7 @@ export const xrpFetch = async () => {
       console.log("Connected, funding wallet.");
       const response = await client.request({
         command: "account_info",
-        account: "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
+        account: account,
         ledger_index: "validated",
       });
       client.disconnect();
