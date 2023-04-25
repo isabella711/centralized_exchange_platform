@@ -9,9 +9,15 @@ import { callExternalApi } from "../api";
 const { xrpFetch } = require("../api");
 
 export default function UserProfile() {
+  const [xrpBalance, setXrpBalance] =useState(0)
   //XRP
-  console.log("xrpresult:", xrpFetch());
-
+  useEffect(()=>{
+    xrpFetch().then(res=>{
+      let balance = res.result.account_data
+      setXrpBalance(balance)
+    })
+  })
+  
   //SOL
   // const [solBalance, setSolBalance] = useState();
   // useEffect(() => {
@@ -143,7 +149,7 @@ export default function UserProfile() {
                   />
                   <div class="media-body">
                     <p class="my-1">
-                      <strong>XRP</strong>
+                      <strong>XRP {xrpBalance}</strong>
                     </p>
                   </div>
                   <p>

@@ -140,7 +140,6 @@ export const xrpFetch = async () => {
     const net = "wss://s.altnet.rippletest.net:51233";
     const client = new xrpl.Client(net);
 
-    const xrpWallet = async () => {
       await client.connect();
       console.log("Connected, funding wallet.");
       const response = await client.request({
@@ -148,26 +147,24 @@ export const xrpFetch = async () => {
         account: "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
         ledger_index: "validated",
       });
-      console.log(`xrp ++++response>>>`, response.result.account_data.Balance);
       client.disconnect();
-    };
+      return response
 
-    console.log(`rey>>>>`, xrpWallet());
   } catch (error) {
     console.log("Error", error);
   }
 
-  if (type === "btc") {
-    try {
-      await axios
-        .get(`https://blockstream.info/testnet/api/address/${address}/txs`)
-        .then((res) => {
-          console.log(res.data);
-        });
-    } catch (error) {
-      console.log("Error", error);
-    }
-  }
+  // if (type === "btc") {
+  //   try {
+  //     await axios
+  //       .get(`https://blockstream.info/testnet/api/address/${address}/txs`)
+  //       .then((res) => {
+  //         console.log(res.data);
+  //       });
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  // }
 
   // if (type === "xrp") {
   //   try {

@@ -35,7 +35,6 @@ function xrpFetch(address) {
     client.disconnect();
   };
 
-  // console.log(`rey>>>>`, xrpWallet());
   return xrpWalletUpdate;
 }
 
