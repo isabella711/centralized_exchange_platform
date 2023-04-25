@@ -1,34 +1,33 @@
 const xrpl = require("xrpl");
 
-function xrpGen() {
+const createXrpWallet = async () => {
   const net = "wss://s.altnet.rippletest.net:51233";
   const client = new xrpl.Client(net);
   let faucetHost = null;
   let amount = "100";
-  const createNewWallet = async () => {
-    await client.connect();
-    console.log("Connected, funding wallet.");
-    const my_wallet = (await client.fundWallet(null, { amount, faucetHost }))
-      .wallet;
-    console.log("Got a wallet.");
-    console.log(my_wallet.address);
-    console.log(my_wallet.privateKey,`publicKey`,my_wallet.publicKey )
-    client.disconnect();
-  };
-  console.log(createNewWallet());
-  return;
+  await client.connect();
+  console.log("Connected, funding wallet.");
+  const my_wallet = (await client.fundWallet(null, { amount, faucetHost }))
+    .wallet;
+  console.log("Got a wallet.");
+  console.log(my_wallet.address);
+  console.log(my_wallet.privateKey, `publicKey`, my_wallet.publicKey);
+  client.disconnect();
+  console.log(`xrp`, my_wallet);
+  return my_wallet;
 };
 
-function xrpFetch() {
+function xrpFetch(address) {
   const net = "wss://s.altnet.rippletest.net:51233";
   const client = new xrpl.Client(net);
 
-  const xrpWallet = async () => {
+  const xrpWalletUpdate = async () => {
     await client.connect();
     console.log("Connected, funding wallet.");
     const response = await client.request({
       command: "account_info",
-      account: "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
+      account: address,
+      // "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
       ledger_index: "validated",
     });
 
@@ -36,9 +35,8 @@ function xrpFetch() {
     client.disconnect();
   };
 
-  console.log(`rey>>>>`, xrpWallet());
-  return;
-};
+  // console.log(`rey>>>>`, xrpWallet());
+  return xrpWalletUpdate;
+}
 
-
-module.exports ={xrpGen,xrpFetch}
+module.exports = { createXrpWallet, xrpFetch };

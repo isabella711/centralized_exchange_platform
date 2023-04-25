@@ -1,14 +1,12 @@
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from "../reducers/usersReducer";
-export default function configureAppStore(preloadedState) {
-  const rootReducer = combineReducers({
-    users: usersReducer,
-  });
+import logger from "redux-logger";
 
-  const store = configureStore({
-    reducer: rootReducer,
-  });
+const rootReducer = combineReducers({
+  users: usersReducer,
+});
 
-  return store;
-}
+const store = configureStore({ reducer: rootReducer });
+
+export default store;
