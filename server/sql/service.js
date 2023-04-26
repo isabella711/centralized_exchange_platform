@@ -120,6 +120,16 @@ async function register(email, password) {
   return result;
 }
 
+async function addValue(value) {
+  if (value < 0) {
+    return;
+  }
+  const rows = await db.query(
+    `UPDATE users SET balance = balance + ? WHERE email = ?`,
+    [value]
+  );
+}
+
 async function createTransaction(content) {
   // TODO: add transaction on testnet
 

@@ -9,7 +9,7 @@ import Login from "./js/Login";
 import UserProfile from "./js/UserProfile";
 import Header from "./js/Header";
 import { MenuAppBar } from "./js/AppBar";
-import { userLogin, userRegister,xrpFetch,ethFetch } from "./api";
+import { userLogin, userRegister, xrpFetch, ethFetch } from "./api";
 import { callApi, callExternalApi } from "./api";
 import { fetchSolBalance } from "./reducers/usersReducer";
 import store from "./store/store";
@@ -17,6 +17,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function App() {
   const { login, user } = useAuth();
+  const [currentForm, setCurrentForm] = useState("login");
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  };
   useEffect(() => {
     // callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol");
     // userLogin("alice@gmail.com", "12345678").then((res) => {
@@ -31,7 +35,6 @@ export default function App() {
     // ).then(res=>{
     //   console.log(`sol>>>`,res.data.result.value)
     //   })
-
     // xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
   }, []);
   console.log(`user>>>`, user);
@@ -53,19 +56,29 @@ export default function App() {
     <Router>
       <div>
         <MenuAppBar
-        // pages={[
-        //   { label: "register", path: "/register" },
-        //   { label: "login", path: "/login" },
-        // ]}
+          pages={[
+            { label: "register", path: "/register" },
+            { label: "login", path: "/login" },
+          ]}
         />
         {/* <Header /> */}
-        <nav>
+        {/* <nav>
           <Link to="/register">Register</Link>
           <Link to="/login">Login</Link>
-        </nav>
+        </nav> */}
         <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={
+              <div className="App">
+                {currentForm === "login" ? (
+                  <Login onFormSwitch={toggleForm} />
+                ) : (
+                  <Register onFormSwitch={toggleForm} />
+                )}
+              </div>
+            }
+          />
           {/* <Route path="/addvalue" element={<AddValue />} /> */}
           <Route path="/" element={<Card />} />
         </Routes>

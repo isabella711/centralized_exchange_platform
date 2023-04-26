@@ -1,25 +1,16 @@
-import { FaShoppingCart } from "react-icons/fa";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useUpdateCoin } from "../hooks/useUpdateCoin";
-import  useWebSocket  from "../hooks/useWebSocket";
+import useWebSocket from "../hooks/useWebSocket";
 import { useGetPriceChange } from "../hooks/useGetPriceChange";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./header";
-import {
-  Space,
-  HoverCard,
-  Card,
-  Image,
-  Text,
-  MantineProvider,
-} from "@mantine/core";
-import { Slider, rem } from "@mantine/core";
+
 export function Products(props) {
-  const {coinInfo} = useWebSocket(props.ticket);
+  const { coinInfo } = useWebSocket(props.ticket);
   // const priceChange = Number(useGetPriceChange(props.details)).toFixed(2);
   const coinTrim = Number(coinInfo).toFixed(2);
   // const navigate = useNavigate();
-  console.log(`coinInfo>>>`,coinInfo)
+  console.log(`coinInfo>>>`, coinInfo);
   return (
     <>
       <div className="productList">
@@ -39,11 +30,17 @@ export function Products(props) {
             <div className="displayStack__1"></div>
             <div className="productPrice">Current Price: ${coinTrim}</div>
             {/* <div className="productPrice">24h Price Change: {priceChange}%</div> */}
-            <p>
+            <div
+              style={{
+                justifyContent: "center",
+                alignSelf: "center",
+                margin: "auto",
+              }}
+            >
               <Link to={`/payment/${props.details}`}>
                 <button class="button button5">Buy</button>
               </Link>
-            </p>
+            </div>
           </div>
         </div>
       </div>

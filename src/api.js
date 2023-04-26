@@ -1,5 +1,6 @@
 import axios from "axios";
 const xrpl = require("xrpl");
+// const etherscan = require("etherscan-api");
 
 export const callApi = async () => {
   try {
@@ -106,21 +107,21 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
-  if (type === "eth") {
-    try {
-      console.log("eth called");
-      const etherscanApi = require("etherscan-api").init(
-        "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
-        "sepolia"
-      );
-      const call = etherscanApi.account.balance(address).then((balance) => {
-        return balance.result / 10e17;
-      });
-      return call;
-    } catch (error) {
-      console.log("Error", error);
-    }
-  }
+  // if (type === "eth") {
+  //   try {
+  //     console.log("eth called");
+  //     const etherscanApi = etherscan.init(
+  //       "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+  //       "sepolia"
+  //     );
+  //     const call = etherscanApi.account.balance(address).then((balance) => {
+  //       return balance.result / 10e17;
+  //     });
+  //     return call;
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  // }
 
   // if (type === "btc") {
   //   try {
@@ -140,16 +141,15 @@ export const xrpFetch = async (account) => {
     const net = "wss://s.altnet.rippletest.net:51233";
     const client = new xrpl.Client(net);
 
-      await client.connect();
-      console.log("Connected, funding wallet.");
-      const response = await client.request({
-        command: "account_info",
-        account: account,
-        ledger_index: "validated",
-      });
-      client.disconnect();
-      return response
-
+    await client.connect();
+    console.log("Connected, funding wallet.");
+    const response = await client.request({
+      command: "account_info",
+      account: account,
+      ledger_index: "validated",
+    });
+    client.disconnect();
+    return response;
   } catch (error) {
     console.log("Error", error);
   }
