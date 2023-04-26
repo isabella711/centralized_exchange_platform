@@ -16,3 +16,19 @@ let bn = bitcore.crypto.BN.fromBuffer(hash);
 const privateKey = new bitcore.PrivateKey(bn,'testnet');
 
 console.log(privateKey,privateKey.toAddress().toString())
+
+
+
+
+//Method 2
+const axios = require('axios');
+
+//
+const createbitcoinAccount = async () => {
+    try {
+      const call = await axios.post("https://api.blockcypher.com/v1/btc/main/wallets?token=d918fe8c97a348e39abdb9e5ff48543d");
+      return call.address;
+    } catch (error) {
+      console.log("Error", error);
+    }};
+module.exports = { createbitcoinAccount };
