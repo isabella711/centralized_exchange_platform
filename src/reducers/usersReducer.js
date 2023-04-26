@@ -10,10 +10,10 @@ export const fetchSolBalance = createAsyncThunk(
 );
 
 const user = createSlice({
-  name: "users",
+  name: "user",
   initialState: {
     loading: "idle",
-    users: [],
+    user: null,
   },
   reducers: {
     usersLoading(state, action) {
@@ -22,15 +22,15 @@ const user = createSlice({
         state.loading = "pending";
       }
     },
-    usersReceived(state, action) {
-      if (state.loading === "pending") {
-        state.loading = "idle";
-        state.users = action.payload;
-      }
+    userProfile(state, action) {
+      // if (state.loading === "pending") {
+      // state.loading = "idle";
+      state.user = action.payload;
+      // }
     },
   },
 });
 
-export const { usersLoading, usersReceived } = user.actions;
+export const { usersLoading, userProfile } = user.actions;
 
 export default user.reducer;

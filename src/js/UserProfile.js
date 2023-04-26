@@ -3,30 +3,38 @@ import "../css/UserProfile.css";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
 const { xrpFetch } = require("../api");
 
 export default function UserProfile() {
-  const [xrpBalance, setXrpBalance] =useState(0)
+  const [authenticated, setauthenticated] = useState(null);
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("authenticated");
+    if (loggedInUser) {
+      setauthenticated(loggedInUser);
+    }
+  }, []);
+
+  const [xrpBalance, setXrpBalance] = useState(0);
   //XRP
-  useEffect(()=>{
-    xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{
-      let balance = res.result.account_data
-      setXrpBalance(balance)
-    })
-  })
-  
+  useEffect(() => {
+    xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then((res) => {
+      let balance = res.result.account_data;
+      setXrpBalance(balance);
+    });
+  });
+
   //SOL
   const [solBalance, setSolBalance] = useState();
   useEffect(() => {
-    callExternalApi(
-      "Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS",
-      "sol"
-    ).then(res=>{
-      console.log(`>>>`,res)
-      setSolBalance(res.data.result.value)})
+    callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol").then(
+      (res) => {
+        console.log(`>>>`, res);
+        setSolBalance(res.data.result.value);
+      }
+    );
   }, []);
 
   //ETH
@@ -34,6 +42,9 @@ export default function UserProfile() {
   //   const result = callExternalApi("4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC", "eth");
   //   console.log("result", result);
   // }, []);
+  if (!authenticated) {
+    return <Navigate replace to="/login" />;
+  }
 
   return (
     <div className="maincontainer">

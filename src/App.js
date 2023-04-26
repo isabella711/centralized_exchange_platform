@@ -1,26 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-import { AuthProvider, useAuth } from "./AuthContext";
-import Xrp from "./js/Xrp";
-import Payment from "./js/Payment";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import Card from "./js/Card";
 import Register from "./js/Register";
 import Login from "./js/Login";
-import UserProfile from "./js/UserProfile";
-import Header from "./js/Header";
 import { MenuAppBar } from "./js/AppBar";
-import { userLogin, userRegister, xrpFetch, ethFetch } from "./api";
-import { callApi, callExternalApi } from "./api";
-import { fetchSolBalance } from "./reducers/usersReducer";
-import store from "./store/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function App() {
-  const { login, user } = useAuth();
+  const { login, user, authenticated } = useAuth();
   const [currentForm, setCurrentForm] = useState("login");
+
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   };
+  const userInfo = useSelector((state) => state.user);
   useEffect(() => {
     // callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol");
     // userLogin("alice@gmail.com", "12345678").then((res) => {
@@ -38,8 +32,7 @@ export default function App() {
     // xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
   }, []);
   console.log(`user>>>`, user);
-  const users = useSelector((state) => state.users);
-  console.log(`usersLoading>>`, users);
+  console.log(`usersLoading>>`, userInfo.user);
   return (
     // <div>
     //   <Router>
@@ -55,17 +48,7 @@ export default function App() {
 
     <Router>
       <div>
-        <MenuAppBar
-          pages={[
-            { label: "register", path: "/register" },
-            { label: "login", path: "/login" },
-          ]}
-        />
-        {/* <Header /> */}
-        {/* <nav>
-          <Link to="/register">Register</Link>
-          <Link to="/login">Login</Link>
-        </nav> */}
+        <MenuAppBar isAuthenticated={authenticated} />
         <Routes>
           <Route
             path="/login"

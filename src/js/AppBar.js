@@ -13,11 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
-const settings = ["Home", "Login"];
-
-export function MenuAppBar() {
+export function MenuAppBar(props) {
+  const { logout } = useAuth();
+  const { isAuthenticated } = props;
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  console.log(`isAuthenticated>>>`, isAuthenticated);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -25,8 +27,20 @@ export function MenuAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    if (isAuthenticated) {
+      logout();
+    }
   };
-
+  const linkHandler = (page) => {
+    let link = page.toLowerCase();
+    if (link === "home") {
+      return "/";
+    }
+    if (link === "logout") {
+      return "/";
+    }
+    return link;
+  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -75,14 +89,8 @@ export function MenuAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <Link
-                  to={
-                    setting.toLowerCase() === "home"
-                      ? "/"
-                      : setting.toLowerCase()
-                  }
-                >
+              {["Home", isAuthenticated ? "Logout" : "Login"].map((setting) => (
+                <Link to={linkHandler(setting)}>
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>

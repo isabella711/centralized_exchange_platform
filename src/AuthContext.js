@@ -1,12 +1,14 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { userLogin } from "./api";
 import axios from "axios";
+import { userProfile, usersLoading } from "./reducers/usersReducer";
+import { store } from "./store/store";
 
 const AuthContext = createContext({
-  // user: null,
-  // login: (email, password) => {},
-  // logout: () => {},
-  // // addValue,
+  user: null,
+  login: (email, password) => {},
+  logout: () => {},
+  // addValue,
 });
 
 export const useAuth = () => {
@@ -15,23 +17,30 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // const login = (email, password) =>
-  //   userLogin(email, password).then((res) => {
-  //     console.log(`res>>>`, res);
-  //     setUser(res);
-  //   });
-
+  const [authenticated, setauthenticated] = useState(
+    localStorage.getItem("authenticated") ?? false
+  );
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("authenticated");
+    if (loggedInUser) {
+      console.log(`...is set yes`);
+      setauthenticated(loggedInUser);
+    } else {
+      console.log(`...is set`);
+      setauthenticated(false);
+    }
+  }, [authenticated, setauthenticated]);
   const login = async (email, password) => {
     const response = await userLogin(email, password);
     console.log("Credentials:", JSON.stringify({ email, password }));
     console.log("Response:", response);
-    console.log("Response.ok:", response.ok);
     if (response.data) {
       try {
         const responseText = await response.data;
         console.log("Raw response text:", responseText);
         setUser(responseText);
-        console.log(`data set<<<`, responseText);
+        store.dispatch(userProfile(responseText));
+        return true;
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
@@ -41,7 +50,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    store.dispatch(userProfile(null));
     setUser(null);
+    localStorage.removeItem("authenticated");
   };
 
   const addValue = async (value) => {
@@ -67,6 +78,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     addValue,
+    authenticated,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
