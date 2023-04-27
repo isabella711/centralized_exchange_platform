@@ -16,7 +16,7 @@ export default function Header(props) {
 
       const ethAddress =
         wallets?.find((wallet) => wallet.currency_type === "ETH")
-          .wallet_addres ?? null;
+          .wallet_address ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
         setXrpBalance(balance);
