@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { userLogin } from "../api";
 
 const Login = (props) => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  const [authenticated, setauthenticated] = React.useState(
-    localStorage.getItem("authenticated") ?? false
-  );
+  // const [authenticated, setauthenticated] = React.useState(
+  //   localStorage.getItem("authenticated") ?? false
+  // );
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -30,7 +28,6 @@ const Login = (props) => {
       const result = await login(email, password);
       if (result) {
         // usersLoading("idle");
-        setauthenticated(true);
         localStorage.setItem("authenticated", true);
         // usersLoading("pending");
         navigate("/");
