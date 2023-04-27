@@ -7,15 +7,18 @@ const { xrpFetch, callExternalApi } = require("../api");
 export default function Header(props) {
   const [xrpBalance, setXrpBalance] = useState();
   const [ethBalance, setEthBalance] = useState();
+  const [solBalance, setSolBalance] = useState();
   const { isAuthenticated, wallets } = props;
   useEffect(() => {
     if (wallets.length > 0) {
       const xrpAddress =
         wallets?.find((wallet) => wallet.currency_type === "XRP")
           .classicAddress ?? null;
-
       const ethAddress =
         wallets?.find((wallet) => wallet.currency_type === "ETH")
+          .wallet_address ?? null;
+      const solAddress =
+        wallets?.find((wallet) => wallet.currency_type === "SOL")
           .wallet_address ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
@@ -23,6 +26,9 @@ export default function Header(props) {
       });
       callExternalApi(ethAddress, "eth").then((res) => {
         setEthBalance(res.data);
+      });
+      callExternalApi(solAddress, "sol").then((res) => {
+        setSolBalance(res.data.result.value);
       });
     }
   }, []);
@@ -43,9 +49,12 @@ export default function Header(props) {
 
   return (
     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-      {JSON.stringify(wallets)}
-      xrpBalance : {xrpBalance}
-      ethBalance:{ethBalance}
+      {/* {JSON.stringify(wallets)} */}
+      xrp Balance:{xrpBalance}
+      {"\n"}
+      eth Balance:{ethBalance}
+      {"\n"}
+      sol Balance:{solBalance}
     </Typography>
   );
 }
