@@ -9,4 +9,22 @@ const createEthAccount = async () => {
   return newAccount;
 };
 
-module.exports = { createEthAccount };
+const ethersFetch = async (address) => {
+  const etherscanApi = require("etherscan-api").init(
+    "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+    "sepolia"
+  );
+  const call = await etherscanApi.account.balance(address);
+  // .then((balance) => {
+  //   console.log(`ethcall>>>`, balance);
+  //   return balance.result / 10e17;
+  // })
+  // .catch((err) => {
+  //   console.log(`err>>>eth`, err);
+  // });
+  return call;
+};
+module.exports = { createEthAccount, ethersFetch };
+// ethersFetch("0x0902a667d6a3f287835e0a4593cae4167384abc6").then((res) => {
+//   console.log(`0x0902a667d6a3f287835e0a4593cae4167384abc6>>`, res);
+// });
