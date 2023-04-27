@@ -20,7 +20,9 @@ export function MenuAppBar(props) {
   const { isAuthenticated } = props;
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   console.log(`isAuthenticated>>>`, isAuthenticated);
-
+  const prefix = isAuthenticated
+    ? ["Home", "Payment", "Logout"]
+    : ["Home", "Login"];
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -93,7 +95,7 @@ export function MenuAppBar(props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {["Home", isAuthenticated ? "Logout" : "Login"].map((setting) => (
+              {prefix.map((setting) => (
                 <Link to={linkHandler(setting)}>
                   {
                     setting.toLowerCase() === "logout" ? (
