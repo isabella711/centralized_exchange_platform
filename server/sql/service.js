@@ -111,7 +111,7 @@ async function register(email, password) {
         ]
       );
       await db.query(
-        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type,wallet_create_date , wallet_address, wallet_private_key) VALUES  (?,?,?,?,?,?,?)`,
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type,wallet_create_date , wallet_address, wallet_private_key, classicAddress, seed) VALUES  (?,?,?,?,?,?,?)`,
         [
           createdUserId,
           "XRP",
