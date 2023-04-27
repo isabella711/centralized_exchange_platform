@@ -1,6 +1,6 @@
 import axios from "axios";
 const xrpl = require("xrpl");
-// const etherscan = require("etherscan-api");
+const etherscan = require("etherscan-api");
 
 export const callApi = async () => {
   try {
@@ -122,21 +122,21 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
-  // if (type === "eth") {
-  //   try {
-  //     console.log("eth called");
-  //     const etherscanApi = etherscan.init(
-  //       "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
-  //       "sepolia"
-  //     );
-  //     const call = etherscanApi.account.balance(address).then((balance) => {
-  //       return balance.result / 10e17;
-  //     });
-  //     return call;
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  // }
+  if (type === "eth") {
+     try {
+       console.log("eth called");
+       const etherscanApi = etherscan.init(
+         "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+         "sepolia"
+       );
+       const call = etherscanApi.account.balance(address).then((balance) => {
+         return balance.result / 10e17;
+       });
+       return call;
+     } catch (error) {
+       console.log("Error", error);
+     }
+   }
 
   // if (type === "btc") {
   //   try {
