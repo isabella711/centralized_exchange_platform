@@ -87,6 +87,21 @@ export const userRegister = async (email, password) => {
   }
 };
 
+export const getUserWallets = async (id) => {
+  // console.log(`APii,`, email, password);
+  try {
+    const wallets = await axios.get("http://localhost:4000/wallets", {
+      params: {
+        id: id,
+      },
+    });
+    return wallets;
+  } catch (error) {
+    console.log("Error>>>", error);
+    return error;
+  }
+};
+
 export const callExternalApi = async (address, type) => {
   if (type === "sol") {
     try {
