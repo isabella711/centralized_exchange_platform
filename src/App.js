@@ -11,7 +11,8 @@ import Header from "./components/header";
 import { getUserWallets } from "./api";
 import { fetchUserWallets, useWallet } from "./reducers/usersReducer";
 import { store } from "./store/store";
-import Deposit  from "./components/DStripeContainer";
+import Deposit from "./components/DStripeContainer";
+import Payment from "./js/Payment";
 
 export default function App() {
   const { login, user, authenticated } = useAuth();
@@ -74,7 +75,7 @@ export default function App() {
             </div>
           }
         />
-        {/* <Route path="/addvalue" element={<AddValue />} /> */}
+        <Route path="/payment" element={<Payment />} />
         <Route
           path="/"
           element={
