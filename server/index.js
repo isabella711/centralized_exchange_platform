@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const {
   getResult,
+  getUserWalletByUser,
   getUser,
   create,
   login,
@@ -122,20 +123,38 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/wallets", async (req, res) => {
+  const { id } = req.query;
+  try {
+    getUserWalletByUser(id).then((result) => {
+      console.log(`result>>`, result);
+      if (result.length > 0) {
+        res.status(200).send(result);
+      } else {
+        res.status(401).send("Incorrect email or password");
+      }
+    });
+  } catch (err) {
+    if (err) {
+      res.status(500).send("An internal server error occurred");
+    }
+  }
+});
+
 const runLitecoinCommand = (command, ...params) => {
   return new Promise((resolve, reject) => {
-    const litecoinCli = spawn('litecoin-cli', ['-regtest', command, ...params]);
-    let output = '';
+    const litecoinCli = spawn("litecoin-cli", ["-regtest", command, ...params]);
+    let output = "";
 
-    litecoinCli.stdout.on('data', (data) => {
+    litecoinCli.stdout.on("data", (data) => {
       output += data.toString();
     });
 
-    litecoinCli.stderr.on('data', (data) => {
+    litecoinCli.stderr.on("data", (data) => {
       console.error(`Error: ${data}`);
     });
 
-    litecoinCli.on('close', (code) => {
+    litecoinCli.on("close", (code) => {
       if (code === 0) {
         console.log(`Output: ${output.trim()}`); // Log the output
         resolve(output.trim());
@@ -146,10 +165,10 @@ const runLitecoinCommand = (command, ...params) => {
   });
 };
 
-app.post('/api/sendltcaddress', async (req, res) => {
+app.post("/api/sendltcaddress", async (req, res) => {
   const { address, amount } = req.body;
   try {
-    const txid = await runLitecoinCommand('sendtoaddress', address, amount);
+    const txid = await runLitecoinCommand("sendtoaddress", address, amount);
     res.json({ success: true, txid });
   } catch (error) {
     res.status(500).json({ success: false, error });
