@@ -123,20 +123,29 @@ export const callExternalApi = async (address, type) => {
   }
 
   if (type === "eth") {
-     try {
-       console.log("eth called");
-       const etherscanApi = etherscan.init(
-         "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
-         "sepolia"
-       );
-       const call = etherscanApi.account.balance(address).then((balance) => {
-         return balance.result / 10e17;
-       });
-       return call;
-     } catch (error) {
-       console.log("Error", error);
-     }
-   }
+  //   try {
+  //     console.log("eth called");
+  //     const etherscanApi = etherscan.init(
+  //       "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+  //       "sepolia"
+  //     );
+  //     const call = etherscanApi.account.balance(address).then((balance) => {
+   //      return balance.result / 10e17;
+  //     });
+  //    return call;
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  //}
+  try {
+    const result = await axios.get(`https://api-sepolia.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC`);
+    const call = result.result;
+    return call;
+  } catch (error) {
+    console.log("Error", error);
+  }
+}
+  
 
   // if (type === "btc") {
   //   try {
