@@ -9,11 +9,11 @@ import { useGetLowPrice } from "../hooks/useGetLowPrice";
 import { useGetHighPrice } from "../hooks/useGetHighPrice";
 import { useGetPriceChange } from "../hooks/useGetPriceChange";
 import { useGetAmount } from "../hooks/useGetAmount";
-import  useWebSocket  from "../hooks/useWebSocket";
+import useWebSocket from "../hooks/useWebSocket";
 
 const PaymentCont = (props) => {
   const { id } = props;
-  const {coinInfo} = useWebSocket(id);
+  const { coinInfo } = useWebSocket(id);
   // const lowPrice = Number(useGetLowPrice(id)).toFixed(2);
   // const highPrice = Number(useGetHighPrice(id)).toFixed(2);
   // const priceChange = Number(useGetPriceChange(id)).toFixed(2);
@@ -21,31 +21,34 @@ const PaymentCont = (props) => {
   const coinTrim = Number(coinInfo).toFixed(2);
 
   return (
-    <div>
-      <h1>Details</h1>
-      <table class="center">
-        <tr>
-          <th>Current Price</th>
-          <th>${coinTrim}</th>
-        </tr>
-        <tr>
-          <th>24h Lowest Price</th>
-          {/* <th>${lowPrice}</th> */}
-        </tr>
-        <tr>
-          <th>24h Highestst Price</th>
-          {/* <th>${highPrice}</th> */}
-        </tr>
-        <tr>
-          <th>24h Price Change</th>
-          {/* <th>{priceChange}%</th> */}
-        </tr>
-        <tr>
-          <th>24h Total Amount</th>
-          {/* <th>${amount}</th> */}
-        </tr>
-      </table>
-    </div>
+    <>
+      <StripeContainer />
+      <div>
+        <h1>Details</h1>
+        <table class="center">
+          <tr>
+            <th>Current Price</th>
+            <th>${coinTrim}</th>
+          </tr>
+          <tr>
+            <th>24h Lowest Price</th>
+            {/* <th>${lowPrice}</th> */}
+          </tr>
+          <tr>
+            <th>24h Highestst Price</th>
+            {/* <th>${highPrice}</th> */}
+          </tr>
+          <tr>
+            <th>24h Price Change</th>
+            {/* <th>{priceChange}%</th> */}
+          </tr>
+          <tr>
+            <th>24h Total Amount</th>
+            {/* <th>${amount}</th> */}
+          </tr>
+        </table>
+      </div>
+    </>
   );
 };
 
