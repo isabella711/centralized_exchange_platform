@@ -27,6 +27,10 @@ export function MenuAppBar(props) {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const logoutHandle = () => {
+    setAnchorElUser(null);
     if (isAuthenticated) {
       logout();
     }
@@ -91,9 +95,18 @@ export function MenuAppBar(props) {
             >
               {["Home", isAuthenticated ? "Logout" : "Login"].map((setting) => (
                 <Link to={linkHandler(setting)}>
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
+                  {
+                    setting.toLowerCase() === "logout" ? (
+                      <MenuItem key={setting} onClick={logoutHandle}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ) : (
+                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    )
+                    // )}
+                  }
                 </Link>
               ))}
             </Menu>
