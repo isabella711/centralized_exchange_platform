@@ -30,13 +30,14 @@ async function getTables() {
   return results;
 }
 
-async function addColumn() {
-  const connection = await mysql.createConnection(config);
-  const [results] = await connection.execute(
-    `ALTER TABLE joehocom_21010627g.Users ADD password varchar(255)`
-  );
-  return results;
-}
+// async function addColumn() {
+//   const connection = await mysql.createConnection(config);
+//   const [results] = await connection.execute(
+//     `ALTER TABLE joehocom_21010627g.Wallets ADD seed varchar(255)`
+//   );
+//   console.log(`results>>`, results);
+//   return results;
+// }
 
 // getTable().then((res) => {
 //   console.log(`getTable>>>`, res);
