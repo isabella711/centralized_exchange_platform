@@ -16,10 +16,15 @@ async function getResult() {
 
 async function getUser(id) {
   const rows = await db.query(
-    `SELECT user_id user_name, user_balance, email_address FROM joehocom_21010627g.Users WHERE user_id=${id}`
+    `SELECT user_id, user_name, user_balance, email_address FROM joehocom_21010627g.Users WHERE user_id=${id}`
   );
+}
 
-  return { rows };
+async function getUserWalletByUser(id) {
+  const wallet = await db.query(
+    `SELECT wallet_id , currency_type, wallet_address, classicAddress FROM joehocom_21010627g.Wallets WHERE user_id=${id}`
+  );
+  return wallet;
 }
 
 async function login(email, password) {
@@ -80,7 +85,7 @@ async function register(email, password) {
     if (solAccount && ethAccount && xrpAccount) {
       console.log(
         createdUserId,
-        "SOL",
+        "XRP",
         Date.now().toString(),
         solAccount.publicKey.toString(),
         solAccount.privateKey.toString()
@@ -101,18 +106,20 @@ async function register(email, password) {
           createdUserId,
           "ETH",
           Date.now().toString(),
-          solAccount.publicKey,
-          solAccount.privateKey,
+          ethAccount.address,
+          ethAccount.privateKey,
         ]
       );
       await db.query(
-        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type,wallet_create_date , wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type,wallet_create_date , wallet_address, wallet_private_key) VALUES  (?,?,?,?,?,?,?)`,
         [
           createdUserId,
           "XRP",
           Date.now().toString(),
-          solAccount.publicKey,
-          solAccount.privateKey,
+          xrpAccount.publicKey,
+          xrpAccount.privateKey,
+          xrpAccount.classicAddress,
+          xrpAccount.seed,
         ]
       );
     }
@@ -150,5 +157,6 @@ module.exports = {
   createTransaction,
   getUser,
   register,
+  getUserWalletByUser,
   login,
 };
