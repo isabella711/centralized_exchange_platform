@@ -6,15 +6,29 @@ import Register from "./js/Register";
 import Login from "./js/Login";
 import { MenuAppBar } from "./js/AppBar";
 import { useSelector } from "react-redux";
+import HomeLayout from "./components/HomeLayout";
+import Header from "./components/header";
+import { getUserWallets } from "./api";
+import { fetchUserWallets, useWallet } from "./reducers/usersReducer";
+import { store } from "./store/store";
 
 export default function App() {
   const { login, user, authenticated } = useAuth();
   const [currentForm, setCurrentForm] = useState("login");
-
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   };
   const userInfo = useSelector((state) => state.user);
+  console.log(`userInfo>>>`, userInfo);
+
+  useEffect(() => {
+    if (userInfo.user !== null) {
+      const { user_id } = userInfo.user;
+      console.log(`user_id>>>`, user_id);
+      store.dispatch(fetchUserWallets(user_id));
+    }
+  }, [userInfo.user]);
+
   useEffect(() => {
     // callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol");
     // userLogin("alice@gmail.com", "12345678").then((res) => {
@@ -31,8 +45,7 @@ export default function App() {
     //   })
     // xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
   }, []);
-  console.log(`user>>>`, user);
-  console.log(`usersLoading>>`, userInfo.user);
+
   return (
     // <div>
     //   <Router>
@@ -47,25 +60,34 @@ export default function App() {
     // </div>
 
     <Router>
-      <div>
-        <MenuAppBar isAuthenticated={authenticated} />
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <div className="App">
-                {currentForm === "login" ? (
-                  <Login onFormSwitch={toggleForm} />
-                ) : (
-                  <Register onFormSwitch={toggleForm} />
-                )}
-              </div>
-            }
-          />
-          {/* <Route path="/addvalue" element={<AddValue />} /> */}
-          <Route path="/" element={<Card />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <div className="App">
+              {currentForm === "login" ? (
+                <Login onFormSwitch={toggleForm} />
+              ) : (
+                <Register onFormSwitch={toggleForm} />
+              )}
+            </div>
+          }
+        />
+        {/* <Route path="/addvalue" element={<AddValue />} /> */}
+        <Route
+          path="/"
+          element={
+            <HomeLayout>
+              <MenuAppBar isAuthenticated={userInfo.user !== null} />
+              <Header
+                isAuthenticated={userInfo.user !== null}
+                wallets={userInfo.wallets}
+              />
+              <Card />
+            </HomeLayout>
+          }
+        />
+      </Routes>
     </Router>
   );
 }
