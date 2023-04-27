@@ -1,12 +1,13 @@
 import React from "react";
-
+import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
-
 import { useState } from "react";
 import ReactDOM from "react-dom/client";
 
 function Register(props) {
   // const [inputs, setInputs] = useState({});
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   // const handleChange = (event) => {
   //   const name = event.target.name;
@@ -14,42 +15,27 @@ function Register(props) {
   //   setInputs((values) => ({ ...values, [name]: value }));
   // };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log(inputs.id);
-  //   console.log(inputs.password);
-  // };
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
+    try {
+      const result = await register(email, pass);
+      if (result) {
+        // usersLoading("idle");
+        localStorage.setItem("authenticated", true);
+        // usersLoading("pending");
+        navigate("/");
+      }
+    } catch (error) {
+      alert("Invalid credentials");
+      console.log(email);
+    }
   };
 
   return (
-    // <form onSubmit={handleSubmit}>
-    //   <label>
-    //     Enter your ID:
-    //     <input
-    //       type="text"
-    //       name="id"
-    //       value={inputs.id || ""}
-    //       onChange={handleChange}
-    //     />
-    //   </label>
-    //   <label>
-    //     Enter your password:
-    //     <input
-    //       type="number"
-    //       name="password"
-    //       value={inputs.password || ""}
-    //       onChange={handleChange}
-    //     />
-    //   </label>
-    //   <input type="submit" />
-    // </form>
     <div className="auth-form-container">
       <h2>Register</h2>
       <form className="register-form" onSubmit={handleSubmit}>
