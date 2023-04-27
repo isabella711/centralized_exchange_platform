@@ -14,19 +14,17 @@ const { xrpFetch } = require("../api");
 export default function Header(props) {
   const [xrpBalance, setXrpBalance] = useState();
   const { isAuthenticated, wallets } = props;
-
   useEffect(() => {
-    console.log(`>>>wallets`, wallets);
-    const xrpAddress = wallets.find(
-      (wallet) => wallet.currency_type === "XRP"
-    ).classicAddress;
-    console.log(`>>>xrpAddress`, xrpAddress);
+    if (wallets.length > 0) {
+      const xrpAddress =
+        wallets?.find((wallet) => wallet.currency_type === "XRP")
+          .classicAddress ?? null;
 
-    xrpFetch(xrpAddress).then((res) => {
-      let balance = res.result.account_data.Balance;
-      console.log(`>>>xrpBalance`, balance);
-      setXrpBalance(balance);
-    });
+      xrpFetch(xrpAddress).then((res) => {
+        let balance = res.result.account_data.Balance;
+        setXrpBalance(balance);
+      });
+    }
   }, []);
   if (!isAuthenticated) {
     return <></>;
