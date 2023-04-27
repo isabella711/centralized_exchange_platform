@@ -11,6 +11,7 @@ import Header from "./components/header";
 import { getUserWallets } from "./api";
 import { fetchUserWallets, useWallet } from "./reducers/usersReducer";
 import { store } from "./store/store";
+import Deposit  from "./components/DStripeContainer";
 
 export default function App() {
   const { login, user, authenticated } = useAuth();
@@ -87,6 +88,7 @@ export default function App() {
             </HomeLayout>
           }
         />
+        <Route path="/deposit" element={<Deposit />} />
       </Routes>
     </Router>
   );

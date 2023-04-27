@@ -14,7 +14,6 @@ const { xrpFetch } = require("../api");
 export default function Header(props) {
   const [xrpBalance, setXrpBalance] = useState();
   const { isAuthenticated, wallets } = props;
-
   useEffect(() => {
     if (wallets.length > 0) {
       const xrpAddress =

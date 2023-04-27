@@ -1,6 +1,6 @@
 import axios from "axios";
 const xrpl = require("xrpl");
-// const etherscan = require("etherscan-api");
+const etherscan = require("etherscan-api");
 
 export const callApi = async () => {
   try {
@@ -122,7 +122,7 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
-  // if (type === "eth") {
+  if (type === "eth") {
   //   try {
   //     console.log("eth called");
   //     const etherscanApi = etherscan.init(
@@ -130,13 +130,22 @@ export const callExternalApi = async (address, type) => {
   //       "sepolia"
   //     );
   //     const call = etherscanApi.account.balance(address).then((balance) => {
-  //       return balance.result / 10e17;
+   //      return balance.result / 10e17;
   //     });
-  //     return call;
+  //    return call;
   //   } catch (error) {
   //     console.log("Error", error);
   //   }
-  // }
+  //}
+  try {
+    const result = await axios.get(`https://api-sepolia.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC`);
+    const call = result.result;
+    return call;
+  } catch (error) {
+    console.log("Error", error);
+  }
+}
+  
 
   // if (type === "btc") {
   //   try {
