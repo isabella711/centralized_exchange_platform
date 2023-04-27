@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { userLogin } from "./api";
+import { userLogin, userRegister } from "./api";
 import axios from "axios";
 import { userProfile, usersLoading } from "./reducers/usersReducer";
 import { store } from "./store/store";
@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   const [authenticated, setauthenticated] = useState(
     localStorage.getItem("authenticated") ?? false
   );
+
   useEffect(() => {
     const loggedInUser = localStorage.getItem("authenticated");
     if (loggedInUser) {
@@ -30,6 +31,24 @@ export const AuthProvider = ({ children }) => {
       setauthenticated(false);
     }
   }, [authenticated, setauthenticated]);
+
+  const register = async (email, password) => {
+    const response = await userRegister(email, password);
+    if (response.data) {
+      try {
+        const responseText = await response.data;
+        console.log("Raw response text:", responseText);
+        setUser(responseText);
+        store.dispatch(userProfile(responseText));
+        return true;
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    } else {
+      throw new Error("Invalid credentials");
+    }
+  };
+
   const login = async (email, password) => {
     const response = await userLogin(email, password);
     console.log("Credentials:", JSON.stringify({ email, password }));
@@ -78,6 +97,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     addValue,
+    register,
     authenticated,
   };
 
