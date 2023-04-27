@@ -1,6 +1,5 @@
 import axios from "axios";
 const xrpl = require("xrpl");
-const etherscan = require("etherscan-api");
 
 export const callApi = async () => {
   try {
@@ -123,29 +122,31 @@ export const callExternalApi = async (address, type) => {
   }
 
   if (type === "eth") {
-  //   try {
-  //     console.log("eth called");
-  //     const etherscanApi = etherscan.init(
-  //       "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
-  //       "sepolia"
-  //     );
-  //     const call = etherscanApi.account.balance(address).then((balance) => {
-   //      return balance.result / 10e17;
-  //     });
-  //    return call;
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  //}
-  try {
-    const result = await axios.get(`https://api-sepolia.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC`);
-    const call = result.result;
-    return call;
-  } catch (error) {
-    console.log("Error", error);
+    try {
+      const call = await axios.get("http://localhost:4000/getEthBalance", {
+        params: {
+          address: address,
+        },
+      });
+      // console.log("eth called");
+      // const etherscanApi = require("etherscan-api").init(
+      //   "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+      //   "sepolia"
+      // );
+      // const call = etherscanApi.account
+      //   .balance(address)
+      //   .then((balance) => {
+      //     console.log(`call>>>`, call);
+      //     return balance.result / 10e17;
+      //   })
+      //   .catch((err) => {
+      //     console.log(`err>>>eth`, err);
+      //   });
+      return call;
+    } catch (error) {
+      console.log("Error", error);
+    }
   }
-}
-  
 
   // if (type === "btc") {
   //   try {
@@ -153,6 +154,31 @@ export const callExternalApi = async (address, type) => {
   //       .get(`https://blockstream.info/testnet/api/address/${address}/txs`)
   //       .then((res) => {
   //         console.log(res.data);
+  //       });
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   }
+  // }
+
+  // if (type === "xrp") {
+  //   try {
+  //     let config = {
+  //       headers: {
+  //         "X-Api-Key": "707430bfc2710166ada57a17c1c0baaf06a8b631",
+  //         Accept: "application/json",
+  //         "Content-Type": "application/x-www-form-urlencoded",
+  //         "Access-Control-Allow-Headers": "*",
+  //       },
+  //       data: {},
+  //     };
+  //     await axios
+  //       .get(
+  //         `http://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}/balance`,
+  //         // "https://rest.cryptoapis.io/blockchain-data/ethereum/goerli/addresses/0x0902a667d6a3f287835e0a4593cae4167384abc6/balance?context=yourExampleString",
+  //         config
+  //       )
+  //       .then((res) => {
+  //         console.log(`....res>>>`, res.data);
   //       });
   //   } catch (error) {
   //     console.log("Error", error);
@@ -166,7 +192,6 @@ export const xrpFetch = async (account) => {
     const client = new xrpl.Client(net);
 
     await client.connect();
-    console.log("Connected, funding wallet.");
     const response = await client.request({
       command: "account_info",
       account: account,
@@ -211,19 +236,21 @@ export const xrpFetch = async (account) => {
   //         console.log(`....res>>>`, res.data);
   //       });
 
-  //     // fetch(
-  //     //   `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
-  //     //   config
-  //     // )
-  //     //   .then((response) => {
-  //     //     response.json();
-  //     //     console.log(`response>>>`, response);
-  //     //   }) // one extra step
-  //     //   .then((data) => {
-  //     //     console.log(`>>>>`, data);
-  //     //   });
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
+  //   // fetch(
+  //   //   `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
+  //   //   config
+  //   // )
+  //   //   .then((response) => {
+  //   //     response.json();
+  //   //     console.log(`response>>>`, response);
+  //   //   }) // one extra step
+  //   //   .then((data) => {
+  //   //     console.log(`>>>>`, data);
+  //   //   });
+  // } catch (error) {
+  //   console.log("Error", error);
+  // }
   // }
 };
+// callExternalApi("0x0902a667d6a3f287835e0a4593cae4167384abc6", "eth");
+// callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
