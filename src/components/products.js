@@ -10,7 +10,6 @@ export function Products(props) {
   // const priceChange = Number(useGetPriceChange(props.details)).toFixed(2);
   const coinTrim = Number(coinInfo).toFixed(2);
   // const navigate = useNavigate();
-  console.log(`coinInfo>>>`, coinInfo);
   return (
     <>
       <div className="productList">
