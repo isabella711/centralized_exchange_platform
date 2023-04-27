@@ -1,4 +1,5 @@
 const { xrpFetch } = require("./walletGenerater/xrpGen");
+const { ethersFetch } = require("./walletGenerater/ethGen");
 const express = require("express");
 const app = express();
 require("dotenv").config();
@@ -138,6 +139,28 @@ app.get("/wallets", async (req, res) => {
     if (err) {
       res.status(500).send("An internal server error occurred");
     }
+  }
+});
+
+app.get("/getEthBalance", async (req, res) => {
+  const { address } = req.query;
+  try {
+    // const etherscanApi = require("etherscan-api").init(
+    //   "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+    //   "sepolia"
+    // );
+    const call = await ethersFetch(address);
+    if (call.message === "OK") {
+      res.status(200).send(call.result);
+    } else {
+      res.status(401).send("Incorrect email or password");
+    }
+    return call;
+  } catch (error) {
+    if (error) {
+      res.status(500).send("An internal server error occurred");
+    }
+    console.log("Error", error);
   }
 });
 
