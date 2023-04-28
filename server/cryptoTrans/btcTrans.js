@@ -9,7 +9,9 @@ const btcTransaction = async (from, to, privateKey) => {
     .get(`https://blockstream.info/testnet/api/address/${from}/txs`)
     .then((res) => {
       txid = res.data[0].txid;
-      vout = res.data[0].vout[0].scriptpubkey;
+      vout = res.data[0].vout.find(
+        (v) => v.scriptpubkey_address === from
+      ).scriptpubkey;
     });
   console.log({ txid, vout });
 
@@ -43,8 +45,8 @@ const btcTransaction = async (from, to, privateKey) => {
   return result;
 };
 
-btcTransaction(
-  "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
-  "mohjSavDdQYHRYXcS3uS6ttaHP8amyvX78",
-  "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa"
-);
+// btcTransaction(
+//   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
+//   "mohjSavDdQYHRYXcS3uS6ttaHP8amyvX78",
+//   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa"
+// );

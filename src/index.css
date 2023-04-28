@@ -232,6 +232,8 @@ button {
   background: none;
   color: white;
   text-decoration: underline;
+  text-align: center;
+  height: 50;
 }
 
 .App {

@@ -7,7 +7,6 @@ import Login from "./js/Login";
 import { MenuAppBar } from "./js/AppBar";
 import { useSelector } from "react-redux";
 import HomeLayout from "./components/HomeLayout";
-import Header from "./components/header";
 import { getUserWallets } from "./api";
 import {
   fetchUserWallets,
@@ -68,11 +67,7 @@ export default function App() {
         <Route
           path="/login"
           element={
-            <HomeLayout>
-              <MenuAppBar
-                isAuthenticated={userInfo.user !== null}
-                isInLoginPage={true}
-              />
+            <HomeLayout userInfo={userInfo}>
               <div className="App">
                 {currentForm === "login" ? (
                   <Login onFormSwitch={toggleForm} />
@@ -90,12 +85,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <HomeLayout>
-              <MenuAppBar isAuthenticated={userInfo.user !== null} />
-              <Header
-                isAuthenticated={userInfo.user !== null}
-                wallets={userInfo.wallets}
-              />
+            <HomeLayout userInfo={userInfo}>
               <Card />
             </HomeLayout>
           }

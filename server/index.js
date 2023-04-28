@@ -86,11 +86,11 @@ app.post("/payment", cors(), async (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   // Insert a new user into the MySQL database
   try {
-    register(email, password).then((result) => {
-      if (result.length > 0) {
+    register(email, password, name).then((result) => {
+      if (result.length > 0 && Array.isArray(result)) {
         const userData = result[0];
         res.status(200).send(userData);
       } else {
@@ -110,7 +110,7 @@ app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     login(email, password).then((result) => {
-      if (result.length > 0) {
+      if (result.length > 0 && Array.isArray(result)) {
         const userData = result[0];
         res.status(200).send(userData);
       } else {
@@ -128,7 +128,6 @@ app.get("/wallets", async (req, res) => {
   const { id } = req.query;
   try {
     getUserWalletByUser(id).then((result) => {
-      console.log(`result>>`, result);
       if (result.length > 0) {
         res.status(200).send(result);
       } else {

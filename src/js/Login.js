@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { userLogin } from "../api";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "./Spinner";
+import { store } from "../store/store";
+import { stopLoading } from "../reducers/usersReducer";
 
 const Login = (props) => {
   // const [authenticated, setauthenticated] = React.useState(
@@ -35,8 +37,8 @@ const Login = (props) => {
         navigate("/");
       }
     } catch (error) {
-      alert("Invalid credentials");
-      console.log(email);
+      store.dispatch(stopLoading("idle"));
+      alert("Internal Server Error");
     }
   };
 
@@ -66,9 +68,15 @@ const Login = (props) => {
               id="password"
               name="password"
             />
-            <button type="submit">Log In</button>
+            <button
+              type="submit"
+              style={{ textAlign: "center", alignSelf: "center", height: 60 }}
+            >
+              Log In
+            </button>
           </form>
           <button
+            style={{ height: 60 }}
             className="link-btn"
             onClick={() => props.onFormSwitch("register")}
           >

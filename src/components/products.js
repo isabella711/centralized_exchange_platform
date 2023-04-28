@@ -3,7 +3,6 @@ import { useUpdateCoin } from "../hooks/useUpdateCoin";
 import useWebSocket from "../hooks/useWebSocket";
 import { useGetPriceChange } from "../hooks/useGetPriceChange";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "./header";
 
 export function Products(props) {
   const { coinInfo } = useWebSocket(props.ticket);

@@ -23,31 +23,6 @@ const PaymentCont = (props) => {
   return (
     <>
       <StripeContainer />
-      <div>
-        <h1>Details</h1>
-        <table class="center">
-          <tr>
-            <th>Current Price</th>
-            <th>${coinTrim}</th>
-          </tr>
-          <tr>
-            <th>24h Lowest Price</th>
-            {/* <th>${lowPrice}</th> */}
-          </tr>
-          <tr>
-            <th>24h Highestst Price</th>
-            {/* <th>${highPrice}</th> */}
-          </tr>
-          <tr>
-            <th>24h Price Change</th>
-            {/* <th>{priceChange}%</th> */}
-          </tr>
-          <tr>
-            <th>24h Total Amount</th>
-            {/* <th>${amount}</th> */}
-          </tr>
-        </table>
-      </div>
     </>
   );
 };
@@ -60,3 +35,29 @@ function Payment() {
 }
 
 export default Payment;
+
+// <div>
+//         <h1>Details</h1>
+//         <table class="center">
+//           <tr>
+//             <th>Current Price</th>
+//             <th>${coinTrim}</th>
+//           </tr>
+//           <tr>
+//             <th>24h Lowest Price</th>
+//             {/* <th>${lowPrice}</th> */}
+//           </tr>
+//           <tr>
+//             <th>24h Highestst Price</th>
+//             {/* <th>${highPrice}</th> */}
+//           </tr>
+//           <tr>
+//             <th>24h Price Change</th>
+//             {/* <th>{priceChange}%</th> */}
+//           </tr>
+//           <tr>
+//             <th>24h Total Amount</th>
+//             {/* <th>${amount}</th> */}
+//           </tr>
+//         </table>
+//       </div>

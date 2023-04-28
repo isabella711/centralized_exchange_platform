@@ -32,7 +32,11 @@ async function login(email, password) {
     `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND password = ?`,
     [email, password]
   );
-  let userId = query.find((col) => col.email_address === email).user_id;
+  let userId =
+    query.find((col) => col.email_address === email)?.user_id ?? undefined;
+  if (!userId) {
+    return { msg: "Invalid credentials" };
+  }
   let key = email + password + Date.now().toString();
   const sessionId = generate_key(key);
 
@@ -44,14 +48,14 @@ async function login(email, password) {
   }
 
   const result = await db.query(
-    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
+    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
     [email, sessionId]
   );
 
   return result;
 }
 
-async function register(email, password) {
+async function register(email, password, name) {
   const query = await db.query(
     `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ?`,
     [email]
@@ -64,15 +68,15 @@ async function register(email, password) {
   }
   let key = email + password + Date.now().toString();
   const sessionId = generate_key(key);
-  console.log([email, password, sessionId]);
+  console.log([email, password, name, sessionId]);
   // if(!userId){
   await db.query(
-    `INSERT INTO joehocom_21010627g.Users (email_address, password, session) VALUES (?, ?, ?)`,
-    [email, password, sessionId]
+    `INSERT INTO joehocom_21010627g.Users (email_address, password, user_name, session) VALUES (?, ?, ?, ?)`,
+    [email, password, name, sessionId]
   );
 
   const result = await db.query(
-    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
+    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
     [email, sessionId]
   );
   const createdUserId = result.find(
@@ -80,15 +84,30 @@ async function register(email, password) {
   )?.user_id;
   if (email && password && sessionId) {
     const wallets = await createMultiWallet();
-    const { solAccount, ethAccount, xrpAccount } = wallets;
-    console.log(`wallets.>>>`, { solAccount, ethAccount, xrpAccount });
-    if (solAccount && ethAccount && xrpAccount) {
+    const { solAccount, ethAccount, xrpAccount, btcAccount } = wallets;
+    console.log(`wallets.>>>`, {
+      solAccount,
+      ethAccount,
+      xrpAccount,
+      btcAccount,
+    });
+    if (solAccount && ethAccount && xrpAccount && btcAccount) {
       console.log(
         createdUserId,
-        "XRP",
+        "BTC",
         Date.now().toString(),
-        solAccount.publicKey.toString(),
-        solAccount.privateKey.toString()
+        btcAccount.publicKey.toString(),
+        btcAccount.privateKey.toString()
+      );
+      await db.query(
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type, wallet_create_date,wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
+        [
+          createdUserId,
+          "BTC",
+          Date.now().toString(),
+          btcAccount.publicKey.toString(),
+          btcAccount.privateKey.toString(),
+        ]
       );
       await db.query(
         `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type, wallet_create_date,wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
