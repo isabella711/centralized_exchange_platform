@@ -17,7 +17,7 @@ import { useAuth } from "../AuthContext";
 
 export function MenuAppBar(props) {
   const { logout } = useAuth();
-  const { isAuthenticated } = props;
+  const { isAuthenticated, isInLoginPage } = props;
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   console.log(`isAuthenticated>>>`, isAuthenticated);
   const prefix = isAuthenticated
@@ -42,9 +42,13 @@ export function MenuAppBar(props) {
     if (link === "home") {
       return "/";
     }
+    if (link === "login" && isInLoginPage) {
+      return "/login";
+    }
     if (link === "logout") {
       return "/";
     }
+    console.log(`link>>>`, link);
     return link;
   };
   return (
