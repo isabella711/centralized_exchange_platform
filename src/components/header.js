@@ -25,7 +25,7 @@ export default function Header(props) {
         setXrpBalance(balance);
       });
       callExternalApi(ethAddress, "eth").then((res) => {
-        setEthBalance(res.data);
+        setEthBalance(res.data.result);
       });
       callExternalApi(solAddress, "sol").then((res) => {
         setSolBalance(res.data.result.value);
