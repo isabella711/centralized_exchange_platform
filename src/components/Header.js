@@ -63,11 +63,11 @@ export default function Header(props) {
     return <></>;
   }
   return (
-    <>
+    <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
       <EachBalance
         balanceArr={[btcBalance, ethBalance, solBalance, xrpBalance]}
       />
-    </>
+    </div>
   );
 
   // return <EachBalance balance={xrpBalance} />;
@@ -83,11 +83,20 @@ const EachBalance = ({ balanceArr }) => {
       return <></>;
     }
     return (
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        <div>
-          {walletArrKey[key]} : {balance}
-        </div>
-      </Typography>
+      <div
+        style={{
+          margin: "auto",
+          padding: "3vh 5vh",
+          borderRadius: "3vh",
+          backgroundColor: "#89a4fc",
+        }}
+      >
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <div>
+            {walletArrKey[key]} : {balance}
+          </div>
+        </Typography>
+      </div>
     );
   });
   return <>{component}</>;
