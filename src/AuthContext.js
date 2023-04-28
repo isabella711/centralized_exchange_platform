@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }) => {
   }, [authenticated, setauthenticated]);
 
   const register = async (email, password) => {
+    store.dispatch(usersLoading("pending"));
     const response = await userRegister(email, password);
     if (response.data) {
       try {
@@ -50,6 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
+    store.dispatch(usersLoading("pending"));
     const response = await userLogin(email, password);
     console.log("Credentials:", JSON.stringify({ email, password }));
     console.log("Response:", response);
@@ -69,6 +71,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    store.dispatch(usersLoading("pending"));
     store.dispatch(userProfile(null));
     setUser(null);
     localStorage.removeItem("authenticated");
