@@ -9,6 +9,7 @@ export default function Header(props) {
   const [ethBalance, setEthBalance] = useState();
   const [solBalance, setSolBalance] = useState();
   const { isAuthenticated, wallets } = props;
+  let balanceArr = [xrpBalance, ethBalance, solBalance];
   useEffect(() => {
     if (wallets.length > 0) {
       const xrpAddress =
@@ -46,15 +47,29 @@ export default function Header(props) {
   if (!isAuthenticated) {
     return <></>;
   }
-
+  console.log(`balanceArr>>>`, balanceArr);
+  // let renderBalance = <></>;
+  // if (balanceArr) {
+  //   renderBalance = balanceArr.map((balance) => {
+  //     return <EachBalance balance={balance} />;
+  //   });
+  // }
   return (
-    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-      {/* {JSON.stringify(wallets)} */}
-      xrp Balance:{xrpBalance}
-      {"\n"}
-      eth Balance:{ethBalance}
-      {"\n"}
-      sol Balance:{solBalance}
-    </Typography>
+    <>
+      <EachBalance balanceArr={[xrpBalance, ethBalance, solBalance]} />
+    </>
   );
+
+  // return <EachBalance balance={xrpBalance} />;
 }
+
+const EachBalance = ({ balanceArr }) => {
+  const component = balanceArr.map((balance) => {
+    return (
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <div>{balance}</div>
+      </Typography>
+    );
+  });
+  return <>{component}</>;
+};
