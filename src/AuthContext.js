@@ -1,7 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { userLogin, userRegister } from "./api";
 import axios from "axios";
-import { userProfile, usersLoading } from "./reducers/usersReducer";
+import {
+  userProfile,
+  usersLoading,
+  stopLoading,
+} from "./reducers/usersReducer";
 import { store } from "./store/store";
 
 const AuthContext = createContext({
@@ -43,10 +47,12 @@ export const AuthProvider = ({ children }) => {
         store.dispatch(userProfile(responseText));
         return true;
       } catch (error) {
+        store.dispatch(stopLoading("idle"));
         console.error("Error parsing JSON:", error);
       }
     } else {
-      throw new Error("Invalid credentials");
+      store.dispatch(stopLoading("idle"));
+      throw new Error("Account already exists");
     }
   };
 
@@ -63,18 +69,19 @@ export const AuthProvider = ({ children }) => {
         store.dispatch(userProfile(responseText));
         return true;
       } catch (error) {
-        console.error("Error parsing JSON:", error);
+        store.dispatch(stopLoading("idle"));
       }
     } else {
+      store.dispatch(stopLoading("idle"));
       throw new Error("Invalid credentials");
     }
   };
 
   const logout = () => {
     store.dispatch(usersLoading("pending"));
-    store.dispatch(userProfile(null));
     setUser(null);
     localStorage.removeItem("authenticated");
+    store.dispatch(userProfile(null));
   };
 
   const addValue = async (value) => {

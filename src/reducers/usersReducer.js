@@ -30,10 +30,18 @@ const user = createSlice({
       if (state.loading === "idle") {
         state.loading = "pending";
       }
+      // if (state.loading === "pending") {
+      //   state.loading = "idle";
+      // }
     },
     userProfile(state, action) {
       if (state.loading === "pending") {
         state.user = action.payload;
+        state.loading = "idle";
+      }
+    },
+    stopLoading(state, action) {
+      if (state.loading === "pending") {
         state.loading = "idle";
       }
     },
@@ -48,6 +56,7 @@ const user = createSlice({
   },
 });
 
-export const { usersLoading, userProfile, useWallet } = user.actions;
+export const { usersLoading, userProfile, useWallet, stopLoading } =
+  user.actions;
 
 export default user.reducer;

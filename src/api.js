@@ -68,7 +68,8 @@ export const userLogin = async (email, password) => {
     });
     return loginInfo;
   } catch (error) {
-    console.log("Error", error);
+    console.log("Error", error.response.data);
+    return { msg: error.response.data };
   }
 };
 
@@ -81,8 +82,8 @@ export const userRegister = async (email, password) => {
     });
     return registerRes;
   } catch (error) {
-    console.log("Error>>>", error);
-    return error;
+    console.log("Error", error.response.data);
+    return { msg: error.response.data };
   }
 };
 

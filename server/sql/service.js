@@ -32,7 +32,11 @@ async function login(email, password) {
     `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND password = ?`,
     [email, password]
   );
-  let userId = query.find((col) => col.email_address === email).user_id;
+  let userId =
+    query.find((col) => col.email_address === email)?.user_id ?? undefined;
+  if (!userId) {
+    return { msg: "Invalid credentials" };
+  }
   let key = email + password + Date.now().toString();
   const sessionId = generate_key(key);
 

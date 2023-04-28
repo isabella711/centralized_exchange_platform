@@ -4,6 +4,7 @@ import { MenuAppBar } from "../js/AppBar";
 import Header from "./Header";
 
 export default function HomeLayout({ children, userInfo }) {
+  console.log(`userInfo>>>`, userInfo);
   return (
     <>
       <MenuAppBar
