@@ -60,7 +60,7 @@ export function MenuAppBar(props) {
             disableGutters
             sx={{ display: { md: "flex" }, justifyContent: "space-between" }}
           >
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
 
             <Typography
               variant="h6"
@@ -68,11 +68,13 @@ export function MenuAppBar(props) {
               component="a"
               href="/"
               sx={{
-                mr: 2,
+                "&:hover": { color: "#F2A900" },
+                mr: 4,
                 display: { xs: "none", md: "flex" },
+                fontSize: 20,
                 fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
+                fontWeight: 900,
+                letterSpacing: ".5rem",
                 color: "inherit",
                 textDecoration: "none",
               }}

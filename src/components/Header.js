@@ -88,7 +88,7 @@ const EachBalance = ({ balanceArr }) => {
           margin: "auto",
           padding: "3vh 5vh",
           borderRadius: "3vh",
-          backgroundColor: "#89a4fc",
+          backgroundColor: "#F2A900",
         }}
       >
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
