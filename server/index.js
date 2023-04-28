@@ -128,7 +128,6 @@ app.get("/wallets", async (req, res) => {
   const { id } = req.query;
   try {
     getUserWalletByUser(id).then((result) => {
-      console.log(`result>>`, result);
       if (result.length > 0) {
         res.status(200).send(result);
       } else {
