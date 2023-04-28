@@ -9,7 +9,11 @@ import { useSelector } from "react-redux";
 import HomeLayout from "./components/HomeLayout";
 import Header from "./components/header";
 import { getUserWallets } from "./api";
-import { fetchUserWallets, useWallet } from "./reducers/usersReducer";
+import {
+  fetchUserWallets,
+  useWallet,
+  usersLoading,
+} from "./reducers/usersReducer";
 import { store } from "./store/store";
 import Deposit from "./components/DStripeContainer";
 import Payment from "./js/Payment";
@@ -21,16 +25,13 @@ export default function App() {
     setCurrentForm(formName);
   };
   const userInfo = useSelector((state) => state.user);
-  console.log(`userInfo>>>`, userInfo);
-
   useEffect(() => {
     if (userInfo.user !== null) {
       const { user_id } = userInfo.user;
-      console.log(`user_id>>>`, user_id);
+      store.dispatch(usersLoading("idle"));
       store.dispatch(fetchUserWallets(user_id));
     }
   }, [userInfo.user]);
-
   useEffect(() => {
     // callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol");
     // userLogin("alice@gmail.com", "12345678").then((res) => {
@@ -66,13 +67,19 @@ export default function App() {
         <Route
           path="/login"
           element={
-            <div className="App">
-              {currentForm === "login" ? (
-                <Login onFormSwitch={toggleForm} />
-              ) : (
-                <Register onFormSwitch={toggleForm} />
-              )}
-            </div>
+            <HomeLayout>
+              <MenuAppBar
+                isAuthenticated={userInfo.user !== null}
+                isInLoginPage={true}
+              />
+              <div className="App">
+                {currentForm === "login" ? (
+                  <Login onFormSwitch={toggleForm} />
+                ) : (
+                  <Register onFormSwitch={toggleForm} />
+                )}
+              </div>
+            </HomeLayout>
           }
         />
         <Route path="/payment" element={<Payment />} />
