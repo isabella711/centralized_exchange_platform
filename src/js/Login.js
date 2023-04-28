@@ -66,9 +66,15 @@ const Login = (props) => {
               id="password"
               name="password"
             />
-            <button type="submit">Log In</button>
+            <button
+              type="submit"
+              style={{ textAlign: "center", alignSelf: "center", height: 60 }}
+            >
+              Log In
+            </button>
           </form>
           <button
+            style={{ height: 60 }}
             className="link-btn"
             onClick={() => props.onFormSwitch("register")}
           >
