@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../api";
+import { useSelector } from "react-redux";
+import LoadingSpinner from "./Spinner";
 
 const Login = (props) => {
   // const [authenticated, setauthenticated] = React.useState(
   //   localStorage.getItem("authenticated") ?? false
   // );
-
   const { login } = useAuth();
+  const { loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -40,34 +42,40 @@ const Login = (props) => {
 
   return (
     <div className="auth-form-container">
-      <h2>Login</h2>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <label htmlFor="email">email</label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          placeholder="youremail@gmail.com"
-          id="email"
-          name="email"
-        />
-        <label htmlFor="password">password</label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="********"
-          id="password"
-          name="password"
-        />
-        <button type="submit">Log In</button>
-      </form>
-      <button
-        className="link-btn"
-        onClick={() => props.onFormSwitch("register")}
-      >
-        Don't have an account? Register here.
-      </button>
+      {loading === "pending" ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <h2>Login</h2>
+          <form className="login-form" onSubmit={handleSubmit}>
+            <label htmlFor="email">email</label>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="youremail@gmail.com"
+              id="email"
+              name="email"
+            />
+            <label htmlFor="password">password</label>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="********"
+              id="password"
+              name="password"
+            />
+            <button type="submit">Log In</button>
+          </form>
+          <button
+            className="link-btn"
+            onClick={() => props.onFormSwitch("register")}
+          >
+            Don't have an account? Register here.
+          </button>
+        </>
+      )}
     </div>
   );
 };
