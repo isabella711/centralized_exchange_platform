@@ -74,7 +74,7 @@ export default function Header(props) {
 }
 
 const EachBalance = ({ balanceArr }) => {
-  const walletArrKey = ["btc", "eth", "sol", "xrp"];
+  const walletArrKey = ["BTC", "ETH", "SOL", "XRP"];
   const component = balanceArr.map((balance, key) => {
     if (
       balance === undefined ||
@@ -85,6 +85,7 @@ const EachBalance = ({ balanceArr }) => {
     return (
       <div
         style={{
+          "&:hover": { color: "#CC9900" },
           margin: "auto",
           padding: "3vh 5vh",
           borderRadius: "3vh",
