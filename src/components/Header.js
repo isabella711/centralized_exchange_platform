@@ -57,7 +57,9 @@ export default function Header(props) {
 }
 
 const EachBalance = ({ balanceArr }) => {
-  const component = balanceArr.map((balance) => {
+  const walletArrKey = ["xrp", "eth", "sol"];
+  const component = balanceArr.map((balance, key) => {
+    console.log(`key>>`, key);
     if (
       balance === undefined ||
       balance?.toString().toLowerCase().includes("error")
@@ -66,7 +68,9 @@ const EachBalance = ({ balanceArr }) => {
     }
     return (
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        <div>{balance}</div>
+        <div>
+          {walletArrKey[key]} : {balance}
+        </div>
       </Typography>
     );
   });
