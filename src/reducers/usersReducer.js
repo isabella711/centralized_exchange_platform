@@ -32,19 +32,17 @@ const user = createSlice({
       }
     },
     userProfile(state, action) {
-      // if (state.loading === "pending") {
-      // state.loading = "idle";
-      state.user = action.payload;
-      // }
+      if (state.loading === "pending") {
+        state.user = action.payload;
+        state.loading = "idle";
+      }
     },
-    // useWallet(state, action) {
-    //   state.wallets = action.payload;
-    // },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserWallets.fulfilled, (state, action) => {
       if (isFulfilled(action)) {
         state.wallets = action.payload.data;
+        state.loading = "idle";
       }
     });
   },
