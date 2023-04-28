@@ -1,9 +1,6 @@
-body {
-  background-image: linear-gradient(to right top, #1976d2, #4D0525)!important;
-  background-repeat: no-repeat;
-  height: 100vh
-}
+
 ::-webkit-scrollbar {
+  
   width: 6px
 }
 ::-webkit-scrollbar-track {
@@ -16,17 +13,19 @@ body {
   background: #555
 }
 .nav-tabs .nav-link.active {
-  border-color: transparent;
-  background-color: #fff !important;
+  border: 1px solid #1976d2;
+  background-color: #e1dede !important;
   color: #1976d2 !important;
   border-bottom: 4px solid #1976d2 !important
 }
 .nav-fill .nav-item .nav-link,
 .nav-justified .nav-item .nav-link {
+
   width: 100%;
   color: #000
 }
 .nav-tabs .nav-link {
+  border: 1px solid #1976d2;
   border-top-left-radius: 0rem !important;
   border-top-right-radius: 0rem !important
 }
@@ -41,25 +40,22 @@ body {
   font-size: 13px;
   background-color: #fff
 }
-.nav-link:hover {
-  border: none
-}
-.nav-link:focus {
-  outline: none
-}
+
 .tab-pane {
+  border: 1px solid #1976d2;
   height: 300px
 }
 .form-control {
+  border: 1px solid #1976d2;
   height: 45px;
-  position: relative
+
 }
 .form-control:focus {
-  outline: none;
-  box-shadow: none;
+
   border: 1px solid #1976d2;
 }
 .flight-where-from:after {
+  
   position: absolute;
   content: '23';
   width: 20px;
@@ -84,9 +80,7 @@ body {
 }
 
 .centered-div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid #1976d2;
   height: 100vh;
   width: 1000px;
   
