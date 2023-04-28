@@ -123,11 +123,17 @@ export const callExternalApi = async (address, type) => {
 
   if (type === "eth") {
     try {
-      const call = await axios.get("http://localhost:4000/getEthBalance", {
-        params: {
-          address: address,
-        },
-      });
+      const call = await axios.get(`https://api-sepolia.etherscan.io/api
+         ?module=account
+         &action=balance
+         &address=${address}
+         &tag=latest
+         &apikey=4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC`.replace(/\s/g, ""), {
+         headers: {
+        'Content-Type': "application/x-www-form-urlencoded",
+         Accept:  "application/x-www-form-urlencoded"
+    }
+});
       // console.log("eth called");
       // const etherscanApi = require("etherscan-api").init(
       //   "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
