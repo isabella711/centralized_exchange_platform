@@ -47,13 +47,6 @@ export default function Header(props) {
   if (!isAuthenticated) {
     return <></>;
   }
-  console.log(`balanceArr>>>`, balanceArr);
-  // let renderBalance = <></>;
-  // if (balanceArr) {
-  //   renderBalance = balanceArr.map((balance) => {
-  //     return <EachBalance balance={balance} />;
-  //   });
-  // }
   return (
     <>
       <EachBalance balanceArr={[xrpBalance, ethBalance, solBalance]} />
@@ -65,7 +58,6 @@ export default function Header(props) {
 
 const EachBalance = ({ balanceArr }) => {
   const component = balanceArr.map((balance) => {
-    console.log(`balance>>>`, balance?.toString().toLowerCase());
     if (
       balance === undefined ||
       balance?.toString().toLowerCase().includes("error")
