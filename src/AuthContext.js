@@ -36,9 +36,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, [authenticated, setauthenticated]);
 
-  const register = async (email, password) => {
+  const register = async (email, password, name) => {
     store.dispatch(usersLoading("pending"));
-    const response = await userRegister(email, password);
+    const response = await userRegister(email, password, name);
     if (response.data) {
       try {
         const responseText = await response.data;
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
       }
     } else {
       store.dispatch(stopLoading("idle"));
-      throw new Error("Invalid credentials");
+      throw new Error("Internal Server Error");
     }
   };
 

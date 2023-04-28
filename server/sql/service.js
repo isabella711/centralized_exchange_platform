@@ -55,7 +55,7 @@ async function login(email, password) {
   return result;
 }
 
-async function register(email, password) {
+async function register(email, password, name) {
   const query = await db.query(
     `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ?`,
     [email]
@@ -68,11 +68,11 @@ async function register(email, password) {
   }
   let key = email + password + Date.now().toString();
   const sessionId = generate_key(key);
-  console.log([email, password, sessionId]);
+  console.log([email, password, name, sessionId]);
   // if(!userId){
   await db.query(
-    `INSERT INTO joehocom_21010627g.Users (email_address, password, session) VALUES (?, ?, ?)`,
-    [email, password, sessionId]
+    `INSERT INTO joehocom_21010627g.Users (email_address, password, user_name, session) VALUES (?, ?, ?, ?)`,
+    [email, password, name, sessionId]
   );
 
   const result = await db.query(

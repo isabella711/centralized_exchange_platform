@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "./Spinner";
+import { stopLoading } from "../reducers/usersReducer";
+import { store } from "../store/store";
 
 function Register(props) {
   // const [inputs, setInputs] = useState({});
@@ -23,7 +25,7 @@ function Register(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await register(email, pass);
+      const result = await register(email, pass, name);
       if (result) {
         // usersLoading("idle");
         localStorage.setItem("authenticated", true);
@@ -31,8 +33,8 @@ function Register(props) {
         navigate("/");
       }
     } catch (error) {
+      store.dispatch(stopLoading("idle"));
       alert("Invalid credentials");
-      console.log(email);
     }
   };
   return (

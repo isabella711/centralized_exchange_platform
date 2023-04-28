@@ -86,10 +86,10 @@ app.post("/payment", cors(), async (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   // Insert a new user into the MySQL database
   try {
-    register(email, password).then((result) => {
+    register(email, password, name).then((result) => {
       if (result.length > 0 && Array.isArray(result)) {
         const userData = result[0];
         res.status(200).send(userData);

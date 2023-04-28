@@ -73,12 +73,12 @@ export const userLogin = async (email, password) => {
   }
 };
 
-export const userRegister = async (email, password) => {
-  // console.log(`APii,`, email, password);
+export const userRegister = async (email, password, name) => {
   try {
     const registerRes = await axios.post("http://localhost:4000/register", {
       email: email,
       password: password,
+      name: name,
     });
     return registerRes;
   } catch (error) {

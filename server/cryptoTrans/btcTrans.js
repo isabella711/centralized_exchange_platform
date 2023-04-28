@@ -45,8 +45,8 @@ const btcTransaction = async (from, to, privateKey) => {
   return result;
 };
 
-btcTransaction(
-  "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
-  "mohjSavDdQYHRYXcS3uS6ttaHP8amyvX78",
-  "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa"
-);
+// btcTransaction(
+//   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
+//   "mohjSavDdQYHRYXcS3uS6ttaHP8amyvX78",
+//   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa"
+// );
