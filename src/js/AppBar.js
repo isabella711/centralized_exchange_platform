@@ -14,10 +14,11 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import Header from "../components/Header";
 
 export function MenuAppBar(props) {
   const { logout } = useAuth();
-  const { isAuthenticated, isInLoginPage } = props;
+  const { isAuthenticated, isInLoginPage, wallets } = props;
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   console.log(`isAuthenticated>>>`, isAuthenticated);
   const prefix = isAuthenticated
@@ -52,73 +53,75 @@ export function MenuAppBar(props) {
     return link;
   };
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar
-          disableGutters
-          sx={{ display: { md: "flex" }, justifyContent: "space-between" }}
-        >
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
+    <>
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar
+            disableGutters
+            sx={{ display: { md: "flex" }, justifyContent: "space-between" }}
           >
-            CEX
-          </Typography>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {prefix.map((setting) => (
-                <Link to={linkHandler(setting)}>
-                  {
-                    setting.toLowerCase() === "logout" ? (
-                      <MenuItem key={setting} onClick={logoutHandle}>
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
-                    ) : (
-                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
-                    )
-                    // )}
-                  }
-                </Link>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              CEX
+            </Typography>
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {prefix.map((setting) => (
+                  <Link to={linkHandler(setting)}>
+                    {
+                      setting.toLowerCase() === "logout" ? (
+                        <MenuItem key={setting} onClick={logoutHandle}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      ) : (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      )
+                      // )}
+                    }
+                  </Link>
+                ))}
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </>
   );
 }
