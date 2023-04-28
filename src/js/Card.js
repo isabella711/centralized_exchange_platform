@@ -3,9 +3,14 @@ import { Products } from "../components/products";
 import contents from "../js/content";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/App.css";
+import { useSelector } from "react-redux";
+import LoadingSpinner from "./Spinner";
 
 export default function Card() {
-  return (
+  const { loading } = useSelector((state) => state.user);
+  return loading === "pending" ? (
+    <LoadingSpinner />
+  ) : (
     <div className="productList">
       {contents.map((contents) => (
         <Products
