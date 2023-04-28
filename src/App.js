@@ -17,6 +17,7 @@ import {
 import { store } from "./store/store";
 import Deposit from "./components/DStripeContainer";
 import Payment from "./js/Payment";
+import Transaction from "./js/Transaction";
 
 export default function App() {
   const { login, user, authenticated } = useAuth();
@@ -83,6 +84,9 @@ export default function App() {
           }
         />
         <Route path="/payment" element={<Payment />} />
+
+        <Route path="/transaction" element={<Transaction />} />
+
         <Route
           path="/"
           element={

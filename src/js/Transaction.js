@@ -4,8 +4,12 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "../css/TransactionForm.css";
 export default function TransactionForm() {
   return (
-    <div className="centered-div">
-      <div className="col-md-8">
+    <div
+      className="transaction-container d-flex flex-column min-vh-100 justify-content-center align-items-center"
+      style={{ borderWidth: 5 }}
+    >
+      <h2>Transaction</h2>
+      <div className="col-md-6">
         <div className="bg-white">
           <ul className="nav nav-tabs nav-fill" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
@@ -76,9 +80,7 @@ export default function TransactionForm() {
                 </div>
                 <div className="mt-4 d-flex justify-content-end">
                   {" "}
-                  <button className="btn btn-success custom-button px-5">
-                    Buy
-                  </button>{" "}
+                  <button class="button button5">Buy</button>{" "}
                 </div>
               </div>
             </div>
@@ -112,101 +114,7 @@ export default function TransactionForm() {
                 </div>
                 <div className="mt-4 d-flex justify-content-end">
                   {" "}
-                  <button className="btn btn-success custom-button px-5">
-                    Sell
-                  </button>{" "}
-                </div>
-              </div>
-            </div>
-            <div
-              className="tab-pane fade"
-              id="faq_tab_3"
-              role="tabpanel"
-              aria-labelledby="faq_tab_3-tab"
-            >
-              <div className="container p-3 mt-4">
-                <div className="input-group mb-3">
-                  {" "}
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search hotels..."
-                  />{" "}
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Location"
-                  />{" "}
-                </div>
-                <div className="input-group mb-3">
-                  {" "}
-                  <select
-                    className="form-select form-control"
-                    id="inputGroupSelect02"
-                  >
-                    <option selected>Rooms</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3+</option>
-                  </select>{" "}
-                  <select
-                    className="form-select form-control"
-                    id="inputGroupSelect02"
-                  >
-                    <option selected>Members</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="3">Four</option>
-                    <option value="3">Five</option>
-                  </select>{" "}
-                </div>
-                <div className="mt-4 d-flex justify-content-end">
-                  {" "}
-                  <button className="btn btn-success custom-button px-5">
-                    Search Hotels
-                  </button>{" "}
-                </div>
-              </div>
-            </div>
-            <div
-              className="tab-pane fade"
-              id="faq_tab_4"
-              role="tabpanel"
-              aria-labelledby="faq_tab_4-tab"
-            >
-              <div className="container p-3">
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="input-group mb-3">
-                      {" "}
-                      <select
-                        className="form-select form-control"
-                        id="inputGroupSelect02"
-                      >
-                        <option selected>Select Airline</option>
-                        <option value="1">Indigo</option>
-                        <option value="2">Air India</option>
-                        <option value="3">Air Asthana</option>
-                      </select>{" "}
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="input-group mb-3">
-                      {" "}
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Flight Number"
-                      />{" "}
-                      <button
-                        className="btn btn-outline-secondary custom-button"
-                        type="button"
-                      >
-                        Search
-                      </button>
-                    </div>
-                  </div>
+                  <button class="button button5">Sell</button>{" "}
                 </div>
               </div>
             </div>
