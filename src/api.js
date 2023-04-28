@@ -123,17 +123,20 @@ export const callExternalApi = async (address, type) => {
 
   if (type === "eth") {
     try {
-      const call = await axios.get(`https://api-sepolia.etherscan.io/api
+      const call = await axios.get(
+        `https://api-sepolia.etherscan.io/api
          ?module=account
          &action=balance
          &address=${address}
          &tag=latest
-         &apikey=4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC`.replace(/\s/g, ""), {
-         headers: {
-        'Content-Type': "application/x-www-form-urlencoded",
-         Accept:  "application/x-www-form-urlencoded"
-    }
-});
+         &apikey=4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC`.replace(/\s/g, ""),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/x-www-form-urlencoded",
+          },
+        }
+      );
       // console.log("eth called");
       // const etherscanApi = require("etherscan-api").init(
       //   "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
@@ -154,17 +157,16 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
-  // if (type === "btc") {
-  //   try {
-  //     await axios
-  //       .get(`https://blockstream.info/testnet/api/address/${address}/txs`)
-  //       .then((res) => {
-  //         console.log(res.data);
-  //       });
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  // }
+  if (type === "btc") {
+    try {
+      const result = await axios.get(
+        `https://blockstream.info/testnet/api/address/${address}/txs`
+      );
+      return result;
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
 
   // if (type === "xrp") {
   //   try {

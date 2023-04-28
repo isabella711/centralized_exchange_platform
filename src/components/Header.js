@@ -5,10 +5,12 @@ import Typography from "@mui/material/Typography";
 const { xrpFetch, callExternalApi } = require("../api");
 
 export default function Header(props) {
-  const [xrpBalance, setXrpBalance] = useState();
-  const [ethBalance, setEthBalance] = useState();
-  const [solBalance, setSolBalance] = useState();
+  const [xrpBalance, setXrpBalance] = useState(0);
+  const [ethBalance, setEthBalance] = useState(0);
+  const [solBalance, setSolBalance] = useState(0);
+  const [btcBalance, setBtcBalance] = useState(0);
   const { isAuthenticated, wallets } = props;
+  console.log(`wallets..>>`, wallets);
   let balanceArr = [xrpBalance, ethBalance, solBalance];
   useEffect(() => {
     if (wallets.length > 0) {
@@ -21,6 +23,9 @@ export default function Header(props) {
       const solAddress =
         wallets?.find((wallet) => wallet.currency_type === "SOL")
           ?.wallet_address ?? null;
+      const btcAddress =
+        wallets?.find((wallet) => wallet.currency_type === "BTC")
+          ?.wallet_address ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
         setXrpBalance(balance);
@@ -30,6 +35,17 @@ export default function Header(props) {
       });
       callExternalApi(solAddress, "sol").then((res) => {
         setSolBalance(res.data.result.value);
+      });
+      callExternalApi(btcAddress, "btc").then((res) => {
+        console.log(`res.data.length>>>`, res.data);
+        if (res.data.length === 0) {
+          setBtcBalance(0);
+          return;
+        }
+        let balance = res.data[0].vout.find(
+          (v) => v.scriptpubkey_address === btcAddress
+        ).value;
+        setBtcBalance(balance);
       });
     }
   }, []);
@@ -49,7 +65,9 @@ export default function Header(props) {
   }
   return (
     <>
-      <EachBalance balanceArr={[xrpBalance, ethBalance, solBalance]} />
+      <EachBalance
+        balanceArr={[btcBalance, ethBalance, solBalance, xrpBalance]}
+      />
     </>
   );
 
@@ -57,9 +75,8 @@ export default function Header(props) {
 }
 
 const EachBalance = ({ balanceArr }) => {
-  const walletArrKey = ["xrp", "eth", "sol"];
+  const walletArrKey = ["btc", "eth", "sol", "xrp"];
   const component = balanceArr.map((balance, key) => {
-    console.log(`key>>`, key);
     if (
       balance === undefined ||
       balance?.toString().toLowerCase().includes("error")

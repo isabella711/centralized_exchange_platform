@@ -9,7 +9,9 @@ const btcTransaction = async (from, to, privateKey) => {
     .get(`https://blockstream.info/testnet/api/address/${from}/txs`)
     .then((res) => {
       txid = res.data[0].txid;
-      vout = res.data[0].vout[0].scriptpubkey;
+      vout = res.data[0].vout.find(
+        (v) => v.scriptpubkey_address === from
+      ).scriptpubkey;
     });
   console.log({ txid, vout });
 

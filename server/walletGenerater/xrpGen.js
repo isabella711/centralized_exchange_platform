@@ -4,7 +4,7 @@ const createXrpWallet = async () => {
   const net = "wss://s.altnet.rippletest.net:51233";
   const client = new xrpl.Client(net);
   let faucetHost = null;
-  let amount = "0";
+  let amount = "100";
   await client.connect();
   console.log("Connected, funding wallet.");
   const my_wallet = (await client.fundWallet(null, { amount, faucetHost }))

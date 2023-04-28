@@ -44,7 +44,7 @@ async function login(email, password) {
   }
 
   const result = await db.query(
-    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
+    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
     [email, sessionId]
   );
 
@@ -72,7 +72,7 @@ async function register(email, password) {
   );
 
   const result = await db.query(
-    `SELECT * FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
+    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE email_address = ? AND session = ?`,
     [email, sessionId]
   );
   const createdUserId = result.find(
@@ -80,15 +80,30 @@ async function register(email, password) {
   )?.user_id;
   if (email && password && sessionId) {
     const wallets = await createMultiWallet();
-    const { solAccount, ethAccount, xrpAccount } = wallets;
-    console.log(`wallets.>>>`, { solAccount, ethAccount, xrpAccount });
-    if (solAccount && ethAccount && xrpAccount) {
+    const { solAccount, ethAccount, xrpAccount, btcAccount } = wallets;
+    console.log(`wallets.>>>`, {
+      solAccount,
+      ethAccount,
+      xrpAccount,
+      btcAccount,
+    });
+    if (solAccount && ethAccount && xrpAccount && btcAccount) {
       console.log(
         createdUserId,
-        "XRP",
+        "BTC",
         Date.now().toString(),
-        solAccount.publicKey.toString(),
-        solAccount.privateKey.toString()
+        btcAccount.publicKey.toString(),
+        btcAccount.privateKey.toString()
+      );
+      await db.query(
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type, wallet_create_date,wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
+        [
+          createdUserId,
+          "BTC",
+          Date.now().toString(),
+          btcAccount.publicKey.toString(),
+          btcAccount.privateKey.toString(),
+        ]
       );
       await db.query(
         `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type, wallet_create_date,wallet_address, wallet_private_key) VALUES  (?,?,?,?,?)`,
