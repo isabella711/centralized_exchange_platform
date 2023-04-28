@@ -69,9 +69,12 @@ function Register(props) {
               id="password"
               name="password"
             />
-            <button type="submit">Sign Up</button>
+            <button style={{ height: 60 }} type="submit">
+              Sign Up
+            </button>
           </form>
           <button
+            style={{ height: 60 }}
             className="link-btn"
             onClick={() => props.onFormSwitch("login")}
           >
