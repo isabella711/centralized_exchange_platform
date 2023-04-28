@@ -14,13 +14,13 @@ export default function Header(props) {
     if (wallets.length > 0) {
       const xrpAddress =
         wallets?.find((wallet) => wallet.currency_type === "XRP")
-          .classicAddress ?? null;
+          ?.classicAddress ?? null;
       const ethAddress =
         wallets?.find((wallet) => wallet.currency_type === "ETH")
-          .wallet_address ?? null;
+          ?.wallet_address ?? null;
       const solAddress =
         wallets?.find((wallet) => wallet.currency_type === "SOL")
-          .wallet_address ?? null;
+          ?.wallet_address ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
         setXrpBalance(balance);
