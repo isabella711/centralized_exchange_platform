@@ -65,6 +65,13 @@ export default function Header(props) {
 
 const EachBalance = ({ balanceArr }) => {
   const component = balanceArr.map((balance) => {
+    console.log(`balance>>>`, balance?.toString().toLowerCase());
+    if (
+      balance === undefined ||
+      balance?.toString().toLowerCase().includes("error")
+    ) {
+      return <></>;
+    }
     return (
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
         <div>{balance}</div>
