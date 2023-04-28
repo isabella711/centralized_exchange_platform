@@ -56,13 +56,13 @@ export default function PaymentForm() {
     if (!error) {
       try {
         const { id } = paymentMethod;
-        const response = await axios.post("http://localhost:4000/payment", {
+        const response = await axios.post("http://localhost:4000/addvalue", {
           amount: amount,
           id,
         });
 
         if (response.data.success) {
-          console.log("Successful payment");
+          console.log("Successful deposit");
           setSuccess(true);
         }
       } catch (error) {
@@ -89,7 +89,7 @@ export default function PaymentForm() {
     </div>
 
         <form onSubmit={handleSubmit} style={{paddingLeft:200 ,fontSize: 20}}>
-          <label>
+          <label style={{paddingLeft: "15px"}}>
           <input 
           type='number'
           value={amount}
@@ -97,7 +97,7 @@ export default function PaymentForm() {
           onKeyPress={(event) => {if (!/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)) {event.preventDefault();}
           }}
           placeholder="Deposit value"
-          style={AMOUNT_OPTIONS}
+          style={{backgroundColor:"#7795f8", color: "#fff"}}
            />
            </label>
           <fieldset className="FormGroup">
@@ -106,8 +106,8 @@ export default function PaymentForm() {
               <CardElement options={CARD_OPTIONS} />
             </div>
           </fieldset>
-          <button>Deposit</button>
-          <button onClick={() => navigate(-1)}>Go Back</button>
+          <button type="submit" style={{maxWidth:"200px"}}>Deposit</button>
+          <button onClick={() => navigate(-1)} style={{maxWidth:"200px"}}>Go Back</button>
         </form>
         </>
       ) : (
