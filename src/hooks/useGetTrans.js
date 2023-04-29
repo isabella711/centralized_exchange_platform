@@ -16,7 +16,7 @@ export default function useGetTrans(transIdArr) {
 
   const searchTransaction = (transIdArr) => {
     let tArr = [];
-    transIdArr.map(async (t) => {
+    transIdArr?.map(async (t) => {
       if (t.tx_id !== null) {
         const eachT = await callExternalApi(t.tx_id, "solTransaction");
         const eachDetail = {
