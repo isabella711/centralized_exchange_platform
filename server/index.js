@@ -132,7 +132,7 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/user", async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
   try {
     getUser(userId).then((result) => {
       if (result.length > 0 && Array.isArray(result)) {

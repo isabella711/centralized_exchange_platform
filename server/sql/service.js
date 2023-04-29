@@ -16,7 +16,8 @@ async function getResult() {
 
 async function getUser(id) {
   const rows = await db.query(
-    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE user_id=${id}`
+    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE user_id=?`,
+    [id]
   );
   return rows;
 }

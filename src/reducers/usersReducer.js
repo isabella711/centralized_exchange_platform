@@ -13,7 +13,6 @@ export const fetchUser = createAsyncThunk(
   "user/detail",
   async (userId, dispatch) => {
     const response = await getUserInfo(userId);
-    console.log(`response>>`, response);
     return response;
   }
 );
@@ -65,7 +64,7 @@ const user = createSlice({
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       if (isFulfilled(action)) {
-        state.balance = action.payload.data;
+        state.balance = action.payload.data.user_balance;
         state.loading = "idle";
       }
     });
