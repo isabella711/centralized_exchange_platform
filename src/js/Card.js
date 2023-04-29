@@ -15,7 +15,7 @@ export default function Card() {
   );
 
   useEffect(() => {
-    store.dispatch(fetchUser(user.user_id));
+    store.dispatch(fetchUser(user?.user_id));
     console.log("balance>>>", balance);
   }, []);
   console.log(`>>>user`, user);
