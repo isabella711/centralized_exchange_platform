@@ -37,7 +37,7 @@ async function login(email, password) {
   if (!userId) {
     return { msg: "Invalid credentials" };
   }
-  let key = email + password + Date.now().toString();
+  let key = email + password + Date.now();
   const sessionId = generate_key(key);
 
   if (query) {
@@ -66,7 +66,7 @@ async function register(email, password, name) {
     console.log("account already exist");
     return { msg: "account already exist" };
   }
-  let key = email + password + Date.now().toString();
+  let key = email + password + Date.now();
   const sessionId = generate_key(key);
   console.log([email, password, name, sessionId]);
   // if(!userId){
@@ -85,6 +85,7 @@ async function register(email, password, name) {
   if (email && password && sessionId) {
     const wallets = await createMultiWallet();
     const { solAccount, ethAccount, xrpAccount, btcAccount } = wallets;
+    const currentTime = new Date(Date.now());
     console.log(`wallets.>>>`, {
       solAccount,
       ethAccount,
@@ -95,7 +96,7 @@ async function register(email, password, name) {
       console.log(
         createdUserId,
         "BTC",
-        Date.now().toString(),
+        currentTime,
         btcAccount.publicKey.toString(),
         btcAccount.privateKey.toString()
       );
@@ -104,7 +105,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "BTC",
-          Date.now().toString(),
+          currentTime,
           btcAccount.publicKey.toString(),
           btcAccount.privateKey.toString(),
         ]
@@ -114,7 +115,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "SOL",
-          Date.now().toString(),
+          currentTime,
           solAccount.publicKey.toString(),
           solAccount.privateKey.toString(),
         ]
@@ -124,7 +125,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "ETH",
-          Date.now().toString(),
+          currentTime,
           ethAccount.address,
           ethAccount.privateKey,
         ]
@@ -134,7 +135,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "XRP",
-          Date.now().toString(),
+          currentTime,
           xrpAccount.publicKey,
           xrpAccount.privateKey,
           xrpAccount.classicAddress,
@@ -158,19 +159,62 @@ async function addValue(value) {
 
 async function createTransaction(content) {
   // TODO: add transaction on testnet
-
   const result = await db.query(
-    `INSERT INTO programming_languages 
-    (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
-    VALUES 
-    (${content.name}, ${content.released_year}, ${content.githut_rank}, ${content.pypl_rank}, ${content.tiobe_rank})`
+    `INSERT INTO joehocom_21010627g.Transactions 
+    ( transactioner_id_A, 
+      transaction_date ,
+      status ,
+      transactioner_id_B,
+      transactioner_A_currency_type,
+      transactioner_A_currency_amount,
+      transactioner_B_currency_type,
+      transactioner_B_currency_amount ) VALUES 
+    (?,?,?,?,?,?,?,?)`,
+    [
+      content.transactioner_id_A,
+      content.transaction_date,
+      content.status,
+      content.transactioner_id_B,
+      content.transactioner_A_currency_type,
+      content.transactioner_A_currency_amount,
+      content.transactioner_B_currency_type,
+      content.transactioner_B_currency_amount,
+    ]
   );
-  let message = "Error in creating programming language";
-  if (result.affectedRows) {
-    message = "Programming language created successfully";
-  }
-  return { message };
+  return result;
 }
+
+async function getAllTransaction() {
+  const rows = await db.query(`SELECT * FROM joehocom_21010627g.Transactions`);
+  console.log(`rows>>>rows`, rows);
+}
+
+async function getUserTransaction(id) {
+  const rows = await db.query(
+    `SELECT * FROM joehocom_21010627g.Transactions WHERE transactioner_id_A = ${id} OR transactioner_id_B = ${id}`
+  );
+  console.log(`rows>>>rows`, rows);
+}
+async function addCol() {
+  const rows = await db.query(
+    `ALTER TABLE joehocom_21010627g.Transactions ADD tx_id varchar(255)`
+  );
+  console.log(`rows>>>rows`, rows);
+}
+
+async function makeAutoIncre(start) {
+  const rows = await db.query(
+    `ALTER TABLE joehocom_21010627g.Transactions MODIFY transaction_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT`,
+    [start]
+  );
+  console.log(`rows>>>rows`, rows);
+}
+
+// getAllTransaction();
+// getUserTransaction(44);
+
+// makeAutoIncre(2);
+
 module.exports = {
   getResult,
   createTransaction,

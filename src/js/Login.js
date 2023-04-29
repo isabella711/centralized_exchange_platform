@@ -76,7 +76,7 @@ const Login = (props) => {
             </button>
           </form>
           <button
-            style={{ height: 60 }}
+            style={{ height: 60, alignSelf: "center" }}
             className="link-btn"
             onClick={() => props.onFormSwitch("register")}
           >

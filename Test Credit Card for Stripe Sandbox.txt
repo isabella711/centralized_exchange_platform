@@ -1,0 +1,15 @@
+List: https://stripe.com/docs/testing
+
+Credit Card : 
+
+4000 0034 4000 0004
+4242 4242 4242 4242
+5555 5555 5555 4444
+4000 0566 5566 5556 (Debit)
+
+Date: Any future date (e.g. 08/23, 09/25)
+
+CVC: xxx (e.g. 452, 578, 299)
+
+Zip: XXXXX (e.g. 02139, 94301, 94309, 99977, 00000)
+

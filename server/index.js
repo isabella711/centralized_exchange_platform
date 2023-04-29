@@ -1,6 +1,7 @@
 const { xrpFetch } = require("./walletGenerater/xrpGen");
 const { ethersFetch } = require("./walletGenerater/ethGen");
 const express = require("express");
+const { createTransactionRecord } = require("./sql/cex");
 const app = express();
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
@@ -60,11 +61,13 @@ app.put("/testing", cors(), async (req, res) => {
 
 app.post("/payment", cors(), async (req, res) => {
   let { amount, id } = req.body;
+  console.log(amount);
   try {
+    console.log("received payment request");
     const payment = await stripe.paymentIntents.create({
-      amount,
+      amount: amount * 100,
       currency: "USD",
-      description: "Spatula company",
+      description: "Cryto Company",
       payment_method: id,
       confirm: true,
     });
@@ -149,6 +152,28 @@ app.get("/getEthBalance", async (req, res) => {
     //   "sepolia"
     // );
     const call = await ethersFetch(address);
+    if (call.message === "OK") {
+      res.status(200).send(call.result);
+    } else {
+      res.status(401).send("Incorrect email or password");
+    }
+    return call;
+  } catch (error) {
+    if (error) {
+      res.status(500).send("An internal server error occurred");
+    }
+    console.log("Error", error);
+  }
+});
+
+app.post("/createTransaction", async (req, res) => {
+  const { transactionType, from, to, amount } = req.query;
+  try {
+    // execute the transaction using function CryptoTran
+    if (transactionType === "usdtosol") {
+    }
+    const content = {};
+    const call = await createTransactionRecord(content);
     if (call.message === "OK") {
       res.status(200).send(call.result);
     } else {
