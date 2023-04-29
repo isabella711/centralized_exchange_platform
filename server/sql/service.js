@@ -158,14 +158,15 @@ async function register(email, password, name) {
   return result;
 }
 
-async function addValue(value) {
+async function addValue(value,email) {
   if (value < 0) {
     return;
   }
+  console.log(value,email);
   const rows = await db.query(
-    `UPDATE users SET balance = balance + ? WHERE email = ?`,
-    [value]
-  );
+    `UPDATE joehocom_21010627g.Users SET user_balance = user_balance + ? WHERE email_address = ?`,[value,email]);
+  console.log(rows);
+  return rows;
 }
 
 async function createTransaction(content) {
@@ -234,6 +235,7 @@ module.exports = {
   getPrivateKeyByPubkey,
   getUserTransaction,
   login,
+  addValue
 };
 
 // getPrivateKeyByPubkey("mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc");

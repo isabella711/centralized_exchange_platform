@@ -3,6 +3,7 @@ const { ethersFetch } = require("./walletGenerater/ethGen");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction } = require("./cryptoTrans/btcTrans");
 const express = require("express");
+const { addValue } = require("./sql/service");
 const { createTransactionRecord } = require("./sql/cex");
 const app = express();
 require("dotenv").config();
@@ -319,6 +320,22 @@ app.post("/api/sendltcaddress", async (req, res) => {
 //     }
 //   });
 // });
+
+ app.post("/api/addvalue", (req, res) => {
+   const { email, value } = req.body;
+  // Insert a new user into the MySQL database
+  
+  
+   addValue(value,email).then((result) => {
+
+      if (result.changedRows > 0) {
+        res.status(200).send("OK");
+      } else {
+        res.status(401).send("Incorrect user account");
+      }
+    });
+  
+ });
 
 app.listen(process.env.PORT || 4000, () => {
   console.log("Sever is listening on port 4000");
