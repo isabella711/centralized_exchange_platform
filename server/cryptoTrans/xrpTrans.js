@@ -6,17 +6,17 @@ function xrpTrans() {
   // const [serverInfo, setServerInfo] = useState({ "buildVersion:": "0.0.0" });
 
   const net = "wss://s.altnet.rippletest.net:51233";
- 
-  const paidAmount= 0
-  const client = new Client(net)
+
+  const paidAmount = 0;
+  const client = new Client(net);
 
   const standby_wallet = xrpl.Wallet.fromSeed(
     "sEd7VZB9Tie9VXowLyv5o7g3gjm3NEt"
   );
 
   const rcvAddress = "";
-  const senderPublicKey= standby_wallet.publicKey
-  const senderWallet = standby_wallet.address
+  const senderPublicKey = standby_wallet.publicKey;
+  const senderWallet = standby_wallet.address;
 
   async function sendPayment() {
     await client.connect();
@@ -39,7 +39,6 @@ function xrpTrans() {
     console.log("Signed blob:", signed.tx_blob);
     client.disconnect();
   }
-
 }
 
 export default xrpTrans;
