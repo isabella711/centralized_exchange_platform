@@ -158,19 +158,62 @@ async function addValue(value) {
 
 async function createTransaction(content) {
   // TODO: add transaction on testnet
-
   const result = await db.query(
-    `INSERT INTO programming_languages 
-    (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
-    VALUES 
-    (${content.name}, ${content.released_year}, ${content.githut_rank}, ${content.pypl_rank}, ${content.tiobe_rank})`
+    `INSERT INTO joehocom_21010627g.Transactions 
+    ( transactioner_id_A, 
+      transaction_date ,
+      status ,
+      transactioner_id_B,
+      transactioner_A_currency_type,
+      transactioner_A_currency_amount,
+      transactioner_B_currency_type,
+      transactioner_B_currency_amount ) VALUES 
+    (?,?,?,?,?,?,?,?)`,
+    [
+      content.transactioner_id_A,
+      content.transaction_date,
+      content.status,
+      content.transactioner_id_B,
+      content.transactioner_A_currency_type,
+      content.transactioner_A_currency_amount,
+      content.transactioner_B_currency_type,
+      content.transactioner_B_currency_amount,
+    ]
   );
-  let message = "Error in creating programming language";
-  if (result.affectedRows) {
-    message = "Programming language created successfully";
-  }
-  return { message };
+  return result;
 }
+
+async function getAllTransaction() {
+  const rows = await db.query(`SELECT * FROM joehocom_21010627g.Transactions`);
+  console.log(`rows>>>rows`, rows);
+}
+
+async function getUserTransaction(id) {
+  const rows = await db.query(
+    `SELECT * FROM joehocom_21010627g.Transactions WHERE transactioner_id_A = ${id} OR transactioner_id_B = ${id}`
+  );
+  console.log(`rows>>>rows`, rows);
+}
+async function addCol() {
+  const rows = await db.query(
+    `ALTER TABLE joehocom_21010627g.Transactions ADD tx_id varchar(255)`
+  );
+  console.log(`rows>>>rows`, rows);
+}
+
+async function makeAutoIncre(start) {
+  const rows = await db.query(
+    `ALTER TABLE joehocom_21010627g.Transactions MODIFY transaction_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT`,
+    [start]
+  );
+  console.log(`rows>>>rows`, rows);
+}
+
+// getAllTransaction();
+// getUserTransaction(44);
+
+// makeAutoIncre(2);
+
 module.exports = {
   getResult,
   createTransaction,
