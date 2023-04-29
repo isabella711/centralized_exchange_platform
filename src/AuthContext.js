@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { userLogin, userRegister } from "./api";
+import { getUserInfo, userLogin, userRegister } from "./api";
 import axios from "axios";
 import {
   userProfile,
@@ -56,6 +56,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // const userDetail = async (id) => {
+  //   store.dispatch(usersLoading("pending"));
+  //   const response = await getUserInfo(id);
+  //   console.log("Credentials:", JSON.stringify({ id }));
+  //   console.log("Response:", response);
+  //   if (response.data) {
+  //     try {
+  //       const responseText = await response.data;
+  //       console.log("Raw response text:", responseText);
+  //       setUser(responseText);
+  //       store.dispatch(userProfile(responseText));
+  //       return true;
+  //     } catch (error) {
+  //       store.dispatch(stopLoading("idle"));
+  //     }
+  //   } else {
+  //     store.dispatch(stopLoading("idle"));
+  //     throw new Error("Internal Server Error");
+  //   }
+  // };
+
   const login = async (email, password) => {
     store.dispatch(usersLoading("pending"));
     const response = await userLogin(email, password);
@@ -108,6 +129,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     addValue,
     register,
+    //userDetail,
     authenticated,
   };
 

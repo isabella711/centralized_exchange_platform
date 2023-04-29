@@ -1,11 +1,20 @@
 import { createAsyncThunk, createSlice, isFulfilled } from "@reduxjs/toolkit";
-import { callExternalApi, getUserWallets } from "../api";
+import { callExternalApi, getUserInfo, getUserWallets } from "../api";
 
 export const fetchSolBalance = createAsyncThunk(
   "sol/fetchSolBalance",
   async (address, type) => {
     const response = await callExternalApi(address, type);
     return response.data;
+  }
+);
+
+export const fetchUser = createAsyncThunk(
+  "user/detail",
+  async (userId, dispatch) => {
+    const response = await getUserInfo(userId);
+    console.log(`response>>`, response);
+    return response;
   }
 );
 
@@ -23,6 +32,7 @@ const user = createSlice({
     loading: "idle",
     user: null,
     wallets: [],
+    balance: undefined,
   },
   reducers: {
     usersLoading(state, action) {
@@ -50,6 +60,12 @@ const user = createSlice({
     builder.addCase(fetchUserWallets.fulfilled, (state, action) => {
       if (isFulfilled(action)) {
         state.wallets = action.payload.data;
+        state.loading = "idle";
+      }
+    });
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      if (isFulfilled(action)) {
+        state.balance = action.payload.data;
         state.loading = "idle";
       }
     });

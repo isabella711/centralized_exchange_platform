@@ -59,11 +59,11 @@ export const deleteApi = async (params) => {
   }
 };
 
-export const getUserInfo = async (id) => {
+export const getUserInfo = async (userId) => {
   try {
-    const userInfo = await axios.get("http://localhost:4000/login", {
+    const userInfo = await axios.get("http://localhost:4000/user", {
       params: {
-        userId: id,
+        userId: userId,
       },
     });
     return userInfo;
