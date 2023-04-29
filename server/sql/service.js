@@ -37,7 +37,7 @@ async function login(email, password) {
   if (!userId) {
     return { msg: "Invalid credentials" };
   }
-  let key = email + password + Date.now().toString();
+  let key = email + password + Date.now();
   const sessionId = generate_key(key);
 
   if (query) {
@@ -66,7 +66,7 @@ async function register(email, password, name) {
     console.log("account already exist");
     return { msg: "account already exist" };
   }
-  let key = email + password + Date.now().toString();
+  let key = email + password + Date.now();
   const sessionId = generate_key(key);
   console.log([email, password, name, sessionId]);
   // if(!userId){
@@ -85,6 +85,7 @@ async function register(email, password, name) {
   if (email && password && sessionId) {
     const wallets = await createMultiWallet();
     const { solAccount, ethAccount, xrpAccount, btcAccount } = wallets;
+    const currentTime = new Date(Date.now());
     console.log(`wallets.>>>`, {
       solAccount,
       ethAccount,
@@ -95,7 +96,7 @@ async function register(email, password, name) {
       console.log(
         createdUserId,
         "BTC",
-        Date.now().toString(),
+        currentTime,
         btcAccount.publicKey.toString(),
         btcAccount.privateKey.toString()
       );
@@ -104,7 +105,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "BTC",
-          Date.now().toString(),
+          currentTime,
           btcAccount.publicKey.toString(),
           btcAccount.privateKey.toString(),
         ]
@@ -114,7 +115,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "SOL",
-          Date.now().toString(),
+          currentTime,
           solAccount.publicKey.toString(),
           solAccount.privateKey.toString(),
         ]
@@ -124,7 +125,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "ETH",
-          Date.now().toString(),
+          currentTime,
           ethAccount.address,
           ethAccount.privateKey,
         ]
@@ -134,7 +135,7 @@ async function register(email, password, name) {
         [
           createdUserId,
           "XRP",
-          Date.now().toString(),
+          currentTime,
           xrpAccount.publicKey,
           xrpAccount.privateKey,
           xrpAccount.classicAddress,
