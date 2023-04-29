@@ -15,7 +15,7 @@ export default function Card() {
   );
 
   useEffect(() => {
-    store.dispatch(fetchUser(user?.user_id));
+    store.dispatch(fetchUser(user ? user.user_id : ""));
     console.log("balance>>>", balance);
   }, []);
   console.log(`>>>user`, user);
@@ -24,7 +24,6 @@ export default function Card() {
   ) : (
     <>
       <Header isAuthenticated={user !== null} wallets={wallets} />
-
       <div className="productList">
         {contents.map((contents) => (
           <Products
