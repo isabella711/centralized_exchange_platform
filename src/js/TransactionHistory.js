@@ -8,43 +8,44 @@ import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
 const { xrpFetch } = require("../api");
 
-export default function UserProfile() {
-  const [authenticated, setauthenticated] = useState(null);
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("authenticated");
-    if (loggedInUser) {
-      setauthenticated(loggedInUser);
-    }
-  }, []);
+export default function TransactionHistory() {
+  // const [authenticated, setauthenticated] = useState(null);
+  // useEffect(() => {
+  //   const loggedInUser = localStorage.getItem("authenticated");
+  //   if (loggedInUser) {
+  //     setauthenticated(loggedInUser);
+  //   }
+  // }, []);
 
-  const [xrpBalance, setXrpBalance] = useState(0);
-  //XRP
-  useEffect(() => {
-    xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then((res) => {
-      let balance = res.result.account_data;
-      setXrpBalance(balance);
-    });
-  });
+  // const [xrpBalance, setXrpBalance] = useState(0);
+  // //XRP
+  // useEffect(() => {
+  //   xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then((res) => {
+  //     let balance = res.result.account_data;
+  //     setXrpBalance(balance);
+  //   });
+  // });
 
-  //SOL
-  const [solBalance, setSolBalance] = useState();
-  useEffect(() => {
-    callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol").then(
-      (res) => {
-        console.log(`>>>`, res);
-        setSolBalance(res.data.result.value);
-      }
-    );
-  }, []);
+  // //SOL
+  // const [solBalance, setSolBalance] = useState();
+  // useEffect(() => {
+  //   callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol").then(
+  //     (res) => {
+  //       console.log(`>>>`, res);
+  //       setSolBalance(res.data.result.value);
+  //     }
+  //   );
+  // }, []);
 
   //ETH
   // useEffect(() => {
   //   const result = callExternalApi("4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC", "eth");
   //   console.log("result", result);
   // }, []);
-  if (!authenticated) {
-    return <Navigate replace to="/login" />;
-  }
+
+  // if (!authenticated) {
+  //   return <Navigate replace to="/login" />;
+  // }
 
   return (
     <div className="maincontainer">
@@ -162,7 +163,7 @@ export default function UserProfile() {
                   />
                   <div class="media-body">
                     <p class="my-1">
-                      <strong>XRP {xrpBalance}</strong>
+                      <strong>XRP</strong>
                     </p>
                   </div>
                   <p>

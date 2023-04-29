@@ -5,7 +5,7 @@ export const useUpdateCoin = (coinType) => {
   const [coinInfo, setCoinInfo] = useState();
   ws.onmessage = (event) => {
     setCoinInfo(JSON.parse(event.data).p);
-    // console.log(JSON.parse(event.data));
+    //console.log(JSON.parse(event.data));
   };
   //console.log(coinInfo);
   return coinInfo;

@@ -12,16 +12,19 @@ import { useGetAmount } from "../hooks/useGetAmount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../css/TransactionForm.css";
+import useWebSocket from "../hooks/useWebSocket";
 
 const PaymentCont = (props) => {
+  const { coinInfo } = useWebSocket(props.ticket);
   const { id } = props;
-  const coin = useUpdateCoin(id);
   const lowPrice = Number(useGetLowPrice(id)).toFixed(2);
   const highPrice = Number(useGetHighPrice(id)).toFixed(2);
   const priceChange = Number(useGetPriceChange(id)).toFixed(2);
   const amount = Number(useGetAmount(id)).toFixed(2);
-  const coinTrim = Number(coin).toFixed(2);
+  const coinTrim = Number(coinInfo).toFixed(2);
   const navigate = useNavigate();
+  console.log("buysell current price: " + coinTrim);
+
   return (
     <div
       className="transaction-container d-flex flex-column min-vh-100 justify-content-center align-items-center"
