@@ -13,6 +13,7 @@ export default function Header(props) {
   const [btcBalance, setBtcBalance] = useState(0);
   const { isAuthenticated, wallets } = props;
   console.log("header balance: ", user?.user_balance);
+
   console.log(`wallets..>>`, wallets ?? "error");
   useEffect(() => {
     if (wallets?.length > 0 && wallets !== undefined) {

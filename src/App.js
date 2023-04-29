@@ -13,6 +13,7 @@ import HomeLayout from "./components/HomeLayout";
 import { getUserWallets } from "./api";
 import {
   fetchUser,
+  fetchTransactionHistory,
   fetchUserWallets,
   useWallet,
   usersLoading,
@@ -35,6 +36,7 @@ export default function App() {
       store.dispatch(usersLoading("idle"));
       store.dispatch(fetchUserWallets(user_id));
       store.dispatch(fetchUser(user_id));
+      store.dispatch(fetchTransactionHistory(user_id));
     }
   }, [userInfo.user]);
   useEffect(() => {

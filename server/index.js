@@ -1,5 +1,6 @@
 const { xrpFetch } = require("./walletGenerater/xrpGen");
 const { ethersFetch } = require("./walletGenerater/ethGen");
+const { ethTrans } = require("./cryptoTrans/ethTrans");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction } = require("./cryptoTrans/btcTrans");
 const express = require("express");
@@ -189,6 +190,23 @@ app.get("/getEthBalance", async (req, res) => {
   }
 });
 
+app.get("/userTransaction", async (req, res) => {
+  const { id } = req.query;
+  try {
+    getUserTransaction(id).then((result) => {
+      if (result.length > 0) {
+        res.status(200).send(result);
+      } else {
+        res.status(401).send("An internal server error occurred");
+      }
+    });
+  } catch (err) {
+    if (err) {
+      res.status(500).send("An internal server error occurred");
+    }
+  }
+});
+
 app.post("/createTransaction", async (req, res) => {
   const { id, transactionType, userReceAmount, userSendAmount } = req.body;
   console.log(`req.body`, userReceAmount, userSendAmount);
@@ -228,6 +246,31 @@ app.post("/createTransaction", async (req, res) => {
         }
       }
       return userReceiveSol;
+    }
+
+      if (transactionType === "usdtoeth") {
+      const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
+      //UNTIL HERE
+      const userReceiveEth = await ethTrans(
+        "0xc018e39c82584Fb5129081d2677bB4369cE700C3", //which is our company wallet
+        findSpecWallet.wallet_address,
+        userReceAmount,
+        "0xc31e5e4f52bc52ab124f7e41027f8fb2e0d3a8899c4802cfb3db25d7878a2dc3"
+        
+      );
+      console.log(userReceiveEth);
+      content.transactioner_A_currency_type = "USD";
+      content.transactioner_B_currency_type = "ETH";
+      if (userReceiveEth) {
+        content.tx_id = userReceiveEth;
+        content.status = "success";
+        const call = await createTransactionRecord(content);
+        if (call.affectedRows > 0) {
+          const verify = await getUserTransaction(id);
+          res.status(200).send({ tx_id: userReceiveEth, verify });
+        }
+      }
+      return userReceiveEth;
     }
     //
     if (transactionType === "btctosol") {
@@ -321,21 +364,18 @@ app.post("/api/sendltcaddress", async (req, res) => {
 //   });
 // });
 
- app.post("/api/addvalue", (req, res) => {
-   const { email, value } = req.body;
+app.post("/api/addvalue", (req, res) => {
+  const { email, value } = req.body;
   // Insert a new user into the MySQL database
-  
-  
-   addValue(value,email).then((result) => {
 
-      if (result.changedRows > 0) {
-        res.status(200).send("OK");
-      } else {
-        res.status(401).send("Incorrect user account");
-      }
-    });
-  
- });
+  addValue(value, email).then((result) => {
+    if (result.changedRows > 0) {
+      res.status(200).send("OK");
+    } else {
+      res.status(401).send("Incorrect user account");
+    }
+  });
+});
 
 app.listen(process.env.PORT || 4000, () => {
   console.log("Sever is listening on port 4000");

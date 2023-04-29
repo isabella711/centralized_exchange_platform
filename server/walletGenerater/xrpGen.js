@@ -17,6 +17,26 @@ const createXrpWallet = async () => {
   return my_wallet;
 };
 
+const xrpTx = async (tx) => {
+  const net = "wss://s.altnet.rippletest.net:51233";
+  const client = new xrpl.Client(net);
+
+  // const xrpTransHistory = async () => {
+  await client.connect();
+  console.log("Connected, funding wallet.");
+  const response = await client.request({
+    command: "tx",
+    transaction: tx,
+    binary: false,
+  });
+
+  console.log(`xrp ++++response>>>`, response);
+  client.disconnect();
+  // };
+  // xrpTransHistory();
+  return response;
+};
+
 function xrpFetch(address) {
   const net = "wss://s.altnet.rippletest.net:51233";
   const client = new xrpl.Client(net);
@@ -38,4 +58,6 @@ function xrpFetch(address) {
   return xrpWalletUpdate;
 }
 
-module.exports = { createXrpWallet, xrpFetch };
+module.exports = { createXrpWallet, xrpFetch, xrpTx };
+
+xrpTx("b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d");
