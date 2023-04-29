@@ -45,11 +45,41 @@ export default function Header(props) {
           setBtcBalance(0 * 0.00000001);
           return;
         }
-        let balance = res.data[0].vout.find(
-          (v) => v.scriptpubkey_address === btcAddress
-        ).value;
+        console.log(`res.data[0].vout>>>`, res.data);
+        let arr = [];
+        let data = res.data;
+        // let vin = res.data[0].vin.find(
+        //   (v) => v.prevout.scriptpubkey_address === btcAddress
+        // )?.prevout.scriptpubkey;
 
-        setBtcBalance(balance);
+        // let vout = res.data[0].vout.find(
+        //   (v) => v.scriptpubkey_address === btcAddress
+        // )?.scriptpubkey;
+
+        data.forEach((tx) => {
+          let fromVin = tx.vin.find(
+            (v) => v.prevout.scriptpubkey_address === btcAddress
+          )?.prevout.value;
+          let fromVout = tx.vout.find(
+            (v) => v.scriptpubkey_address === btcAddress
+          )?.value;
+          arr.push(fromVout ?? fromVin);
+        });
+        Array.prototype.getUnique = function () {
+          var uniques = [];
+          for (var i = 0, l = this.length; i < l; ++i) {
+            if (this.lastIndexOf(this[i]) == this.indexOf(this[i])) {
+              uniques.push(this[i]);
+            }
+          }
+          return uniques;
+        };
+        console.log(`arr`, arr);
+        const sum = arr
+          .getUnique()
+          .reduce((partialSum, a) => partialSum + a, 0);
+        console.log(`arr`, sum);
+        setBtcBalance(sum * 0.00000001);
       });
     }
   }, []);
