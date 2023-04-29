@@ -154,6 +154,20 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
+  if (type === "solTransaction") {
+    try {
+      const call = await axios.post("https://api.devnet.solana.com", {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "getTransaction",
+        params: [`${address}`, "json"],
+      });
+      return call;
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
+
   if (type === "eth") {
     try {
       const call = await axios.get(

@@ -10,6 +10,7 @@ export default function Header(props) {
   const [solBalance, setSolBalance] = useState(0);
   const [btcBalance, setBtcBalance] = useState(0);
   const { isAuthenticated, wallets } = props;
+
   console.log(`wallets..>>`, wallets ?? "error");
   useEffect(() => {
     if (wallets?.length > 0 && wallets !== undefined) {
