@@ -101,6 +101,24 @@ export const userRegister = async (email, password, name) => {
   }
 };
 
+export const getUserTransactions = async (id) => {
+  // console.log(`APii,`, email, password);
+  try {
+    const transactionHistory = await axios.get(
+      "http://localhost:4000/userTransaction",
+      {
+        params: {
+          id: id,
+        },
+      }
+    );
+    return transactionHistory;
+  } catch (error) {
+    console.log("Error>>>", error);
+    return error;
+  }
+};
+
 export const getUserWallets = async (id) => {
   // console.log(`APii,`, email, password);
   try {

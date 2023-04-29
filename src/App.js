@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import HomeLayout from "./components/HomeLayout";
 import { getUserWallets } from "./api";
 import {
+  fetchTransactionHistory,
   fetchUserWallets,
   useWallet,
   usersLoading,
@@ -32,6 +33,7 @@ export default function App() {
       const { user_id } = userInfo.user;
       store.dispatch(usersLoading("idle"));
       store.dispatch(fetchUserWallets(user_id));
+      store.dispatch(fetchTransactionHistory(user_id));
     }
   }, [userInfo.user]);
   useEffect(() => {

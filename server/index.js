@@ -189,6 +189,23 @@ app.get("/getEthBalance", async (req, res) => {
   }
 });
 
+app.get("/userTransaction", async (req, res) => {
+  const { id } = req.query;
+  try {
+    getUserTransaction(id).then((result) => {
+      if (result.length > 0) {
+        res.status(200).send(result);
+      } else {
+        res.status(401).send("An internal server error occurred");
+      }
+    });
+  } catch (err) {
+    if (err) {
+      res.status(500).send("An internal server error occurred");
+    }
+  }
+});
+
 app.post("/createTransaction", async (req, res) => {
   const { id, transactionType, userReceAmount, userSendAmount } = req.body;
   console.log(`req.body`, userReceAmount, userSendAmount);
@@ -321,21 +338,18 @@ app.post("/api/sendltcaddress", async (req, res) => {
 //   });
 // });
 
- app.post("/api/addvalue", (req, res) => {
-   const { email, value } = req.body;
+app.post("/api/addvalue", (req, res) => {
+  const { email, value } = req.body;
   // Insert a new user into the MySQL database
-  
-  
-   addValue(value,email).then((result) => {
 
-      if (result.changedRows > 0) {
-        res.status(200).send("OK");
-      } else {
-        res.status(401).send("Incorrect user account");
-      }
-    });
-  
- });
+  addValue(value, email).then((result) => {
+    if (result.changedRows > 0) {
+      res.status(200).send("OK");
+    } else {
+      res.status(401).send("Incorrect user account");
+    }
+  });
+});
 
 app.listen(process.env.PORT || 4000, () => {
   console.log("Sever is listening on port 4000");
