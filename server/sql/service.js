@@ -95,15 +95,16 @@ async function register(email, password, name) {
   )?.user_id;
   if (email && password && sessionId) {
     const wallets = await createMultiWallet();
-    const { solAccount, ethAccount, xrpAccount, btcAccount } = wallets;
+    const { solAccount, ethAccount, xrpAccount, btcAccount, ltcAccount} = wallets;
     const currentTime = new Date(Date.now());
     console.log(`wallets.>>>`, {
       solAccount,
       ethAccount,
       xrpAccount,
       btcAccount,
+	  ltcAccount,
     });
-    if (solAccount && ethAccount && xrpAccount && btcAccount) {
+    if (solAccount && ethAccount && xrpAccount && btcAccount && ltcAccount) {
       console.log(
         createdUserId,
         "BTC",
@@ -153,6 +154,18 @@ async function register(email, password, name) {
           xrpAccount.seed,
         ]
       );
+	   await db.query(
+        `INSERT INTO joehocom_21010627g.Wallets (user_id, currency_type,wallet_create_date , wallet_address, wallet_private_key, classicAddress, seed) VALUES  (?,?,?,?,?,?,?)`,
+        [
+          createdUserId,
+          "LTC",
+          currentTime,
+          ltcAccount.publicKey,
+          ltcAccount.privateKey,
+          ltcAccount.address,
+          '',
+        ]
+      );
     }
   }
   return result;
@@ -169,7 +182,6 @@ async function addValue(value,email) {
   return rows;
 }
 
-
 async function subtractValue(value,email) {
   if (value < 0) {
     return;
@@ -180,7 +192,6 @@ async function subtractValue(value,email) {
   console.log(rows);
   return rows;
 }
-
 
 async function createTransaction(content) {
   // TODO: add transaction on testnet
