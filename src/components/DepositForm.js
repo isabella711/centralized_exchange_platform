@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deposit from "../assets/deposit.png";
 import { Placeholder } from "react-bootstrap";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+//import { View, Text, TextInput, StyleSheet } from "react-native";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -98,11 +98,12 @@ export default function PaymentForm() {
               style={{ maxWidth: "500px" }}
               type="number"
               placeholder="0"
+              min="0"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              onKeyPress={(event) => {
+              KeyPress={(event) => {
                 if (
-                  !/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)
+                  !/^(?!0\d)\d*(\.\d+)?$/.test(event.target.value + event.key)
                 ) {
                   event.preventDefault();
                 }
