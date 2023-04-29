@@ -60,11 +60,13 @@ app.put("/testing", cors(), async (req, res) => {
 
 app.post("/payment", cors(), async (req, res) => {
   let { amount, id } = req.body;
+  console.log(amount);
   try {
+    console.log("received payment request");
     const payment = await stripe.paymentIntents.create({
-      amount,
+      amount:(amount*100),
       currency: "USD",
-      description: "Spatula company",
+      description: "Cryto Company",
       payment_method: id,
       confirm: true,
     });
