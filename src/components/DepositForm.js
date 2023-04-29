@@ -64,6 +64,16 @@ export default function PaymentForm() {
           console.log("Successful deposit");
           setSuccess(true);
         }
+
+        const response_v2 = await axios.post("http://localhost:4000/api/addvalue", {
+          email:"alice@gmail.com",
+          value : amount
+        });
+
+        if (response_v2.data.success) {
+          console.log("Successful deposit");
+          setSuccess(true);
+        }
       } catch (error) {
         console.log("Error", error);
       }
