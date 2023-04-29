@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deposit from "../assets/deposit.png";
 import { Placeholder } from "react-bootstrap";
+import { View, Text, TextInput, StyleSheet } from "react-native";
+
 const CARD_OPTIONS = {
   iconStyle: "solid",
   style: {
@@ -19,8 +21,6 @@ const CARD_OPTIONS = {
     },
   },
 };
-
-
 
 const AMOUNT_OPTIONS = {
   style: {
@@ -42,7 +42,6 @@ export default function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
-
 
   const [amount, setAmount] = useState("");
 
@@ -77,38 +76,97 @@ export default function PaymentForm() {
     <>
       {!success ? (
         <>
-      <div>
-      <h1 style={{ fontSize: 40 }}>Deposit</h1>
-      <img src={deposit} alt="deposit.png" width={300} height={300}  style={{display: "flex"}} class="center"/>
+          <div>
+            <h1 style={{ fontSize: 40 }}>Deposit</h1>
+            <img
+              src={deposit}
+              alt="deposit.png"
+              width={300}
+              height={300}
+              style={{ display: "flex" }}
+              class="center"
+            />
+          </div>
 
+          <form
+            className="payment-form"
+            onSubmit={handleSubmit}
+            style={{ paddingLeft: 500, fontSize: 20 }}
+          >
+            <label>Deposit Value</label>
+            <input
+              style={{ maxWidth: "500px" }}
+              type="number"
+              placeholder="0"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              onKeyPress={(event) => {
+                if (
+                  !/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)
+                ) {
+                  event.preventDefault();
+                }
+              }}
+            />
 
+            <label>Card Payment</label>
+            <fieldset style={{ maxWidth: "500px" }} className="FormGroup">
+              <div className="FormRow">
+                <CardElement options={CARD_OPTIONS} />
+              </div>
+            </fieldset>
 
-
-    
-
-    </div>
-
-        <form onSubmit={handleSubmit} style={{paddingLeft:200 ,fontSize: 20}}>
-          <label style={{paddingLeft: "15px"}}>
-          <input 
-          type='number'
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          onKeyPress={(event) => {if (!/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)) {event.preventDefault();}
-          }}
-          placeholder="Deposit value"
-          style={{backgroundColor:"#7795f8", color: "#fff"}}
-           />
-           </label>
-          <fieldset className="FormGroup">
-            <div className="FormRow">
-              
-              <CardElement options={CARD_OPTIONS} />
-            </div>
-          </fieldset>
-          <button type="submit" style={{maxWidth:"200px"}}>Deposit</button>
-          <button onClick={() => navigate(-1)} style={{maxWidth:"200px"}}>Go Back</button>
-        </form>
+            {/* <label style={{ paddingLeft: "15px" }}>
+              Deposit Value:&nbsp; &nbsp;
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                onKeyPress={(event) => {
+                  if (
+                    !/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)
+                  ) {
+                    event.preventDefault();
+                  }
+                }}
+                placeholder="Deposit value"
+              /> */}
+            {/* <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                onKeyPress={(event) => {
+                  if (
+                    !/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)
+                  ) {
+                    event.preventDefault();
+                  }
+                }}
+                placeholder="Deposit value"
+                style={{ backgroundColor: "#7795f8", color: "#fff" }}
+              /> */}
+            {/* </label>{" "} */}
+            {/* <label style={{ paddingLeft: "15px" }}>
+              Deposit Value:&nbsp; &nbsp;
+              <fieldset style={{ maxWidth: "500px" }} className="FormGroup">
+                <div className="FormRow">
+                  <CardElement options={CARD_OPTIONS} />
+                </div>
+              </fieldset>
+            </label> */}
+            <button style={{ maxWidth: "200px" }} class="button1">
+              Deposit
+            </button>
+            <p></p>
+            <p></p>
+            <button
+              style={{ maxWidth: "200px" }}
+              class="button1"
+              onClick={() => navigate(-1)}
+            >
+              Go Back
+            </button>
+          </form>
         </>
       ) : (
         <div>

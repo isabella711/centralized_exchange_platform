@@ -1,12 +1,35 @@
 .FormGroup {
-  margin: 0 15px 20px;
+  margin: 0 0px 20px;
   padding: 0;
-  border-style: none;
-  background-color: #7795f8;
+  background-color:dodgerblue;
   will-change: opacity, transform;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #829fff;
+  border: 1px solid gray;
   border-radius: 4px;
+  border-radius: 10px;
+}
+
+.payment-form
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 25px 20px 0px 100px;
+  /* align-items: center; */
+}
+
+.button1 {
+  text-align: center;
+  padding: 0px;
+  width: 50%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  margin: 25px 30px 0px 150px;
+}
+
+.button1:hover {
+  background-color: #555555;
+  color: white;
 }
 
 .FormRow {
@@ -14,10 +37,23 @@
   display: flex;
   -ms-flex-align: center;
   align-items: center;
-  margin-left: 15px;
-  border-top: 1px solid #819efc;
 }
 
+.form-group{
+  padding:10px;
+  border:3px solid;
+  margin:10px;
+}
+.form-group>label{
+  position:absolute;
+  top:-1px;
+  left:20px;
+  background-color:white;
+}
+
+.form-group>input{
+  border:none;
+}
 .StripeElement--webkit-autofill {
   background: transparent !important;
 }

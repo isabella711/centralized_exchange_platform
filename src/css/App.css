@@ -42,10 +42,8 @@
   margin: 0 15px 20px;
   padding: 0;
   border-style: none;
-  background-color: #7795f8;
+  background-color:white;
   will-change: opacity, transform;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #829fff;
   border-radius: 4px;
 }
 
@@ -54,7 +52,6 @@
   display: flex;
   -ms-flex-align: center;
   align-items: center;
-  margin-left: 15px;
   border-top: 1px solid #819efc;
 }
 
@@ -84,17 +81,17 @@ button {
 }
 
 button:active {
-  background-color: #d782d9;
-  box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 #e298d8;
-  transform: scale(0.99);
+
 }
 
 .button5 {
   text-align: center;
+  padding: 0px;
+  width: 50%;
   background-color: white;
   color: black;
   border: 2px solid #555555;
+  margin: 0 auto;
 }
 
 .button5:hover {

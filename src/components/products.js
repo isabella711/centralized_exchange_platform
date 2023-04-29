@@ -35,8 +35,8 @@ export function Products(props) {
                 margin: "auto",
               }}
             >
-              <Link to={`/payment/${props.details}`}>
-                <button class="button button5">Buy</button>
+              <Link to={`/buysell/${props.details}`}>
+                <button class="button button5">Buy/Sell</button>
               </Link>
             </div>
           </div>

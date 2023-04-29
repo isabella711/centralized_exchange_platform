@@ -130,7 +130,8 @@ html {
 }
 
 .productCard__content {
-  margin: 2rem;
+  margin: 0px 25px 50px 75px;
+  text-align: center;
 }
 
 .productName {
@@ -213,9 +214,9 @@ label {
 }
 
 input {
+  border: 1px solid gray;
   margin: 0.5rem 0;
   padding: 1rem;
-  border: none;
   border-radius: 10px;
 }
 
