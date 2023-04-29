@@ -134,6 +134,10 @@ html {
   text-align: center;
 }
 
+.productCard__frontpage {
+  text-align: center;
+}
+
 .productName {
   font-size: 3rem;
   font-weight: bold;

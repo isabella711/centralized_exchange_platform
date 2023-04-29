@@ -22,7 +22,7 @@ export function MenuAppBar(props) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   console.log(`isAuthenticated>>>`, isAuthenticated);
   const prefix = isAuthenticated
-    ? ["Home", "Payment", "Logout"]
+    ? ["Home", "Deposit", "Logout"]
     : ["Home", "Login"];
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -48,6 +48,9 @@ export function MenuAppBar(props) {
     }
     if (link === "logout") {
       return "/";
+    }
+    if (link === "deposit") {
+      return "/deposit";
     }
     console.log(`link>>>`, link);
     return link;

@@ -5,6 +5,7 @@ import Card from "./js/Card";
 import Register from "./js/Register";
 import Login from "./js/Login";
 import Buysell from "./js/Buysell";
+import Deposits from "./components/DepositForm";
 import { MenuAppBar } from "./js/AppBar";
 import { useSelector } from "react-redux";
 import HomeLayout from "./components/HomeLayout";
@@ -80,7 +81,7 @@ export default function App() {
           }
         />
         <Route path="/payment" element={<Payment />} />
-
+        <Route path="/depositForm" element={<Deposits />} />
         <Route path="/transaction" element={<Transaction />} />
         <Route path="/buysell/:id" element={<Buysell />} />
         <Route

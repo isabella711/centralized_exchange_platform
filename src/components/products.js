@@ -23,7 +23,7 @@ export function Products(props) {
 
           {/* <FaShoppingCart className={"productCard__cart"} /> */}
 
-          <div className="productCard__content">
+          <div className="productCard__frontpage">
             <h3 className="productName">{props.name}</h3>
             <div className="displayStack__1"></div>
             <div className="productPrice">Current Price: ${coinTrim}</div>
