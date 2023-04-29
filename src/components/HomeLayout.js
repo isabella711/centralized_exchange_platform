@@ -6,6 +6,10 @@ import { callExternalApi } from "../api";
 import useGetTrans from "../hooks/useGetTrans";
 
 export default function HomeLayout({ children, userInfo }) {
+  const { transHistory, transXrpHistory } = useGetTrans(
+    userInfo.transactionHistory
+  );
+  console.log(`userInfo>>>`, transHistory, transXrpHistory);
   return (
     <>
       <MenuAppBar

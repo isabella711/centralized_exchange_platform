@@ -1,7 +1,18 @@
-import { callExternalApi } from "../api";
+import { callExternalApi, xrpTx } from "../api";
 import { useEffect, useRef, useState } from "react";
+const xrpl = require("xrpl");
 export default function useGetTrans(transIdArr) {
   const [transHistory, setTransHistory] = useState([]);
+  const [transXrpHistory, setXrpTransHistory] = useState([]);
+
+  const searchXrpTx = async () => {
+    const response = await xrpTx(
+      "b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d"
+    );
+    console.log(`searchXrpTx>>>`, response);
+    setXrpTransHistory(response.result.Amount);
+    return;
+  };
 
   const searchTransaction = (transIdArr) => {
     let tArr = [];
@@ -25,7 +36,8 @@ export default function useGetTrans(transIdArr) {
 
   useEffect(() => {
     searchTransaction(transIdArr);
+    searchXrpTx();
   }, []);
 
-  return { transHistory };
+  return { transHistory, transXrpHistory };
 }

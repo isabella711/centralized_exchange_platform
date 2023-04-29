@@ -307,5 +307,25 @@ export const xrpFetch = async (account) => {
   // }
   // }
 };
+
+export const xrpTx = async (tx) => {
+  const net = "wss://s.altnet.rippletest.net:51233";
+  const client = new xrpl.Client(net);
+
+  // const xrpTransHistory = async () => {
+  await client.connect();
+  console.log("Connected, funding wallet.");
+  const response = await client.request({
+    command: "tx",
+    transaction: tx,
+    binary: false,
+  });
+
+  console.log(`xrp ++++response>>>`, response);
+  client.disconnect();
+  // };
+  // xrpTransHistory();
+  return response;
+};
 // callExternalApi("0x0902a667d6a3f287835e0a4593cae4167384abc6", "eth");
 // callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
