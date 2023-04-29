@@ -169,6 +169,19 @@ async function addValue(value,email) {
   return rows;
 }
 
+
+async function subtractValue(value,email) {
+  if (value < 0) {
+    return;
+  }
+  console.log(value,email);
+  const rows = await db.query(
+    `UPDATE joehocom_21010627g.Users SET user_balance = user_balance - ? WHERE email_address = ? and user_balance >= ?`,[value,email,value]);
+  console.log(rows);
+  return rows;
+}
+
+
 async function createTransaction(content) {
   // TODO: add transaction on testnet
   const result = await db.query(
