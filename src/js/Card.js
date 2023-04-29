@@ -24,6 +24,7 @@ export default function Card() {
   ) : (
     <>
       <Header isAuthenticated={user !== null} wallets={wallets} />
+
       <div className="productList">
         {contents.map((contents) => (
           <Products

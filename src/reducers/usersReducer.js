@@ -78,7 +78,8 @@ const user = createSlice({
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       if (isFulfilled(action)) {
-        state.balance = action.payload.data.user_balance;
+        if (action.payload.data.user_balance != null)
+          state.balance = action.payload.data.user_balance;
         state.loading = "idle";
       }
     });
