@@ -16,8 +16,9 @@ async function getResult() {
 
 async function getUser(id) {
   const rows = await db.query(
-    `SELECT user_id, user_name, user_balance, email_address FROM joehocom_21010627g.Users WHERE user_id=${id}`
+    `SELECT user_id, user_name, user_balance, email_address, session FROM joehocom_21010627g.Users WHERE user_id=${id}`
   );
+  return rows;
 }
 
 async function getUserWalletByUser(id) {
@@ -25,6 +26,15 @@ async function getUserWalletByUser(id) {
     `SELECT wallet_id , currency_type, wallet_address, classicAddress FROM joehocom_21010627g.Wallets WHERE user_id=${id}`
   );
   return wallet;
+}
+
+async function getPrivateKeyByPubkey(pubkey) {
+  const walletInfo = await db.query(
+    `SELECT wallet_id , currency_type, wallet_address, wallet_private_key, classicAddress FROM joehocom_21010627g.Wallets WHERE wallet_address=?`,
+    [pubkey]
+  );
+  console.log(walletInfo);
+  return walletInfo;
 }
 
 async function login(email, password) {
@@ -193,7 +203,7 @@ async function getUserTransaction(id) {
   const rows = await db.query(
     `SELECT * FROM joehocom_21010627g.Transactions WHERE transactioner_id_A = ${id} OR transactioner_id_B = ${id}`
   );
-  console.log(`rows>>>rows`, rows);
+  return rows;
 }
 async function addCol() {
   const rows = await db.query(
@@ -211,7 +221,6 @@ async function makeAutoIncre(start) {
 }
 
 // getAllTransaction();
-// getUserTransaction(44);
 
 // makeAutoIncre(2);
 
@@ -221,5 +230,11 @@ module.exports = {
   getUser,
   register,
   getUserWalletByUser,
+  getPrivateKeyByPubkey,
+  getUserTransaction,
   login,
 };
+
+// getPrivateKeyByPubkey("mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc");
+// getUserTransaction(44);
+// getUserWalletByUser(44);

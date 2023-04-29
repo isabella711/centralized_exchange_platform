@@ -59,6 +59,20 @@ export const deleteApi = async (params) => {
   }
 };
 
+export const getUserInfo = async (id) => {
+  try {
+    const userInfo = await axios.get("http://localhost:4000/login", {
+      params: {
+        userId: id,
+      },
+    });
+    return userInfo;
+  } catch (error) {
+    console.log("Error", error.response.data);
+    return { msg: error.response.data };
+  }
+};
+
 export const userLogin = async (email, password) => {
   // console.log(`APii,`, email, password);
   try {

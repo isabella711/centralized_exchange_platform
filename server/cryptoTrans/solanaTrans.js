@@ -17,7 +17,7 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
     web3.SystemProgram.transfer({
       fromPubkey: from.publicKey,
       toPubkey: to,
-      lamports: (web3.LAMPORTS_PER_SOL * amount) / 1000,
+      lamports: web3.LAMPORTS_PER_SOL * amount,
       // web3.LAMPORTS_PER_SOL / 100
     })
   );
@@ -29,10 +29,13 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
     [web3.Keypair.fromSecretKey(bs58.decode(secretKey))]
   );
   console.log("SIGNATURE", signature);
+  return signature;
 };
 
-solanaTrans(
-  "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
-  "4o11uYWA1ihtcBnAbSF6ZmY94s3Vh3gtZkfCu6hS2wUq",
-  1
-);
+module.exports = { solanaTrans };
+
+// solanaTrans(
+//   "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
+//   "4o11uYWA1ihtcBnAbSF6ZmY94s3Vh3gtZkfCu6hS2wUq",
+//   1
+// );
