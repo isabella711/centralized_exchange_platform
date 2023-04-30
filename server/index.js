@@ -248,7 +248,7 @@ app.post("/createTransaction", async (req, res) => {
       return userReceiveSol;
     }
 
-      if (transactionType === "usdtoeth") {
+    if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
       //UNTIL HERE
       const userReceiveEth = await ethTrans(
@@ -256,7 +256,6 @@ app.post("/createTransaction", async (req, res) => {
         findSpecWallet.wallet_address,
         userReceAmount,
         "0xc31e5e4f52bc52ab124f7e41027f8fb2e0d3a8899c4802cfb3db25d7878a2dc3"
-        
       );
       console.log(userReceiveEth);
       content.transactioner_A_currency_type = "USD";
