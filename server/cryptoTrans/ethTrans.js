@@ -2,10 +2,10 @@
 const Web3=require('web3');
 
 
-  const handleSendTransaction = async ({senderAddress,recipientAddress,amount,senderPrivateKey}) => {
+  const ethTransaction = async ({senderAddress,recipientAddress,amount,senderPrivateKey}) => {
     // Connect to the Ethereum network
     const web3 = new Web3('https://sepolia.infura.io/v3/40745b7b9da3492dbeb0cd9dff114a2d');
-
+  console.log(amount);
 
     // Create a transaction
     const txObject = {
@@ -26,4 +26,4 @@ const Web3=require('web3');
     console.log(`Transaction hash: ${txHash}`);
   };
 
-  module.exports = { handleSendTransaction };
+  module.exports = { ethTransaction };

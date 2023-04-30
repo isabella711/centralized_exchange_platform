@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import deposit from "../assets/deposit.png";
 import { Placeholder } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { store } from "../store/store";
+import { stopLoading, usersLoading } from "../reducers/usersReducer";
+import LoadingSpinner from "../js/Spinner";
 //import { View, Text, TextInput, StyleSheet } from "react-native";
 
 const CARD_OPTIONS = {
@@ -39,16 +42,17 @@ const AMOUNT_OPTIONS = {
 };
 
 export default function PaymentForm() {
-  const { user } = useSelector((state) => state.user);
+  const { user, loading } = useSelector((state) => state.user);
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
-
+  console.log(`loading>>>`, loading);
   const [amount, setAmount] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    store.dispatch(usersLoading("pending"));
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
@@ -66,6 +70,7 @@ export default function PaymentForm() {
         if (response.data.success) {
           console.log("Successful deposit");
           setSuccess(true);
+          store.dispatch(stopLoading("idle"));
         }
 
         const response_v2 = await axios.post(
@@ -79,118 +84,106 @@ export default function PaymentForm() {
         if (response_v2.data.success) {
           console.log("Successful deposit");
           setSuccess(true);
+          store.dispatch(stopLoading("idle"));
         }
       } catch (error) {
+        store.dispatch(stopLoading("idle"));
         console.log("Error", error);
       }
     } else {
+      store.dispatch(stopLoading("idle"));
       console.log(error.message);
     }
   };
-
+  // if (loading === "pending") {
+  //   return <LoadingSpinner />;
+  // }
   return (
     <>
       {!success ? (
         <>
           <div>
             <h1 style={{ fontSize: 40 }}>Deposit</h1>
-            <img
-              src={deposit}
-              alt="deposit.png"
-              width={300}
-              height={300}
-              style={{ display: "flex" }}
-              class="center"
-            />
+            {loading === "pending" ? (
+              <LoadingSpinner />
+            ) : (
+              <img
+                src={deposit}
+                alt="deposit.png"
+                width={300}
+                height={300}
+                style={{ display: "flex" }}
+                class="center"
+              />
+            )}
           </div>
-
-          <form
-            className="payment-form"
-            onSubmit={handleSubmit}
-            style={{ fontSize: 20 }}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            <label>Deposit Value</label>
-            <input
-              style={{ maxWidth: "500px" }}
-              type="number"
-              placeholder="0"
-              min="0"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              KeyPress={(event) => {
-                if (
-                  !/^(?!0\d)\d*(\.\d+)?$/.test(event.target.value + event.key)
-                ) {
-                  event.preventDefault();
-                }
-              }}
-            />
-
-            <label>Card Payment</label>
-            <fieldset style={{ maxWidth: "500px" }} className="FormGroup">
-              <div className="FormRow">
-                <CardElement options={CARD_OPTIONS} />
-              </div>
-            </fieldset>
-
-            {/* <label style={{ paddingLeft: "15px" }}>
-              Deposit Value:&nbsp; &nbsp;
+            <form
+              className="payment-form"
+              onSubmit={handleSubmit}
+              style={{ fontSize: 20 }}
+            >
+              <label>Deposit Value</label>
               <input
+                style={{ maxWidth: "500px" }}
                 type="number"
+                placeholder="0"
+                min="0"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                onKeyPress={(event) => {
+                KeyPress={(event) => {
                   if (
-                    !/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)
+                    !/^(?!0\d)\d*(\.\d+)?$/.test(event.target.value + event.key)
                   ) {
                     event.preventDefault();
                   }
                 }}
-                placeholder="Deposit value"
-              /> */}
-            {/* <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                onKeyPress={(event) => {
-                  if (
-                    !/^[1-9]\d*(\.\d+)?$/.test(event.target.value + event.key)
-                  ) {
-                    event.preventDefault();
-                  }
-                }}
-                placeholder="Deposit value"
-                style={{ backgroundColor: "#7795f8", color: "#fff" }}
-              /> */}
-            {/* </label>{" "} */}
-            {/* <label style={{ paddingLeft: "15px" }}>
-              Deposit Value:&nbsp; &nbsp;
+              />
+
+              <label>Card Payment</label>
               <fieldset style={{ maxWidth: "500px" }} className="FormGroup">
                 <div className="FormRow">
                   <CardElement options={CARD_OPTIONS} />
                 </div>
               </fieldset>
-            </label> */}
-            <button style={{ maxWidth: "200px" }} class="button1">
-              Deposit
-            </button>
-            <p></p>
-            <p></p>
-            <button
-              style={{ maxWidth: "200px" }}
-              class="button1"
-              onClick={() => navigate(-1)}
-            >
-              Go Back
-            </button>
-          </form>
+              <div
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignContent: "center",
+                  alignSelf: "center",
+                  width: "500px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                }}
+              >
+                <button
+                  style={{ maxWidth: "600px", marginLeft: 15 }}
+                  class="button1"
+                >
+                  Deposit
+                </button>
+                <p></p>
+                <p></p>
+                <button
+                  style={{ maxWidth: "600px", marginLeft: 15 }}
+                  class="button1"
+                  onClick={() => navigate(-1)}
+                >
+                  Go Back
+                </button>
+              </div>
+            </form>
+          </div>
         </>
       ) : (
         <div>
-          <h2>
-            You just bought a sweet spatula congrats this is the best decision
-            of you're life
-          </h2>
+          <h2>You just deposit</h2>
         </div>
       )}
     </>
