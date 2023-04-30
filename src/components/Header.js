@@ -35,7 +35,7 @@ export default function Header(props) {
           ?.wallet_address ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
-        setXrpBalance(balance * 0.00000001);
+        setXrpBalance(balance * 0.000001);
       });
       callExternalApi(ethAddress, "eth").then((res) => {
         setEthBalance(res.data.result * 0.000000000000000001);
