@@ -187,7 +187,7 @@ async function addValue(value, email) {
 
 async function subtractValue(value, email) {
   if (value < 0) {
-    return;
+    return false;
   }
   console.log(value, email);
   const rows = await db.query(
@@ -265,6 +265,7 @@ module.exports = {
   getUserTransaction,
   login,
   addValue,
+  subtractValue
 };
 
 // getPrivateKeyByPubkey("mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc");
