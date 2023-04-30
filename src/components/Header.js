@@ -43,7 +43,7 @@ export default function Header(props) {
       callExternalApi(solAddress, "sol").then((res) => {
         setSolBalance(res.data.result.value * 0.000000001);
       });
-	  callExternalApi(solAddress, "ltc").then((res) => {
+	  callExternalApi(ltcAddress, "ltc").then((res) => {
         setLtcBalance(res.data.result.value * 0.000000001);
       });
       callExternalApi(btcAddress, "btc").then((res) => {
