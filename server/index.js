@@ -3,6 +3,7 @@ const { ethersFetch } = require("./walletGenerater/ethGen");
 const { ethTransaction } = require("./cryptoTrans/ethTrans");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction } = require("./cryptoTrans/btcTrans");
+const { buyLitecoin,sellLitecoin,sendLitecoinTransaction,getLitecoinBalance } = require("./cryptoTrans/ltcTrans");
 const express = require("express");
 const { addValue,subtractValue } = require("./sql/service");
 const { createTransactionRecord } = require("./sql/cex");
@@ -406,6 +407,29 @@ app.post("/api/addvalue", (req, res) => {
       res.status(401).send("Incorrect user account");
     }
   });
+});
+
+app.get("/api/getLtcBalance", async (req, res) => {
+  const { address } = req.query;
+  try {
+    // const etherscanApi = require("etherscan-api").init(
+    //   "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
+    //   "sepolia"
+    // );
+    const call = await getLitecoinBalance(address);
+	console.log(call);
+    if (call.message === "OK") {
+      res.status(200).send(call.balance);
+    } else {
+      res.status(401).send("Wrong");
+    }
+    return call;
+  } catch (error) {
+    if (error) {
+      res.status(500).send("An internal server error occurred");
+    }
+    console.log("Error", error);
+  }
 });
 
 app.listen(process.env.PORT || 4000, () => {
