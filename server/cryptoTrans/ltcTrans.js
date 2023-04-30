@@ -55,7 +55,7 @@ async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
     console.log("Error:", error.message);
   }
 }
-
+/*
 async function getLitecoinBalance(ltcaddress) {
   return new Promise((resolve, reject) => {
     block_io.get_balance({ address: ltcaddress }, function (error, response) {
@@ -70,6 +70,28 @@ async function getLitecoinBalance(ltcaddress) {
       }
     });
   });
-}
+} */
+
+const getLitecoinBalance = async (ltcaddress) => {
+  try{
+	  const call = await block_io.get_balance({ address: ltcaddress });
+	  const bal = call.data.available_balance;
+	  // .then((balance) => {
+	  //   console.log(`ethcall>>>`, balance);
+	  //   return balance.result / 10e17;
+	  // })
+	  // .catch((err) => {
+	  //   console.log(`err>>>eth`, err);
+	  // });
+	  return {
+		 balance : bal,
+		 message : "OK"
+	  }
+  } catch {
+	  return {
+		message : "Fail"
+	  }
+  }
+};
 
 module.exports = { buyLitecoin, sellLitecoin, sendLitecoinTransaction, getLitecoinBalance};
