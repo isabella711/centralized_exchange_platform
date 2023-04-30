@@ -109,7 +109,7 @@ export default function Header(props) {
       <p>Hi, wellcome {user?.user_name}</p>
       <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
         <EachBalance
-          balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance]}
+          balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance, ltcBalance]}
         />
       </div>
     </div>
