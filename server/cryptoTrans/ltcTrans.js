@@ -56,4 +56,4 @@ async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
   }
 }
 
-module.exports = { sendLitecoinTransaction };
+module.exports = { buyLitecoin, sellLitecoin, sendLitecoinTransaction };
