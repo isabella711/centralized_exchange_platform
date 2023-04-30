@@ -21,6 +21,7 @@
     "etherscan-api": "^10.3.0",
     "events": "^3.3.0",
     "litecore-lib": "^0.13.22",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",

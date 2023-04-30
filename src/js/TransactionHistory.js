@@ -10,6 +10,7 @@ import { callExternalApi } from "../api";
 import useGetTrans from "../hooks/useGetTrans";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 const { xrpFetch } = require("../api");
 
 export default function TransactionHistory() {
@@ -18,7 +19,7 @@ export default function TransactionHistory() {
   const navigate = useNavigate();
 
   console.log(`>>>transHistory`, transHistory);
-
+  console.log(`<<<moment().format(`);
   return (
     <div>
       <h1 style={{ fontSize: 40 }}>Transaction History</h1>
@@ -75,6 +76,13 @@ function TransactionTable(props) {
       return element.amount;
     }
   };
+
+  const timeFilter = (element) => {
+    if (element.type === "USD") {
+      return Date(moment().format(element.time)).split(" GMT+0800 ").join(" ");
+    }
+    return element.time;
+  };
   const tableRows = transHistory.map((element) => {
     return (
       <tr>
@@ -89,7 +97,7 @@ function TransactionTable(props) {
         </td>
 
         <td class="text-nowrap">
-          {element.time.toString().split("GMT+0800 (香港標準時間)")}
+          {timeFilter(element).toString().split("GMT+0800 (香港標準時間)")}
         </td>
         <td class="text-nowrap">{element.txId.toString()}</td>
       </tr>
