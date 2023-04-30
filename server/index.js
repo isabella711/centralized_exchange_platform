@@ -4,7 +4,7 @@ const { ethTransaction } = require("./cryptoTrans/ethTrans");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction } = require("./cryptoTrans/btcTrans");
 const express = require("express");
-const { addValue } = require("./sql/service");
+const { addValue,subtractValue } = require("./sql/service");
 const { createTransactionRecord } = require("./sql/cex");
 const app = express();
 require("dotenv").config();
@@ -271,10 +271,12 @@ app.post("/createTransaction", async (req, res) => {
 
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
-      //UNTIL HERE
+      const wallet_process=subtractValue(userSendAmount, "alice@gmail.com");
+      if (!wallet_process){return Error};
       const userReceiveEth = await ethTransaction({
         senderAddress: "0xc018e39c82584Fb5129081d2677bB4369cE700C3", //which is our company wallet
-        recipientAddress: "0x4C18f2a647a57651D6755a959C988Eb8bf4f5Aaf",
+        recipientAddress:findSpecWallet.wallet_address,
+        //recipientAddress: "0x4C18f2a647a57651D6755a959C988Eb8bf4f5Aaf",
         amount: `${userReceAmount}`,
         senderPrivateKey:
           "0xc31e5e4f52bc52ab124f7e41027f8fb2e0d3a8899c4802cfb3db25d7878a2dc3",
