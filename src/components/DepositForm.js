@@ -65,10 +65,13 @@ export default function PaymentForm() {
           setSuccess(true);
         }
 
-        const response_v2 = await axios.post("http://localhost:4000/api/addvalue", {
-          email:"alice@gmail.com",
-          value : amount
-        });
+        const response_v2 = await axios.post(
+          "http://localhost:4000/api/addvalue",
+          {
+            email: "alice@gmail.com",
+            value: amount,
+          }
+        );
 
         if (response_v2.data.success) {
           console.log("Successful deposit");
@@ -101,7 +104,7 @@ export default function PaymentForm() {
           <form
             className="payment-form"
             onSubmit={handleSubmit}
-            style={{ paddingLeft: 500, fontSize: 20 }}
+            style={{ fontSize: 20 }}
           >
             <label>Deposit Value</label>
             <input

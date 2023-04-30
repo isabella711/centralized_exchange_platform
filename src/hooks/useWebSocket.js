@@ -22,7 +22,7 @@ export default function useWebSocket(coinType) {
 
     ws.current.onmessage = (e) => {
       if (isPaused) return;
-      const message = JSON.parse(e.data).p;
+      const message = JSON.parse(e.data);
       setCoinInfo(message);
     };
   }, [isPaused]);

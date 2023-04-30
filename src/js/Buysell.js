@@ -15,13 +15,17 @@ import "../css/TransactionForm.css";
 import useWebSocket from "../hooks/useWebSocket";
 
 const PaymentCont = (props) => {
-  const { coinInfo } = useWebSocket(props.ticket);
+  const { coinInfo } = useWebSocket(props.id);
+
   const { id } = props;
-  const lowPrice = Number(useGetLowPrice(id)).toFixed(2);
-  const highPrice = Number(useGetHighPrice(id)).toFixed(2);
-  const priceChange = Number(useGetPriceChange(id)).toFixed(2);
-  const amount = Number(useGetAmount(id)).toFixed(2);
-  const coinTrim = Number(coinInfo).toFixed(2);
+  // if (coinInfo) {
+  // console.log(`{ l, h, P }`, coinInfo?.l, coinInfo?.h, coinInfo?.P);
+
+  const lowPrice = Number(coinInfo?.l ?? 0).toFixed(2) ?? 0;
+  const highPrice = Number(coinInfo?.h ?? 0).toFixed(2) ?? 0;
+  const priceChange = Number(coinInfo?.P ?? 0).toFixed(2) ?? 0;
+  const amount = Number(coinInfo?.A ?? 0).toFixed(2) ?? 0;
+  const coinTrim = Number(coinInfo?.a ?? 0).toFixed(2) ?? 0;
   const navigate = useNavigate();
   console.log("buysell current price: " + coinTrim);
 
