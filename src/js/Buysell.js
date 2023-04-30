@@ -22,7 +22,6 @@ const PaymentCont = (props) => {
   const { id } = props;
   console.log(`>>>`, coinInfo);
   const userInfo = useSelector((state) => state.user);
-  console.log(`userInfo>>`, userInfo.balance);
   const [inputPrice, setInputPrice] = useState(0);
   const [error, setError] = useState("");
   const imgPick = contents.find(
@@ -246,7 +245,7 @@ function Buysell(props) {
   <img src={props.image} alt="product-img" className="productImage"></img>;
   return (
     <>
-      {/* <Header isAuthenticated={user !== null} wallets={wallets} /> */}
+      <Header isAuthenticated={user !== null} wallets={wallets} />
       <PaymentCont id={id} />
     </>
   );

@@ -5,12 +5,14 @@ import {
   userProfile,
   usersLoading,
   stopLoading,
+  initialState,
+  clearAll,
 } from "./reducers/usersReducer";
 import { store } from "./store/store";
 
 const AuthContext = createContext({
   user: null,
-  login: (email, password) => {},
+  login: (email, password, name) => {},
   logout: () => {},
   // addValue,
 });
@@ -102,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     store.dispatch(usersLoading("pending"));
     setUser(null);
     localStorage.removeItem("authenticated");
-    store.dispatch(userProfile(null));
+    store.dispatch(clearAll(initialState));
   };
 
   const addValue = async (value) => {

@@ -9,7 +9,6 @@ export function Products(props) {
   const { id } = props;
   // const priceChange = Number(useGetPriceChange(props.details)).toFixed(2);
   const coinTrim = Number(coinInfo?.p ?? 0).toFixed(2);
-  console.log("products id: " + id);
   // const navigate = useNavigate();
   return (
     <>

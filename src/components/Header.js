@@ -90,16 +90,6 @@ export default function Header(props) {
       });
     }
   }, []);
-  useEffect(() => {
-    // }, []);
-    // const result = callExternalApi(
-    //   "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
-    //   "xrp"
-    // ).then((res) => {
-    //   console.log(`<<<eth`, res);
-    // });
-    // console.log("result", result);
-  }, []);
 
   if (!isAuthenticated) {
     return <></>;

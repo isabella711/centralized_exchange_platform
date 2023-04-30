@@ -15,6 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Header from "../components/Header";
+import btcIcon from "../assets/btc.png";
 
 export function MenuAppBar(props) {
   const { logout } = useAuth();
@@ -91,7 +92,11 @@ export function MenuAppBar(props) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {isAuthenticated ? (
+                    <Avatar alt="Remy Sharp" src={btcIcon} />
+                  ) : (
+                    <Avatar alt="Remy Sharp" src={btcIcon} />
+                  )}
                 </IconButton>
               </Tooltip>
               <Menu
