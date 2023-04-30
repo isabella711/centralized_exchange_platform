@@ -87,9 +87,30 @@ export default function App() {
         />
         <Route path="/payment" element={<Payment />} />
 
-        <Route path="/depositForm" element={<Deposits />} />
-        <Route path="/transactionHistory" element={<TransactionHistory />} />
-        <Route path="/buysell/:id" element={<Buysell />} />
+        <Route
+          path="/depositForm"
+          element={
+            <HomeLayout userInfo={userInfo}>
+              <Deposits />
+            </HomeLayout>
+          }
+        />
+        <Route
+          path="/transactionHistory"
+          element={
+            <HomeLayout userInfo={userInfo}>
+              <TransactionHistory />
+            </HomeLayout>
+          }
+        />
+        <Route
+          path="/buysell/:id"
+          element={
+            <HomeLayout userInfo={userInfo}>
+              <Buysell />
+            </HomeLayout>
+          }
+        />
         <Route
           path="/"
           element={
@@ -98,7 +119,14 @@ export default function App() {
             </HomeLayout>
           }
         />
-        <Route path="/deposit" element={<Deposit />} />
+        <Route
+          path="/deposit"
+          element={
+            <HomeLayout>
+              <Deposit />
+            </HomeLayout>
+          }
+        />
       </Routes>
     </Router>
   );

@@ -6,9 +6,14 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { Link, Navigate } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
+import useGetTrans from "../hooks/useGetTrans";
+import { useSelector } from "react-redux";
 const { xrpFetch } = require("../api");
 
 export default function TransactionHistory() {
+  const { transactionHistory } = useSelector((state) => state.user);
+  const { transHistory } = useGetTrans(transactionHistory);
+  console.log(`>>>transHistory`, transHistory);
   // const [authenticated, setauthenticated] = useState(null);
   // useEffect(() => {
   //   const loggedInUser = localStorage.getItem("authenticated");
