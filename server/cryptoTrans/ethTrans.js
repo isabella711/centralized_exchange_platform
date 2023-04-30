@@ -1,6 +1,5 @@
 //import React, { useState } from 'react';
-//import Web3 from 'web3';
-const Web3 = require('web3');
+const Web3=require('web3');
 
 
   const handleSendTransaction = async ({senderAddress,recipientAddress,amount,senderPrivateKey}) => {
@@ -27,5 +26,4 @@ const Web3 = require('web3');
     console.log(`Transaction hash: ${txHash}`);
   };
 
-  //export default handleSendTransaction;
   module.exports = { handleSendTransaction };
