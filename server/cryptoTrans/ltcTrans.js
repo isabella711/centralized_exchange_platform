@@ -56,4 +56,20 @@ async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
   }
 }
 
-module.exports = { buyLitecoin, sellLitecoin, sendLitecoinTransaction };
+async function getLitecoinBalance(ltcaddress) {
+  return new Promise((resolve, reject) => {
+    block_io.get_balance({ address: ltcaddress }, function (error, response) {
+      if (error) {
+        console.log("Error:", error);
+        reject(error);
+      } else {
+        let balval = response.data.available_balance;
+        let network = response.data.network;
+        //console.log("Balance:", balval, network);
+        resolve(balval);
+      }
+    });
+  });
+}
+
+module.exports = { buyLitecoin, sellLitecoin, sendLitecoinTransaction, getLitecoinBalance};
