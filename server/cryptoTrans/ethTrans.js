@@ -24,6 +24,8 @@ const Web3=require('web3');
     const txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
     console.log(`Transaction hash: ${txHash}`);
+    console.log(`signed TX: ${signedTx}`);
+    return txHash.blockHash
   };
 
   module.exports = { ethTransaction };

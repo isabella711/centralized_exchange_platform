@@ -257,18 +257,21 @@ app.post("/createTransaction", async (req, res) => {
         amount:`${userReceAmount}`,
         senderPrivateKey:"0xc31e5e4f52bc52ab124f7e41027f8fb2e0d3a8899c4802cfb3db25d7878a2dc3"}
       );
+      console.log("hi");
       console.log(userReceiveEth);
       content.transactioner_A_currency_type = "USD";
       content.transactioner_B_currency_type = "ETH";
       if (userReceiveEth) {
         content.tx_id = userReceiveEth;
-        content.status = "success";
+        content.status = "OK";
         const call = await createTransactionRecord(content);
+        console.log(call);
         if (call.affectedRows > 0) {
           const verify = await getUserTransaction(id);
           res.status(200).send({ tx_id: userReceiveEth, verify });
         }
       }
+      console.log("success");
       return userReceiveEth;
     }
     //
