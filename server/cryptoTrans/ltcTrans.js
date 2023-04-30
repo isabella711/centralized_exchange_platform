@@ -5,7 +5,15 @@ const BlockIo = require('block_io');
 const apiKey = "578f-0868-73d8-7aba";
 const secretPIN = "Roc19111010Prc19491001";
 const block_io = new BlockIo(apiKey);
+const centralAddress = "Qa3HpkiD8n9JGFGauFx6aZWNPepD2gkTE8";
 
+async function buyLitecoin(toAddress, sendamount) {
+	sendLitecoinTransaction(centralAddress,toAddress, sendamount);
+}
+
+async function sellLitecoin(sellAddress, sendamount) {
+	sendLitecoinTransaction(sellAddress, centralAddress, sendamount);
+}
 
 async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
   try {
