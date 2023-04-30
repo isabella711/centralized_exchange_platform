@@ -1,14 +1,7 @@
 //need server
 import { useState, useEffect } from "react";
 import "../css/Payment.css";
-import spatula from "../assets/spatula.jpg";
-import StripeContainer from "../components/StripeContainer";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUpdateCoin } from "../hooks/useUpdateCoin";
-import { useGetLowPrice } from "../hooks/useGetLowPrice";
-import { useGetHighPrice } from "../hooks/useGetHighPrice";
-import { useGetPriceChange } from "../hooks/useGetPriceChange";
-import { useGetAmount } from "../hooks/useGetAmount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 // import "../css/TransactionForm.css";
