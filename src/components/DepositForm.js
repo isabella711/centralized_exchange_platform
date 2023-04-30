@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deposit from "../assets/deposit.png";
+import pngegg from "../assets/pngegg.png";
 import { Placeholder } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { store } from "../store/store";
@@ -108,7 +109,8 @@ export default function PaymentForm() {
               <LoadingSpinner />
             ) : (
               <img
-                src={deposit}
+                // src={deposit}
+                src={pngegg}
                 alt="deposit.png"
                 width={300}
                 height={300}
@@ -182,8 +184,29 @@ export default function PaymentForm() {
           </div>
         </>
       ) : (
-        <div>
-          <h2>You just deposit</h2>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={deposit}
+            alt="deposit.png"
+            width={300}
+            height={300}
+            style={{ display: "flex" }}
+            class="center"
+          />
+          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just deposit</h2>
+          <button
+            style={{ maxWidth: "600px", marginLeft: 15 }}
+            class="button1"
+            onClick={() => navigate(-1)}
+          >
+            Go Back
+          </button>
         </div>
       )}
     </>

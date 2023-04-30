@@ -11,6 +11,7 @@ export default function Header(props) {
   const [ethBalance, setEthBalance] = useState(0);
   const [solBalance, setSolBalance] = useState(0);
   const [btcBalance, setBtcBalance] = useState(0);
+  const [ltcBalance, setLtcBalance] = useState(0);
   const { isAuthenticated, wallets } = props;
   console.log("header balance: ", user?.user_name);
 
@@ -29,6 +30,9 @@ export default function Header(props) {
       const btcAddress =
         wallets?.find((wallet) => wallet.currency_type === "BTC")
           ?.wallet_address ?? null;
+      const ltcAddress =
+        wallets?.find((wallet) => wallet.currency_type === "LTC")
+          ?.wallet_address ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
         setXrpBalance(balance * 0.00000001);
@@ -38,6 +42,9 @@ export default function Header(props) {
       });
       callExternalApi(solAddress, "sol").then((res) => {
         setSolBalance(res.data.result.value * 0.000000001);
+      });
+	  callExternalApi(ltcAddress, "ltc").then((res) => {
+        setLtcBalance(res.data.result.value * 0.000000001);
       });
       callExternalApi(btcAddress, "btc").then((res) => {
         console.log(`res.data.length>>>`, res.data);
@@ -102,7 +109,7 @@ export default function Header(props) {
       <p>Hi, wellcome {user?.user_name}</p>
       <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
         <EachBalance
-          balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance]}
+          balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance, ltcBalance]}
         />
       </div>
     </div>
@@ -112,7 +119,7 @@ export default function Header(props) {
 }
 
 const EachBalance = ({ balanceArr }) => {
-  const walletArrKey = ["USD", "BTC", "ETH", "SOL", "XRP"];
+  const walletArrKey = ["USD", "BTC", "ETH", "SOL", "XRP", "LTC"];
   const component = balanceArr.map((balance, key) => {
     if (
       balance === undefined ||

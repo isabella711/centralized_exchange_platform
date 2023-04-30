@@ -61,7 +61,7 @@ const PaymentCont = (props) => {
           </div>
           <div>
             <h2>
-              24h Highestst Price: ${highPrice !== "0.00" ? highPrice : "-.--"}
+              24h Highest Price: ${highPrice !== "0.00" ? highPrice : "-.--"}
             </h2>
           </div>
           <div>

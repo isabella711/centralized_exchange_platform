@@ -40,7 +40,7 @@ const contents = [
     image: "https://upload.wikimedia.org/wikipedia/commons/f/f8/LTC-400.png",
     price: 220,
     ticket: "ltcusdt@trade",
-    details: "ltcpusdt@ticker",
+    details: "ltcusdt@ticker",
   },
 ];
 export default contents;
