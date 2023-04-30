@@ -16,6 +16,29 @@ td {
 
 h1 {
   margin-bottom: 50px;
-  margin-right: 150px;
-  margin-left: 80px;
+  text-align:center;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+.button3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px 100px 75px 650px;
+  text-align: center;
+  padding: 0px;
+  width: 50%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+}
+
+.button3:hover {
+  background-color: #555555;
+  color: white;
 }

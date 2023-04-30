@@ -9,11 +9,14 @@ import Table from "react-bootstrap/Table";
 import { callExternalApi } from "../api";
 import useGetTrans from "../hooks/useGetTrans";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const { xrpFetch } = require("../api");
 
 export default function TransactionHistory() {
   const { transactionHistory } = useSelector((state) => state.user);
   const { transHistory } = useGetTrans(transactionHistory);
+  const navigate = useNavigate();
+
   console.log(`>>>transHistory`, transHistory);
 
   return (
@@ -21,16 +24,18 @@ export default function TransactionHistory() {
       <h1 style={{ fontSize: 40 }}>Transaction History</h1>
       <Table
         style={{
+          width: "1000px",
+          margin: "auto",
           borderWidth: "1px",
           borderColor: "#aaaaaa",
           borderStyle: "solid",
           justifyContent: "center",
           alignSelf: "center",
-          margin: "auto",
         }}
       >
         <thead>
           <tr>
+            <th>Type</th>
             <th>Amount</th>
             <th>Time</th>
             <th>TxID</th>
@@ -38,18 +43,36 @@ export default function TransactionHistory() {
         </thead>
         <TransactionTable transHistory={transHistory} />
       </Table>
+      <button
+        style={{ maxWidth: "400px" }}
+        class="button3"
+        onClick={() => navigate(-1)}
+      >
+        Go Back
+      </button>
     </div>
   );
 }
 
 function TransactionTable(props) {
   const { transHistory } = props;
+  const nfObject = new Intl.NumberFormat("en-US");
+
   const tableRows = transHistory.map((element) => {
     return (
       <tr>
-        <td>{element.amount}</td>
-        <td>{element.time.toString().substring(0, 9)}</td>
-        <td>{element.txId.toString()}</td>
+        <td style={{ width: "30px" }}>{element.type.toString()}</td>
+        <td
+          class="text-nowrap"
+          style={{
+            color: element.amount < 0 ? "red" : "green",
+          }}
+        >
+          {nfObject.format(element.amount * 0.000000001)}
+        </td>
+
+        <td class="text-nowrap">{element.time.toString().substring(0, 9)}</td>
+        <td class="text-nowrap">{element.txId.toString()}</td>
       </tr>
     );
   });
