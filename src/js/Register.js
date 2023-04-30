@@ -71,12 +71,20 @@ function Register(props) {
               id="password"
               name="password"
             />
-            <button style={{ height: 60 }} type="submit">
+            <button
+              style={{
+                height: 60,
+                marginTop: "3rem",
+                textAlign: "center",
+                alignSelf: "center",
+              }}
+              type="submit"
+            >
               Sign Up
             </button>
           </form>
           <button
-            style={{ height: 60 }}
+            style={{ height: 60, textAlign: "center", alignSelf: "center" }}
             className="link-btn"
             onClick={() => props.onFormSwitch("login")}
           >

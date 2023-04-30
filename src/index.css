@@ -187,20 +187,19 @@ tr:hover {
 
 .auth-form-container,
 .login-form,
-.register-form
-{
+.register-form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0px;
   /* align-items: center; */
 }
 
-.transaction-container
-{
+.transaction-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (min-width: 600px) {
@@ -209,6 +208,8 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     /* border: 1px solid white; */
     border-radius: 10px;
     margin: 0.5rem;
+    width: 50rem;
+    height: 50rem;
   }
 }
 

@@ -70,7 +70,12 @@ const Login = (props) => {
             />
             <button
               type="submit"
-              style={{ textAlign: "center", alignSelf: "center", height: 60 }}
+              style={{
+                textAlign: "center",
+                alignSelf: "center",
+                height: 60,
+                marginTop: "5rem",
+              }}
             >
               Log In
             </button>
