@@ -30,6 +30,7 @@ const PaymentCont = (props) => {
       c.ticket.substring(0, 3).toLowerCase() ===
       props.id.split("usdt")[0].substring(0, 3)
   );
+  const chooseCoin = props.id.split("usdt")[0].substring(0, 3);
   // if (coinInfo) {
   // console.log(`{ l, h, P }`, coinInfo?.l, coinInfo?.h, coinInfo?.P);
 
@@ -82,7 +83,11 @@ const PaymentCont = (props) => {
             </h2>
           </div>
           <div>
-            <h2>
+            <h2
+              style={{
+                color: priceChange < 0 ? "red" : "green",
+              }}
+            >
               24h Price Change: {priceChange !== "0.00" ? priceChange : "-.--"}%
             </h2>
           </div>
@@ -108,8 +113,12 @@ const PaymentCont = (props) => {
                   role="tab"
                   aria-controls="faq_tab_1"
                   aria-selected="true"
+                  style={{ marginLeft: "0px", marginTop: "0px" }}
                 >
-                  <div className="d-flex flex-column lh-lg">
+                  <div
+                    className="d-flex flex-column lh-lg"
+                    style={{ fontSize: 20 }}
+                  >
                     {" "}
                     <i></i> <span>Buy</span>{" "}
                   </div>
@@ -126,8 +135,12 @@ const PaymentCont = (props) => {
                   role="tab"
                   aria-controls="faq_tab_2"
                   aria-selected="false"
+                  style={{ marginLeft: "0px", marginTop: "0px" }}
                 >
-                  <div className="d-flex flex-column lh-lg">
+                  <div
+                    className="d-flex flex-column lh-lg"
+                    style={{ fontSize: 20 }}
+                  >
                     {" "}
                     <i></i> <span>Sell</span>{" "}
                   </div>
@@ -150,8 +163,9 @@ const PaymentCont = (props) => {
                   <p></p>
                 )}
                 <div className="container p-3">
-                  <div className="input-group mb-3">
+                  <div className="input-group mb-3 input-group-lg">
                     <input
+                      style={{ fontSize: 20 }}
                       className="form-control"
                       placeholder="Enter the amount"
                       type="number"
@@ -162,6 +176,7 @@ const PaymentCont = (props) => {
                   <p>{error}</p>
                   <div className="input-group mb-3">
                     <select
+                      style={{ fontSize: 20 }}
                       className="form-select form-control"
                       id="inputGroupSelect02"
                     >
@@ -187,7 +202,10 @@ const PaymentCont = (props) => {
                 </div>
                 <div className="mt-4 d-flex justify-content-end">
                   {" "}
-                  <button style={{ maxWidth: "400px" }} class="button button5">
+                  <button
+                    style={{ maxWidth: "400px", marginTop: "20px" }}
+                    class="button button5"
+                  >
                     Buy
                   </button>{" "}
                 </div>
@@ -203,17 +221,25 @@ const PaymentCont = (props) => {
                     <input
                       type="text"
                       className="form-control"
+                      style={{ fontSize: 20 }}
                       placeholder="Enter the amount"
                     />{" "}
                   </div>
 
                   <div className="input-group mb-3">
                     <select
+                      style={{ fontSize: 20 }}
                       className="form-select form-control"
                       id="inputGroupSelect02"
                     >
                       <option selected>Please choose</option>
-                      <option value="1">Bitcoin</option>
+                      <option value="1">
+                        {" "}
+                        {props.id
+                          .split("usdt")[0]
+                          .substring(0, 3)
+                          .toUpperCase()}
+                      </option>
                     </select>{" "}
                   </div>
                 </div>
@@ -225,13 +251,13 @@ const PaymentCont = (props) => {
             </div>
           </div>
         </div>
-        {/* <button
+        <button
           style={{ maxWidth: "400px" }}
           class="button button5"
           onClick={() => navigate(-1)}
         >
           Go Back
-        </button> */}
+        </button>
       </div>
     </div>
   );
