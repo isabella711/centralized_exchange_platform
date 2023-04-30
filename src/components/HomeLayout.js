@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Outlet, NavLink } from "react-router-dom";
 import "../css/App.css";
 import { MenuAppBar } from "../js/AppBar";
 import Header from "./Header";
@@ -20,7 +21,7 @@ export default function HomeLayout({ children, userInfo }) {
         wallets={userInfo?.wallets}
         isInLoginPage={userInfo?.user == null}
       />
-      {children}
+      <Outlet />
     </>
   );
 }

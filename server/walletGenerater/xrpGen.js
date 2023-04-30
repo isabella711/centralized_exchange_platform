@@ -60,4 +60,4 @@ function xrpFetch(address) {
 
 module.exports = { createXrpWallet, xrpFetch, xrpTx };
 
-xrpTx("b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d");
+// xrpTx("b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d");

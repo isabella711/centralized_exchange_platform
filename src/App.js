@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import Card from "./js/Card";
 import Register from "./js/Register";
@@ -22,6 +28,7 @@ import { store } from "./store/store";
 import Deposit from "./components/DStripeContainer";
 import Payment from "./js/Payment";
 import Transaction from "./js/Transaction";
+import { createBrowserRouter } from "react-router-dom";
 
 export default function App() {
   const { login, user, authenticated } = useAuth();
@@ -39,6 +46,29 @@ export default function App() {
       store.dispatch(fetchTransactionHistory(user_id));
     }
   }, [userInfo.user]);
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<HomeLayout userInfo={userInfo} />}>
+        <Route index element={<Card />} />
+        <Route
+          path="login"
+          element={
+            <div className="App">
+              {currentForm === "login" ? (
+                <Login onFormSwitch={toggleForm} />
+              ) : (
+                <Register onFormSwitch={toggleForm} />
+              )}
+            </div>
+          }
+        />
+        <Route path="/transactionHistory" element={<TransactionHistory />} />
+        <Route path="/deposit" element={<Deposit />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/buysell/:id" element={<Buysell />} />
+      </Route>
+    )
+  );
   useEffect(() => {
     // callExternalApi("Ai5qKTxmXjJow3TkexjEWRDYq2Xd4s8X9GC9C3KKmZWS", "sol");
     // userLogin("alice@gmail.com", "12345678").then((res) => {
@@ -56,78 +86,5 @@ export default function App() {
     // xrpFetch("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt").then(res=>{console.log(`xrpFetch>>>`,res)})
   }, []);
 
-  return (
-    // <div>
-    //   <Router>
-    //     <Routes>
-    //       <Route path="/" element={<Card />} />
-    //       <Route path="/payment/:id" element={<Payment />} />
-    //       <Route path="/Xrp" element={<Xrp />} />
-    //       <Route path="/Register" element={<Register />} />
-    //       <Route path="/UserProfile" element={<UserProfile />} />
-    //     </Routes>
-    //   </Router>
-    // </div>
-
-    <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <HomeLayout userInfo={userInfo}>
-              <div className="App">
-                {currentForm === "login" ? (
-                  <Login onFormSwitch={toggleForm} />
-                ) : (
-                  <Register onFormSwitch={toggleForm} />
-                )}
-              </div>
-            </HomeLayout>
-          }
-        />
-        <Route path="/payment" element={<Payment />} />
-
-        <Route
-          path="/depositForm"
-          element={
-            <HomeLayout userInfo={userInfo}>
-              <Deposits />
-            </HomeLayout>
-          }
-        />
-        <Route
-          path="/transactionHistory"
-          element={
-            <HomeLayout userInfo={userInfo}>
-              <TransactionHistory />
-            </HomeLayout>
-          }
-        />
-        <Route
-          path="/buysell/:id"
-          element={
-            <HomeLayout userInfo={userInfo}>
-              <Buysell />
-            </HomeLayout>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <HomeLayout userInfo={userInfo}>
-              <Card />
-            </HomeLayout>
-          }
-        />
-        <Route
-          path="/deposit"
-          element={
-            <HomeLayout userInfo={userInfo}>
-              <Deposit />
-            </HomeLayout>
-          }
-        />
-      </Routes>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }

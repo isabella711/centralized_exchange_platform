@@ -1,20 +1,20 @@
 //rcvAddress:rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe
-import { RippleAPI } from "ripple-lib";
-import { Client, xrpToDrops, dropsToXrp } from "xrpl";
+const RippleAPI = require("ripple-lib");
+const { Client, xrpToDrops, dropsToXrp } = require("xrpl");
 const xrpl = require("xrpl");
 function xrpTrans() {
   // const [serverInfo, setServerInfo] = useState({ "buildVersion:": "0.0.0" });
 
   const net = "wss://s.altnet.rippletest.net:51233";
 
-  const paidAmount = 0;
+  const paidAmount = 100;
   const client = new Client(net);
 
   const standby_wallet = xrpl.Wallet.fromSeed(
     "sEd7VZB9Tie9VXowLyv5o7g3gjm3NEt"
   );
 
-  const rcvAddress = "";
+  const rcvAddress = "rNKdWCufKPCXc8v9AwtjYkEFtZyRNTkkkp";
   const senderPublicKey = standby_wallet.publicKey;
   const senderWallet = standby_wallet.address;
 
@@ -39,6 +39,10 @@ function xrpTrans() {
     console.log("Signed blob:", signed.tx_blob);
     client.disconnect();
   }
+  sendPayment();
+  return { msg: "success" };
 }
 
-export default xrpTrans;
+xrpTrans();
+
+module.exports = { xrpTrans };
