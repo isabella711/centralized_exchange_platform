@@ -1,17 +1,51 @@
-const request = require('request');
+// load this library
+const BlockIo = require('block_io');
 
-async function sendLitecoinTransaction(fromAddress, toAddress, amount) {
-const apiKey = '578f-0868-73d8-7aba';
+// instantiate a client
+const apiKey = "578f-0868-73d8-7aba";
+const secretPIN = "Roc19111010Prc19491001";
+const block_io = new BlockIo(apiKey);
 
-const url = `https://www.block.io/api/v2/prepare_transaction/?api_key=${apiKey}&from_addresses=${fromAddress}&to_addresses=${toAddress}&amounts=${amount}`;
 
-request(url, (error, response, body) => {
-  if (error) {
-    console.log('Error:', error);
-  } else {
-    console.log('Response:', JSON.parse(body));
+async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
+  try {
+    // print the account balance
+    let balance = await block_io.get_balance();
+    console.log(JSON.stringify(balance,null,2));
+
+    // print first page of unarchived addresses on this account
+    let addresses = await block_io.get_my_addresses();
+    console.log(JSON.stringify(addresses,null,2));
+
+    // withdrawal:
+    //   prepare_transaction ->
+    //   summarize_prepared_transaction ->
+    //   create_and_sign_transaction ->
+    //   submit_transaction
+    let prepared_transaction = await block_io.prepare_transaction({
+      from_addresses: fromAddress,
+      to_addresses: toAddress,
+      amount: sendamount.toString(),
+    });
+
+    // inspect the prepared data for yourself. here's a
+    // summary of the transaction you will create and sign
+    let summarized_transaction = await block_io.summarize_prepared_transaction({data: prepared_transaction});
+    console.log(JSON.stringify(summarized_transaction,null,2));
+    
+    // create and sign this transaction:
+    // we specify the PIN here to decrypt
+    // the private key to sign the transaction
+    let signed_transaction = await block_io.create_and_sign_transaction({data: prepared_transaction, pin: secretPIN});
+
+    // inspect the signed transaction yourself
+    // once satisfied, submit it to Block.io
+    let result = await block_io.submit_transaction({transaction_data: signed_transaction});
+    console.log(JSON.stringify(result,null,2)); // contains the transaction ID of the final transaction
+    
+  } catch (error) {
+    console.log("Error:", error.message);
   }
-});
 }
 
-//getTransactionHistory(transactionId);
+module.exports = { sendLitecoinTransaction };
