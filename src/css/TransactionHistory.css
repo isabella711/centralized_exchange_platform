@@ -3,7 +3,7 @@ th {
   vertical-align: inherit;
   font-weight: bold;
   text-align: center;
-  width:80%;
+  width: 80%;
 }
 
 td {
@@ -11,15 +11,17 @@ td {
   vertical-align: inherit;
   font-weight: bold;
   text-align: center;
-  width:80%;
+  width: 80%;
 }
 
 h1 {
-  margin-bottom: 50px;
-  text-align:center;
+  /* margin-bottom: 50px; */
+  text-align: center;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
   margin: auto;

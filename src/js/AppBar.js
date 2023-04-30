@@ -17,6 +17,7 @@ import { useAuth } from "../AuthContext";
 import Header from "../components/Header";
 import userprofile from "../assets/userprofile.jpg";
 import { useSelector } from "react-redux";
+import btcIcon from "../assets/btc.png";
 
 export function MenuAppBar(props) {
   const userInfo = useSelector((state) => state.user);

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { store } from "../store/store";
 import { stopLoading, usersLoading } from "../reducers/usersReducer";
 import LoadingSpinner from "../js/Spinner";
+
 //import { View, Text, TextInput, StyleSheet } from "react-native";
 
 const CARD_OPTIONS = {
@@ -148,7 +149,7 @@ export default function PaymentForm() {
               />
 
               <label>Card Payment</label>
-              <fieldset style={{ maxWidth: "500px" }} className="FormGroup">
+              <fieldset style={{ maxWidth: "600px" }} className="FormGroup">
                 <div className="FormRow">
                   <CardElement options={CARD_OPTIONS} />
                 </div>

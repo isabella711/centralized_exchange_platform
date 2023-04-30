@@ -68,6 +68,15 @@ const user = createSlice({
         state.loading = "idle";
       }
     },
+    clearAll(state, action) {
+      if (state.loading === "pending") {
+        state.user = null;
+        state.balance = undefined;
+        state.wallets = [];
+        state.transactionHistory = [];
+        state.loading = "idle";
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserWallets.fulfilled, (state, action) => {
@@ -92,7 +101,13 @@ const user = createSlice({
   },
 });
 
-export const { usersLoading, userProfile, useWallet, stopLoading } =
+export const { usersLoading, userProfile, useWallet, stopLoading, clearAll } =
   user.actions;
-
+export const initialState = {
+  loading: "idle",
+  user: null,
+  wallets: [],
+  balance: undefined,
+  transactionHistory: [],
+};
 export default user.reducer;
