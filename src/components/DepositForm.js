@@ -188,8 +188,7 @@ export default function PaymentForm() {
       ) : (
         <div>
           <h2>
-            You just bought a sweet spatula congrats this is the best decision
-            of you're life
+            Deposit successful. You can return to the main page to exchange for crytocurrency 
           </h2>
         </div>
       )}
