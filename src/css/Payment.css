@@ -1,10 +1,14 @@
 .FormGroup {
-  /* margin: 0px 0px 20px; */
-  margin-bottom: 20px;
+  margin: 0px 0px 20px;
+  /* display: flex; */
+  width: "100%";
+
+  /* margin-bottom: 20px; */
   padding: 0;
   background-color: dodgerblue;
   will-change: opacity, transform;
   border: 1px solid gray;
+  /* width: 600px; */
   /* border-radius: 4px; */
   /* border-radius: 4px; */
 }
@@ -44,6 +48,7 @@
 .FormRow {
   display: -ms-flexbox;
   display: flex;
+  width: "100%";
   -ms-flex-align: center;
   align-items: center;
   background-color: dodgerblue;
