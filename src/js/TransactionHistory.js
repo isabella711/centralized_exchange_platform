@@ -71,7 +71,9 @@ function TransactionTable(props) {
           {nfObject.format(element.amount * 0.000000001)}
         </td>
 
-        <td class="text-nowrap">{element.time.toString().substring(0, 9)}</td>
+        <td class="text-nowrap">
+          {element.time.toString().split("GMT+0800 (香港標準時間)")}
+        </td>
         <td class="text-nowrap">{element.txId.toString()}</td>
       </tr>
     );

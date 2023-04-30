@@ -15,8 +15,11 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Header from "../components/Header";
+import userprofile from "../assets/userprofile.jpg";
+import { useSelector } from "react-redux";
 
 export function MenuAppBar(props) {
+  const userInfo = useSelector((state) => state.user);
   const { logout } = useAuth();
   const { isAuthenticated, isInLoginPage, wallets } = props;
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -69,7 +72,7 @@ export function MenuAppBar(props) {
             {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
 
             <Typography
-              variant="h6"
+              variant="h5"
               noWrap
               component="a"
               href="/"
@@ -91,7 +94,13 @@ export function MenuAppBar(props) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar
+                    src={
+                      isAuthenticated
+                        ? userprofile
+                        : "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png"
+                    }
+                  />
                 </IconButton>
               </Tooltip>
               <Menu

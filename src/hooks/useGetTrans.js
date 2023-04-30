@@ -24,7 +24,7 @@ export default function useGetTrans(transIdArr) {
           amount:
             eachT.data.result.meta.postBalances[1] -
             eachT.data.result.meta.preBalances[1],
-          time: new Date(eachT.data.result.blockTime),
+          time: Date(eachT.data.result.blockTime),
           type: "solana",
         };
         console.log(`eachDetail`, eachDetail);

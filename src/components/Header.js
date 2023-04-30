@@ -106,7 +106,7 @@ export default function Header(props) {
   }
   return (
     <div style={{ flexDirection: "column" }}>
-      <p>Hi, wellcome {user?.user_name}</p>
+      <p style={{ fontSize: 30 }}>Hi, wellcome {user?.user_name}</p>
       <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
         <EachBalance
           balanceArr={[
@@ -145,7 +145,7 @@ const EachBalance = ({ balanceArr }) => {
           border: "solid",
         }}
       >
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
           <div>
             {walletArrKey[key]} : {balance}
           </div>
