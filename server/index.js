@@ -1,6 +1,6 @@
 const { xrpFetch } = require("./walletGenerater/xrpGen");
 const { ethersFetch } = require("./walletGenerater/ethGen");
-const {ethTransaction} = require("./cryptoTrans/ethTrans");
+const { ethTransaction } = require("./cryptoTrans/ethTrans");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction } = require("./cryptoTrans/btcTrans");
 const express = require("express");
@@ -209,7 +209,7 @@ app.get("/userTransaction", async (req, res) => {
 
 app.post("/createTransaction", async (req, res) => {
   const { id, transactionType, userReceAmount, userSendAmount } = req.body;
-  console.log(`req.body`,id, transactionType, userReceAmount, userSendAmount);
+  console.log(`req.body`, id, transactionType, userReceAmount, userSendAmount);
   try {
     const wallets = await getUserWalletByUser(id);
     const currentTime = new Date(Date.now());
@@ -225,6 +225,27 @@ app.post("/createTransaction", async (req, res) => {
       transactioner_B_currency_amount: userReceAmount,
       tx_id: "",
     };
+    if (transactionType === "usdtobtc") {
+      const findSpecWallet = wallets.find((w) => w.currency_type === "SOL");
+      const userReceiveSol = await solanaTrans(
+        "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY", //which is our company wallet
+        findSpecWallet.wallet_address,
+        userReceAmount
+      );
+      console.log(userReceiveSol);
+      content.transactioner_A_currency_type = "USD";
+      content.transactioner_B_currency_type = "SOL";
+      if (userReceiveSol) {
+        content.tx_id = userReceiveSol;
+        content.status = "success";
+        const call = await createTransactionRecord(content);
+        if (call.affectedRows > 0) {
+          const verify = await getUserTransaction(id);
+          res.status(200).send({ tx_id: userReceiveSol, verify });
+        }
+      }
+      return userReceiveSol;
+    }
     //
     if (transactionType === "usdtosol") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "SOL");
@@ -251,13 +272,13 @@ app.post("/createTransaction", async (req, res) => {
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
       //UNTIL HERE
-      const userReceiveEth = await ethTransaction(
-        {senderAddress:"0xc018e39c82584Fb5129081d2677bB4369cE700C3", //which is our company wallet
-        recipientAddress:"0x4C18f2a647a57651D6755a959C988Eb8bf4f5Aaf",
-        amount:`${userReceAmount}`,
-        senderPrivateKey:"0xc31e5e4f52bc52ab124f7e41027f8fb2e0d3a8899c4802cfb3db25d7878a2dc3"}
-      );
-      console.log("hi");
+      const userReceiveEth = await ethTransaction({
+        senderAddress: "0xc018e39c82584Fb5129081d2677bB4369cE700C3", //which is our company wallet
+        recipientAddress: "0x4C18f2a647a57651D6755a959C988Eb8bf4f5Aaf",
+        amount: `${userReceAmount}`,
+        senderPrivateKey:
+          "0xc31e5e4f52bc52ab124f7e41027f8fb2e0d3a8899c4802cfb3db25d7878a2dc3",
+      });
       console.log(userReceiveEth);
       content.transactioner_A_currency_type = "USD";
       content.transactioner_B_currency_type = "ETH";
