@@ -9,6 +9,7 @@ import useWebSocket from "../hooks/useWebSocket";
 import contents from "../js/content";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
+import axios from "axios";
 
 const PaymentCont = (props) => {
   const { coinInfo } = useWebSocket(props.id);
@@ -17,6 +18,7 @@ const PaymentCont = (props) => {
   const userInfo = useSelector((state) => state.user);
   const [inputPrice, setInputPrice] = useState(0);
   const [error, setError] = useState("");
+  const [crytotype, getCrytotype] = useState("");
   const imgPick = contents.find(
     (c) =>
       c.ticket.substring(0, 3).toLowerCase() ===
@@ -34,16 +36,78 @@ const PaymentCont = (props) => {
   const navigate = useNavigate();
   console.log("buysell amount price: " + coinInfo);
   console.log("buysell id: " + id);
+  console.log(userInfo.user.user_id);
 
-  useEffect(() => {
+  //var get_transact = ""; 
+  // if(id==="ethusdt@ticker")
+  // {getCrytotype("usdtoeth")};
+  // if (id==="btcusdt@ticker")
+  // {getCrytotype("usdtobtc")};
+  // if (id==="solusdt@ticker")
+  // {getCrytotype("usdtosol")};
+  //if (id==="xrpusdt@ticker")
+  //{get_transact ="usdtobtc"};
+  //if (id==="ltcusdt@ticker")
+  //{get_transact ="usdtobtc"};
+
+  useEffect(()=>{
     if (userInfo.balance < inputPrice) {
       setError("Your balance is not enough");
-      return false;
+      return Error;
     }
-    setError("");
-  }, []);
+    setError("")
+  },[inputPrice])
 
-  const coinExchangeArr = (type) => {};
+const press_buy =()=>{
+  console.log(
+      "press detected"
+    )
+  if(error!==""){
+    return
+  }
+  const response_v2 = axios.post(
+        "http://localhost:4000/createTransaction/",
+        {
+          id: userInfo.user.user_id,
+          transactionType: crytotype,
+          userReceAmount: inputPrice / coinTrim ,
+          userSendAmount: inputPrice,
+
+         }
+        )
+      console.log(response_v2.data);
+      console.log("hi");
+  };
+
+
+
+  //useEffect(() => {
+  //  console.log(
+  //    "press detected"
+  //  )
+  //  if (userInfo.balance < inputPrice) {
+  //    setError("Your balance is not enough");
+  //    return Error;
+  //  }
+  //  //setError("");
+  //  else{
+  //      const response_v2 = axios.post(
+  //      "http://localhost:4000/createTransaction/",
+  //      {
+  //        id: userInfo.user.user_id,
+  //        transactionType: get_transact,
+  //        userReceAmount: inputPrice / coinTrim ,
+  //        userSendAmount: inputPrice,
+//
+  //       }
+  //        
+  //      ).then((response)=>console.log(response));
+  //    console.log(response_v2.data);
+  //    console.log("hi");
+  //  };
+  //}, []);
+
+  // const coinExchangeArr = (type) => {};
 
   return (
     <div>
@@ -90,13 +154,15 @@ const PaymentCont = (props) => {
             </h2>
           </div>
         </div>
-
         <div className="col-md-6">
           <div className="bg-white">
             <ul className="nav nav-tabs nav-fill" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 {" "}
+              <form onSubmit={press_buy}>
+
                 <button
+                  type="submit"
                   className="nav-link active"
                   id="faq_tab_1-tab"
                   data-bs-toggle="tab"
@@ -107,14 +173,14 @@ const PaymentCont = (props) => {
                   aria-selected="true"
                   style={{ marginLeft: "0px", marginTop: "0px" }}
                 >
-                  <div
-                    className="d-flex flex-column lh-lg"
-                    style={{ fontSize: 20 }}
-                  >
+                  
+                  <div className="d-flex flex-column lh-lg">
                     {" "}
                     <i></i> <span>Buy</span>{" "}
                   </div>
                 </button>{" "}
+                        </form>
+
               </li>
               <li className="nav-item" role="presentation">
                 {" "}
@@ -139,6 +205,7 @@ const PaymentCont = (props) => {
                 </button>{" "}
               </li>
             </ul>
+            
             <div className="tab-content" id="myTabContent">
               <div
                 className="tab-pane fade active show"
