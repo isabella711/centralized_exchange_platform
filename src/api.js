@@ -214,6 +214,17 @@ export const callExternalApi = async (address, type) => {
       console.log("Error", error);
     }
   }
+  
+  if (type === "ltc") {
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/api/getLtcBalance?address=${address}`
+      );
+      return result;
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
 
   // if (type === "xrp") {
   //   try {
