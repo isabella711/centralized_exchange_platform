@@ -20,13 +20,14 @@ export function Products(props) {
               className="productImage"
             ></img>
           }
-
           {/* <FaShoppingCart className={"productCard__cart"} /> */}
 
           <div className="productCard__frontpage">
             <h3 className="productName">{props.name}</h3>
             <div className="displayStack__1"></div>
-            <div className="productPrice">Current Price: ${coinTrim}</div>
+            <div className="productPrice">
+              Current Price: ${coinTrim !== "0.00" ? coinTrim : "-.--"}
+            </div>
             {/* <div className="productPrice">24h Price Change: {priceChange}%</div> */}
             <div
               style={{
