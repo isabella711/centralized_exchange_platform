@@ -1,0 +1,21 @@
+th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: center;
+  width:80%;
+}
+
+td {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: center;
+  width:80%;
+}
+
+h1 {
+  margin-bottom: 50px;
+  margin-right: 150px;
+  margin-left: 80px;
+}

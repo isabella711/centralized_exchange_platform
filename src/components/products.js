@@ -6,8 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function Products(props) {
   const { coinInfo } = useWebSocket(props.ticket);
+  const { id } = props;
   // const priceChange = Number(useGetPriceChange(props.details)).toFixed(2);
   const coinTrim = Number(coinInfo?.p ?? 0).toFixed(2);
+  console.log("products id: " + id);
   // const navigate = useNavigate();
   return (
     <>

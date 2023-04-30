@@ -20,10 +20,12 @@
     "crypto": "npm:crypto-browserify",
     "etherscan-api": "^10.3.0",
     "events": "^3.3.0",
+    "litecore-lib": "^0.13.22",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
+    "react-native-web": "^0.19.4",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
@@ -34,6 +36,7 @@
     "thunk": "^0.0.1",
     "vm": "^0.1.0",
     "web-vitals": "^2.1.4",
+    "web3": "^1.9.0",
     "xrpl": "^2.7.0"
   },
   "scripts": {

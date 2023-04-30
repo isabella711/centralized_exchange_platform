@@ -20,7 +20,9 @@ const PaymentCont = (props) => {
   const { id } = props;
   const cType = props.id.split("usdt")[0];
   const imgPick = contents.find(
-    (c) => c.name.substring(0, 3).toLowerCase() === props.id.split("usdt")[0]
+    (c) =>
+      c.ticket.substring(0, 3).toLowerCase() ===
+      props.id.split("usdt")[0].substring(0, 3)
   );
   // if (coinInfo) {
   // console.log(`{ l, h, P }`, coinInfo?.l, coinInfo?.h, coinInfo?.P);
@@ -32,7 +34,7 @@ const PaymentCont = (props) => {
   const coinTrim = Number(coinInfo?.a ?? 0).toFixed(2) ?? "-.--";
   const navigate = useNavigate();
   console.log("buysell current price: " + coinTrim);
-
+  console.log("buysell id: " + id);
   return (
     <div>
       <div
@@ -205,10 +207,10 @@ const PaymentCont = (props) => {
   );
 };
 
-function Buysell() {
+function Buysell(props) {
   const { id } = useParams();
   console.log(`>>>id`, id);
-
+  <img src={props.image} alt="product-img" className="productImage"></img>;
   return <PaymentCont id={id} />;
 }
 
