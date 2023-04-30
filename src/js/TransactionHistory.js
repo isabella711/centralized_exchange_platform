@@ -64,7 +64,7 @@ export default function TransactionHistory() {
 function TransactionTable(props) {
   const { transHistory } = props;
   const nfObject = new Intl.NumberFormat("en-US");
-  const currencyFilte = (element) => {
+  const currencyFilter = (element) => {
     if (element.type === "solana") {
       return nfObject.format(element.amount * 0.000000001);
     }
@@ -85,7 +85,7 @@ function TransactionTable(props) {
             color: element.amount < 0 ? "red" : "green",
           }}
         >
-          {currencyFilte(element)}
+          {currencyFilter(element)}
         </td>
 
         <td class="text-nowrap">
