@@ -58,14 +58,15 @@ const PaymentCont = (props) => {
     setError("")
   },[inputPrice])
 
-const press_buy =()=>{
-  console.log(
-      "press detected"
-    )
+const pressBuy = (e)=>{
+      e.preventDefault();
+  console.log(`e>>>`,e)
+  console.log("press detected")
   if(error!==""){
     return
   }
-  const response_v2 = axios.post(
+  console.log("hi");
+  const response = axios.post(
         "http://localhost:4000/createTransaction/",
         {
           id: userInfo.user.user_id,
@@ -75,8 +76,8 @@ const press_buy =()=>{
 
          }
         )
-      console.log(response_v2.data);
-      console.log("hi");
+  console.log(`hi>>>`,response.data);
+  console.log("hi");
   };
 
 
@@ -159,15 +160,13 @@ const press_buy =()=>{
             <ul className="nav nav-tabs nav-fill" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 {" "}
-              <form onSubmit={press_buy}>
 
                 <button
-                  type="submit"
                   className="nav-link active"
                   id="faq_tab_1-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#faq_tab_1"
-                  type="button"
+                  //type="button"
                   role="tab"
                   aria-controls="faq_tab_1"
                   aria-selected="true"
@@ -179,7 +178,6 @@ const press_buy =()=>{
                     <i></i> <span>Buy</span>{" "}
                   </div>
                 </button>{" "}
-                        </form>
 
               </li>
               <li className="nav-item" role="presentation">
@@ -221,6 +219,9 @@ const press_buy =()=>{
                 ) : (
                   <p></p>
                 )}
+
+                <form onSubmit={pressBuy}>
+
                 <div className="container p-3">
                   <div className="input-group mb-3 input-group-lg">
                     <input
@@ -259,15 +260,20 @@ const press_buy =()=>{
                     </select>{" "}
                   </div> */}
                 </div>
+                
                 <div className="mt-4 d-flex justify-content-end">
                   {" "}
-                  <button
+
+                  <button 
+                    type="submit"
                     style={{ maxWidth: "400px", marginTop: "20px" }}
                     class="button button5"
                   >
                     Buy
                   </button>{" "}
                 </div>
+                                  </form>
+
               </div>
               <div
                 className="tab-pane fade"
