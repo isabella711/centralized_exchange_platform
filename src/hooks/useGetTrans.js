@@ -16,19 +16,37 @@ export default function useGetTrans(transIdArr) {
 
   const searchTransaction = (transIdArr) => {
     let tArr = [];
+    console.log(`transIdArr<<<<>>>`, transIdArr);
     transIdArr?.map(async (t) => {
       if (t.tx_id !== null) {
         const eachT = await callExternalApi(t.tx_id, "solTransaction");
-        const eachDetail = {
+        const eachSolDetail = {
           txId: t.tx_id,
           amount:
             eachT.data.result.meta.postBalances[1] -
             eachT.data.result.meta.preBalances[1],
-          time: Date(eachT.data.result.blockTime),
+          time: Date(eachT.data.result.blockTime)
+            .toString()
+            .split(" GMT+0800 ")
+            .join(" "),
           type: "solana",
         };
-        console.log(`eachDetail`, eachDetail);
-        tArr.push(eachDetail);
+        console.log(`eachSolDetail`, eachSolDetail);
+        tArr.push(eachSolDetail);
+      }
+      if (
+        t.transactioner_A_currency_type === "USD" &&
+        t.transactioner_B_currency_type === "USD" &&
+        t.tx_id == null
+      ) {
+        console.log(`eachUSDdetail`, t.transactioner_A_currency_amount);
+        const eachUsdDetail = {
+          txId: "N/A",
+          amount: t.transactioner_A_currency_amount,
+          time: t.transaction_date.toString(),
+          type: "USD",
+        };
+        tArr.push(eachUsdDetail);
       }
     });
     setTransHistory(tArr);

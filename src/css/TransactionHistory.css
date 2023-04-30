@@ -31,7 +31,7 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 25px 100px 75px 650px;
+  margin: "auto";
   text-align: center;
   padding: 0px;
   width: 50%;

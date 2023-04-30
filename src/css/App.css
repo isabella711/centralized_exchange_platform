@@ -39,7 +39,6 @@
 
 /*for payment*/
 .FormGroup {
-  padding: 0;
   border-style: none;
   background-color: white;
   will-change: opacity, transform;

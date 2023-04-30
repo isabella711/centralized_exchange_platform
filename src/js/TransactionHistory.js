@@ -43,13 +43,20 @@ export default function TransactionHistory() {
         </thead>
         <TransactionTable transHistory={transHistory} />
       </Table>
-      <button
-        style={{ maxWidth: "400px" }}
-        class="button3"
-        onClick={() => navigate(-1)}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
       >
-        Go Back
-      </button>
+        <button
+          style={{ alignSelf: "center" }}
+          class="button3"
+          onClick={() => navigate(-1)}
+        >
+          Go Back
+        </button>
+      </div>
     </div>
   );
 }
@@ -57,7 +64,17 @@ export default function TransactionHistory() {
 function TransactionTable(props) {
   const { transHistory } = props;
   const nfObject = new Intl.NumberFormat("en-US");
-
+  const currencyFilte = (element) => {
+    if (element.type === "solana") {
+      return nfObject.format(element.amount * 0.000000001);
+    }
+    if (element.type === "btc") {
+      return nfObject.format(element.amount * 0.000000001);
+    }
+    if (element.type === "USD") {
+      return element.amount;
+    }
+  };
   const tableRows = transHistory.map((element) => {
     return (
       <tr>
@@ -68,7 +85,7 @@ function TransactionTable(props) {
             color: element.amount < 0 ? "red" : "green",
           }}
         >
-          {nfObject.format(element.amount * 0.000000001)}
+          {currencyFilte(element)}
         </td>
 
         <td class="text-nowrap">
