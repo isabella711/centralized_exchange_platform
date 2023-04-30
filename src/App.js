@@ -122,7 +122,7 @@ export default function App() {
         <Route
           path="/deposit"
           element={
-            <HomeLayout>
+            <HomeLayout userInfo={userInfo}>
               <Deposit />
             </HomeLayout>
           }

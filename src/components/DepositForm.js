@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deposit from "../assets/deposit.png";
 import { Placeholder } from "react-bootstrap";
+import { useSelector } from "react-redux";
 //import { View, Text, TextInput, StyleSheet } from "react-native";
 
 const CARD_OPTIONS = {
@@ -38,6 +39,7 @@ const AMOUNT_OPTIONS = {
 };
 
 export default function PaymentForm() {
+  const { user } = useSelector((state) => state.user);
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
@@ -51,6 +53,7 @@ export default function PaymentForm() {
       type: "card",
       card: elements.getElement(CardElement),
     });
+    console.log(`card>>>`, paymentMethod, error);
 
     if (!error) {
       try {
@@ -68,7 +71,7 @@ export default function PaymentForm() {
         const response_v2 = await axios.post(
           "http://localhost:4000/api/addvalue",
           {
-            email: "alice@gmail.com",
+            email: user.email_address,
             value: amount,
           }
         );

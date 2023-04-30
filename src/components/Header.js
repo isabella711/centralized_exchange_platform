@@ -12,7 +12,7 @@ export default function Header(props) {
   const [solBalance, setSolBalance] = useState(0);
   const [btcBalance, setBtcBalance] = useState(0);
   const { isAuthenticated, wallets } = props;
-  console.log("header balance: ", user?.user_balance);
+  console.log("header balance: ", user?.user_name);
 
   console.log(`wallets..>>`, wallets ?? "error");
   useEffect(() => {
@@ -98,10 +98,13 @@ export default function Header(props) {
     return <></>;
   }
   return (
-    <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
-      <EachBalance
-        balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance]}
-      />
+    <div style={{ flexDirection: "column" }}>
+      <p>Hi, wellcome {user?.user_name}</p>
+      <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
+        <EachBalance
+          balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance]}
+        />
+      </div>
     </div>
   );
 
