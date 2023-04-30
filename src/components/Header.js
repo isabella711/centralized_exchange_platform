@@ -44,7 +44,7 @@ export default function Header(props) {
         setSolBalance(res.data.result.value * 0.000000001);
       });
       callExternalApi(ltcAddress, "ltc").then((res) => {
-        setLtcBalance(res.data.result.value * 0.000000001);
+        setLtcBalance(res.data);
       });
       callExternalApi(btcAddress, "btc").then((res) => {
         console.log(`res.data.length>>>`, res.data);
