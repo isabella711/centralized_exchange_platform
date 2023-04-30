@@ -43,7 +43,7 @@ export default function Header(props) {
       callExternalApi(solAddress, "sol").then((res) => {
         setSolBalance(res.data.result.value * 0.000000001);
       });
-	  callExternalApi(ltcAddress, "ltc").then((res) => {
+      callExternalApi(ltcAddress, "ltc").then((res) => {
         setLtcBalance(res.data.result.value * 0.000000001);
       });
       callExternalApi(btcAddress, "btc").then((res) => {
@@ -109,7 +109,14 @@ export default function Header(props) {
       <p>Hi, wellcome {user?.user_name}</p>
       <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
         <EachBalance
-          balanceArr={[balance, btcBalance, ethBalance, solBalance, xrpBalance]}
+          balanceArr={[
+            balance,
+            btcBalance,
+            ethBalance,
+            solBalance,
+            xrpBalance,
+            ltcBalance,
+          ]}
         />
       </div>
     </div>

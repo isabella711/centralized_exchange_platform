@@ -11,14 +11,20 @@ import { useGetPriceChange } from "../hooks/useGetPriceChange";
 import { useGetAmount } from "../hooks/useGetAmount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import "../css/TransactionForm.css";
+// import "../css/TransactionForm.css";
 import useWebSocket from "../hooks/useWebSocket";
 import contents from "../js/content";
+import { useSelector } from "react-redux";
+import Header from "../components/Header";
 
 const PaymentCont = (props) => {
   const { coinInfo } = useWebSocket(props.id);
   const { id } = props;
-  const cType = props.id.split("usdt")[0];
+  console.log(`>>>`, coinInfo);
+  const userInfo = useSelector((state) => state.user);
+  console.log(`userInfo>>`, userInfo.balance);
+  const [inputPrice, setInputPrice] = useState(0);
+  const [error, setError] = useState("");
   const imgPick = contents.find(
     (c) =>
       c.ticket.substring(0, 3).toLowerCase() ===
@@ -30,18 +36,29 @@ const PaymentCont = (props) => {
   const lowPrice = Number(coinInfo?.l ?? 0).toFixed(2) ?? "-.--";
   const highPrice = Number(coinInfo?.h ?? 0).toFixed(2) ?? "-.--";
   const priceChange = Number(coinInfo?.P ?? 0).toFixed(2) ?? "-.--";
-  const amount = Number(coinInfo?.A ?? 0).toFixed(2) ?? "-.--";
+  const amount = Number(coinInfo?.v ?? 0).toFixed(2) ?? "-.--";
   const coinTrim = Number(coinInfo?.a ?? 0).toFixed(2) ?? "-.--";
   const navigate = useNavigate();
-  console.log("buysell current price: " + coinTrim);
+  console.log("buysell amount price: " + coinInfo);
   console.log("buysell id: " + id);
+
+  useEffect(() => {
+    if (userInfo.balance < inputPrice) {
+      setError("Your balance is not enough");
+      return false;
+    }
+    setError("");
+  }, []);
+
+  const coinExchangeArr = (type) => {};
+
   return (
     <div>
       <div
         className="transaction-container d-flex flex-column min-vh-100 justify-content-center align-items-center"
         style={{ borderWidth: 5 }}
       >
-        <h1>Details</h1>
+        <h1 style={{ margin: 0 }}>Details</h1>
         <img
           src={imgPick.image}
           width="56"
@@ -70,7 +87,10 @@ const PaymentCont = (props) => {
             </h2>
           </div>
           <div>
-            <h2>24h Total Amount: ${amount !== "0.00" ? amount : "-.--"}</h2>
+            <h2>
+              24h Total Amount: {amount !== "0.00" ? amount : "-.--"}{" "}
+              {props.id.split("usdt")[0].substring(0, 3).toUpperCase()}
+            </h2>
           </div>
         </div>
 
@@ -121,15 +141,25 @@ const PaymentCont = (props) => {
                 role="tabpanel"
                 aria-labelledby="faq_tab_1-tab"
               >
+                {inputPrice ? (
+                  <p>
+                    Exchange Rate: $ {inputPrice ?? 0} = {inputPrice / coinTrim}{" "}
+                    {props.id.split("usdt")[0].substring(0, 3).toUpperCase()}
+                  </p>
+                ) : (
+                  <p></p>
+                )}
                 <div className="container p-3">
                   <div className="input-group mb-3">
                     <input
-                      type="text"
                       className="form-control"
                       placeholder="Enter the amount"
+                      type="number"
+                      min="0"
+                      onChange={(e) => setInputPrice(e.target.value)}
                     />{" "}
                   </div>
-
+                  <p>{error}</p>
                   <div className="input-group mb-3">
                     <select
                       className="form-select form-control"
@@ -141,7 +171,7 @@ const PaymentCont = (props) => {
                     </select>{" "}
                   </div>
 
-                  <div className="input-group mb-3">
+                  {/* <div className="input-group mb-3">
                     <select
                       className="form-select form-control"
                       id="inputGroupSelect02"
@@ -153,7 +183,7 @@ const PaymentCont = (props) => {
                       <option value="4">XRP</option>
                       <option value="5">LTC</option>
                     </select>{" "}
-                  </div>
+                  </div> */}
                 </div>
                 <div className="mt-4 d-flex justify-content-end">
                   {" "}
@@ -195,13 +225,13 @@ const PaymentCont = (props) => {
             </div>
           </div>
         </div>
-        <button
+        {/* <button
           style={{ maxWidth: "400px" }}
           class="button button5"
           onClick={() => navigate(-1)}
         >
           Go Back
-        </button>
+        </button> */}
       </div>
     </div>
   );
@@ -209,9 +239,17 @@ const PaymentCont = (props) => {
 
 function Buysell(props) {
   const { id } = useParams();
+  const { loading, user, wallets, balance } = useSelector(
+    (state) => state.user
+  );
   console.log(`>>>id`, id);
   <img src={props.image} alt="product-img" className="productImage"></img>;
-  return <PaymentCont id={id} />;
+  return (
+    <>
+      {/* <Header isAuthenticated={user !== null} wallets={wallets} /> */}
+      <PaymentCont id={id} />
+    </>
+  );
 }
 
 export default Buysell;
