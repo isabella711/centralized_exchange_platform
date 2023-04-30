@@ -32,7 +32,7 @@ export default function Header(props) {
           ?.wallet_address ?? null;
       const ltcAddress =
         wallets?.find((wallet) => wallet.currency_type === "LTC")
-          ?.wallet_address ?? null;
+          ?.classicAddress ?? null;
       xrpFetch(xrpAddress).then((res) => {
         let balance = res.result.account_data.Balance;
         setXrpBalance(balance * 0.000001);
