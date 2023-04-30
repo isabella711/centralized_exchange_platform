@@ -20,7 +20,16 @@ const PaymentCont = (props) => {
   const { id } = props;
   const cType = props.id.split("usdt")[0];
   const imgPick = contents.find(
-    (c) => c.name.substring(0, 3).toLowerCase() === props.id.split("usdt")[0]
+    (c) =>
+      c.ticket.substring(0, 3).toLowerCase() ===
+      props.id.split("usdt")[0].substring(0, 3)
+  );
+  console.log(
+    `imgPick>>>>`,
+    imgPick,
+    props.id,
+    props.id.split("usdt")[0],
+    contents[4].name.substring(0, 3).toLowerCase()
   );
   // if (coinInfo) {
   // console.log(`{ l, h, P }`, coinInfo?.l, coinInfo?.h, coinInfo?.P);

@@ -9,6 +9,8 @@ export default function HomeLayout({ children, userInfo }) {
   const { transHistory, transXrpHistory } = useGetTrans(
     userInfo.transactionHistory
   );
+  // console.log(`userInfo.transactionHistory>>>`, userInfo.transactionHistory);
+
   console.log(`userInfo>>>`, transHistory, transXrpHistory);
   return (
     <>
