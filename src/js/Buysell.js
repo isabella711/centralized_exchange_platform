@@ -23,6 +23,7 @@ const PaymentCont = (props) => {
   const [inputPrice, setInputPrice] = useState(0);
   const [error, setError] = useState("");
   const [crytotype, getCrytotype] = useState("");
+  var currencyLabel = "";
   const imgPick = contents.find(
     (c) =>
       c.ticket.substring(0, 3).toLowerCase() ===
@@ -41,18 +42,33 @@ const PaymentCont = (props) => {
   console.log("buysell amount price: " + coinInfo);
   console.log("buysell id: " + id);
   console.log(userInfo.user.user_id);
-
-  //var get_transact = "";
-  // if(id==="ethusdt@ticker")
-  // {getCrytotype("usdtoeth")};
-  // if (id==="btcusdt@ticker")
-  // {getCrytotype("usdtobtc")};
-  // if (id==="solusdt@ticker")
-  // {getCrytotype("usdtosol")};
-  //if (id==="xrpusdt@ticker")
-  //{get_transact ="usdtobtc"};
-  //if (id==="ltcusdt@ticker")
-  //{get_transact ="usdtobtc"};
+  
+  var get_transact = "";
+   if(id==="ethusdt@ticker")
+   {
+	   //getCrytotype("usdtoeth");
+	   currencyLabel = "ETH";
+   };
+   if (id==="btcusdt@ticker")
+   {
+	   //getCrytotype("usdtobtc");
+	   currencyLabel = "BTC";
+	};
+   if (id==="solusdt@ticker")
+   {
+	   //getCrytotype("usdtosol");
+	   currencyLabel = "SOL";
+	   };
+  if (id==="xrpusdt@ticker")
+  {
+	  //get_transact ="usdtobtc";
+	  currencyLabel = "XRP";
+   };
+  if (id==="ltcusdt@ticker")
+  {
+	  //get_transact ="usdtoltc";
+	  currencyLabel = "LTC";
+   };
 
   useEffect(() => {
     if (userInfo.balance < inputPrice) {
@@ -131,7 +147,7 @@ const PaymentCont = (props) => {
             style={{ display: "flex" }}
             class="center"
           />
-          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just Bought ETH</h2>
+          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just Bought {currencyLabel}</h2>
           <button
             style={{ maxWidth: "600px", marginLeft: 15 }}
             class="button1"
