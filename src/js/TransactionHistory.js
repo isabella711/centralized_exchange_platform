@@ -62,12 +62,7 @@ function TransactionTable(props) {
     return (
       <tr>
         <td style={{ width: "30px" }}>{element.type.toString()}</td>
-        <td
-          class="text-nowrap"
-          style={{
-            color: element.amount < 0 ? "red" : "green",
-          }}
-        >
+        <td class="text-nowrap">
           {nfObject.format(element.amount * 0.000000001)}
         </td>
 
