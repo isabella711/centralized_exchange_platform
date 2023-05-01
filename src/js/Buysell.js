@@ -21,9 +21,13 @@ const PaymentCont = (props) => {
   console.log(`>>>`, coinInfo);
   const userInfo = useSelector((state) => state.user);
   const [inputPrice, setInputPrice] = useState(0);
+  const [sellInputPrice, setSellInputPrice] = useState(0);
   const [error, setError] = useState("");
-  const [crytotype, getCrytotype] = useState("");
+  const [action, setAction] = useState("");
+  //const [crytotype, getCrytotype] = useState("");
+  var crytotype = "";
   var currencyLabel = "";
+
   const imgPick = contents.find(
     (c) =>
       c.ticket.substring(0, 3).toLowerCase() ===
@@ -66,7 +70,7 @@ const PaymentCont = (props) => {
    };
   if (id==="ltcusdt@ticker")
   {
-	  //get_transact ="usdtoltc";
+	  crytotype = "usdtoltc";
 	  currencyLabel = "LTC";
    };
 
@@ -82,16 +86,46 @@ const PaymentCont = (props) => {
     e.preventDefault();
     store.dispatch(usersLoading("pending"));
     console.log("press detected");
+	
     if (error !== "") {
       return;
     }
+	
+	setAction("bought");
+	
     console.log("hi");
 
     const response = axios.post("http://localhost:4000/createTransaction/", {
       id: userInfo.user.user_id,
       transactionType: crytotype,
       userReceAmount: inputPrice / coinTrim,
-      userSendAmount: inputPrice,
+      userSendAmount: 0,
+    });
+    setTimeout(() => {
+      store.dispatch(stopLoading("idle"));
+      props.setSuccess(true);
+    }, [5000]);
+    console.log(`hi>>>`, response.data);
+    console.log("hi");
+  };
+  
+  const pressSell = (e) => {
+    e.preventDefault();
+    store.dispatch(usersLoading("pending"));
+    console.log("press detected");
+	
+    if (error !== "") {
+      return;
+    }
+	setAction("sold");
+	
+    console.log("sold");
+
+    const response = axios.post("http://localhost:4000/createTransaction/", {
+      id: userInfo.user.user_id,
+      transactionType: crytotype,
+      userReceAmount: 0,
+      userSendAmount: sellInputPrice,
     });
     setTimeout(() => {
       store.dispatch(stopLoading("idle"));
@@ -147,7 +181,7 @@ const PaymentCont = (props) => {
             style={{ display: "flex" }}
             class="center"
           />
-          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just Bought {currencyLabel}</h2>
+          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just {action} some {currencyLabel}</h2>
           <button
             style={{ maxWidth: "600px", marginLeft: 15 }}
             class="button1"
@@ -277,6 +311,7 @@ const PaymentCont = (props) => {
                             placeholder="Enter the amount"
                             type="number"
                             min="0"
+							step="0.1" 
                             onChange={(e) => setInputPrice(e.target.value)}
                           />{" "}
                         </div>
@@ -332,14 +367,18 @@ const PaymentCont = (props) => {
                     role="tabpanel"
                     aria-labelledby="faq_tab_2-tab"
                   >
+				  <form onSubmit={pressSell}>
                     <div className="container p-3">
                       <div className="input-group mb-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          style={{ fontSize: 20 }}
-                          placeholder="Enter the amount"
-                        />{" "}
+						 <input
+                            style={{ fontSize: 20 }}
+                            className="form-control"
+                            placeholder="Enter the amount"
+                            type="number"
+                            min="0"
+							step="0.000000000000000001" 
+                            onChange={(e) => setSellInputPrice(e.target.value)}
+                          />{" "}
                       </div>
 
                       <div className="input-group mb-3">
@@ -359,10 +398,21 @@ const PaymentCont = (props) => {
                         </select>{" "}
                       </div>
                     </div>
-                    <div className="mt-4 d-flex justify-content-end">
-                      {" "}
-                      <button class="button button5">Sell</button>{" "}
-                    </div>
+                   <div className="mt-4 d-flex justify-content-end">
+                        {" "}
+                        {userInfo.loading === "pending" ? (
+                          <LoadingSpinner />
+                        ) : (
+                          <button
+                            type="submit"
+                            style={{ maxWidth: "400px", marginTop: "20px" }}
+                            class="button button5"
+                          >
+                            Sell
+                          </button>
+                        )}
+                      </div>
+					</form>
                   </div>
                 </div>
               </div>
