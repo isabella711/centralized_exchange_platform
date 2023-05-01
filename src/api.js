@@ -249,43 +249,24 @@ export const callExternalApi = async (address, type) => {
   }
 };
 
-// export const xrpFetch = async (account) => {
-//   try {
-//     const net = "wss://s.altnet.rippletest.net:51233";
-//     const client = new xrpl.Client(net);
+// export const xrpTx = async (tx) => {
+//   const net = "wss://s.altnet.rippletest.net:51233";
+//   const client = new xrpl.Client(net);
 
-//     await client.connect();
-//     const response = await client.request({
-//       command: "account_info",
-//       account: account,
-//       ledger_index: "validated",
-//     });
-//     console.log("xrp", response);
-//     client.disconnect();
-//     return response;
-//   } catch (error) {
-//     console.log("Error", error);
-//   }
+//   // const xrpTransHistory = async () => {
+//   await client.connect();
+//   console.log("Connected, funding wallet.");
+//   const response = await client.request({
+//     command: "tx",
+//     transaction: tx,
+//     binary: false,
+//   });
+
+//   console.log(`xrp ++++response>>>`, response);
+//   client.disconnect();
+//   // };
+//   // xrpTransHistory();
+//   return response;
 // };
-
-export const xrpTx = async (tx) => {
-  const net = "wss://s.altnet.rippletest.net:51233";
-  const client = new xrpl.Client(net);
-
-  // const xrpTransHistory = async () => {
-  await client.connect();
-  console.log("Connected, funding wallet.");
-  const response = await client.request({
-    command: "tx",
-    transaction: tx,
-    binary: false,
-  });
-
-  console.log(`xrp ++++response>>>`, response);
-  client.disconnect();
-  // };
-  // xrpTransHistory();
-  return response;
-};
-// callExternalApi("0x0902a667d6a3f287835e0a4593cae4167384abc6", "eth");
-// callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
+// // callExternalApi("0x0902a667d6a3f287835e0a4593cae4167384abc6", "eth");
+// // callExternalApi("rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt", "xrp");
