@@ -356,6 +356,23 @@ app.post("/createTransaction", async (req, res) => {
 		if (result.status == "OK")
 		{
 			subtractValue(userSendAmount, userAccount);
+
+
+			content.transactioner_A_currency_type = "USD";
+			content.transactioner_B_currency_type = "LTC";
+			content.transactioner_A_currency_amount = userSendAmount;
+			content.transactioner_B_currency_amount = userReceAmount;
+			content.transactioner_id_A = id;
+			content.transactioner_id_B = 0;
+			content.status = "OK";
+			content.tx_id = result.message;
+			const call = await createTransactionRecord(content);
+			console.log(call);
+			if (call.affectedRows > 0) {
+			  const verify = await getUserTransaction(id);
+			  res.status(200).send({ tx_id: content.tx_id, verify });
+			}
+	  
 		}
 	  } else {
 		 //Sell
@@ -364,6 +381,21 @@ app.post("/createTransaction", async (req, res) => {
 		if (result.status == "OK")
 		{
 			addValue(userReceAmount, userAccount);
+			
+			content.transactioner_A_currency_type = "LTC";
+			content.transactioner_B_currency_type = "USD";
+			content.transactioner_A_currency_amount = userSendAmount;
+			content.transactioner_B_currency_amount = userReceAmount;
+			content.transactioner_id_A = 0;
+			content.transactioner_id_B = id;
+			content.status = "OK";
+			content.tx_id = result.message;
+			const call = await createTransactionRecord(content);
+			console.log(call);
+			if (call.affectedRows > 0) {
+			  const verify = await getUserTransaction(id);
+			  res.status(200).send({ tx_id: content.tx_id, verify });
+			}
 		}
 	  }
 	  
