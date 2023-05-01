@@ -49,23 +49,23 @@ const PaymentCont = (props) => {
   
   var get_transact = "";
    if(id==="ethusdt@ticker")
-   {
-	   //getCrytotype("usdtoeth");
+   {	   
+	   crytotype = "usdtoeth";
 	   currencyLabel = "ETH";
    };
    if (id==="btcusdt@ticker")
    {
-	   //getCrytotype("usdtobtc");
+	   crytotype = "usdtobtc";
 	   currencyLabel = "BTC";
 	};
    if (id==="solusdt@ticker")
    {
-	   //getCrytotype("usdtosol");
+	   crytotype = "usdtosol";
 	   currencyLabel = "SOL";
 	   };
   if (id==="xrpusdt@ticker")
   {
-	  //get_transact ="usdtobtc";
+	  crytotype = "usdtoxrp";
 	  currencyLabel = "XRP";
    };
   if (id==="ltcusdt@ticker")
