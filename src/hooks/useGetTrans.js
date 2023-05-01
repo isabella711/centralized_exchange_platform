@@ -1,16 +1,16 @@
-import { callExternalApi, xrpTx } from "../api";
+import { callExternalApi } from "../api";
 import { useEffect, useRef, useState } from "react";
-const xrpl = require("xrpl");
 export default function useGetTrans(transIdArr) {
   const [transHistory, setTransHistory] = useState([]);
   const [transXrpHistory, setXrpTransHistory] = useState([]);
 
   const searchXrpTx = async () => {
-    const response = await xrpTx(
-      "b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d"
+    const response = await callExternalApi(
+      "b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d",
+      "xrpTx"
     );
-    console.log(`searchXrpTx>>>`, response);
-    setXrpTransHistory(response.result.Amount);
+    console.log(`searchXrpTx>>>`, response.data.result.Amount);
+    setXrpTransHistory(response.data.result.Amount);
     return;
   };
 
@@ -48,7 +48,13 @@ export default function useGetTrans(transIdArr) {
         };
         tArr.push(eachUsdDetail);
       }
+      if (
+        t.transactioner_A_currency_type === "USD" &&
+        t.transactioner_B_currency_type === "btc"
+      ) {
+      }
     });
+
     setTransHistory(tArr);
     return;
   };
