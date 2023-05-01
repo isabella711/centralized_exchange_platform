@@ -71,7 +71,7 @@ const walletId = ["QXXbJuhrFz1f4MiAZZyT4SUAs3irzFeYqj",
 const createLtcAccount = async () => {
 	//const response = await service.getResult();
     const response = await db.query(`SELECT * FROM joehocom_21010627g.Users`);
-	console.log(response.length);
+	//console.log(response.length);
 	var walletAddr = walletId[1];
 	if (response.length > 0)
 	{
