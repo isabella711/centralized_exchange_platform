@@ -8,14 +8,16 @@ const block_io = new BlockIo(apiKey);
 const centralAddress = "Qa3HpkiD8n9JGFGauFx6aZWNPepD2gkTE8";
 
 async function buyLitecoin(toAddress, sendamount) {
-	sendLitecoinTransaction(centralAddress,toAddress, sendamount);
+	return sendLitecoinTransaction(centralAddress,toAddress, sendamount);
 }
 
 async function sellLitecoin(sellAddress, sendamount) {
-	sendLitecoinTransaction(sellAddress, centralAddress, sendamount);
+	return sendLitecoinTransaction(sellAddress, centralAddress, sendamount);
 }
 
 async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
+  var returnstatus = "";
+  var returnmessage = "";
   try {
     // print the account balance
     let balance = await block_io.get_balance();
@@ -50,9 +52,18 @@ async function sendLitecoinTransaction(fromAddress, toAddress, sendamount) {
     // once satisfied, submit it to Block.io
     let result = await block_io.submit_transaction({transaction_data: signed_transaction});
     console.log(JSON.stringify(result,null,2)); // contains the transaction ID of the final transaction
-    
+    returnstatus = "OK";
+	returnmessage = result.data.txid;
+	
   } catch (error) {
     console.log("Error:", error.message);
+	returnstatus = "Failed";
+	returnmessage = error.message;
+  }
+  
+  return {
+	  status: returnstatus,
+	  message: returnmessage,
   }
 }
 /*
@@ -74,15 +85,10 @@ async function getLitecoinBalance(ltcaddress) {
 
 const getLitecoinBalance = async (ltcaddress) => {
   try{
-	  const call = await block_io.get_balance({ address: ltcaddress });
+	  
+	  const call = await block_io.get_address_balance({ address: ltcaddress });
 	  const bal = call.data.available_balance;
-	  // .then((balance) => {
-	  //   console.log(`ethcall>>>`, balance);
-	  //   return balance.result / 10e17;
-	  // })
-	  // .catch((err) => {
-	  //   console.log(`err>>>eth`, err);
-	  // });
+	 
 	  return {
 		 balance : bal,
 		 message : "OK"
