@@ -214,8 +214,8 @@ app.get("/userTransaction", async (req, res) => {
 });
 
 app.post("/createTransaction", async (req, res) => {
-  const { id, transactionType, userReceAmount, userSendAmount } = req.body;
-  console.log(`req.body`, id, transactionType, userReceAmount, userSendAmount);
+  const { id, userAccount, transactionType, userReceAmount, userSendAmount, userAction } = req.body;
+  console.log(`req.body`, id, userAccount, transactionType, userReceAmount, userSendAmount, userAction);
   try {
     const wallets = await getUserWalletByUser(id);
     const currentTime = new Date(Date.now());
@@ -342,21 +342,32 @@ app.post("/createTransaction", async (req, res) => {
       return userReceiveSol;
     }
 
-    if (transactionType === "usdtoltc") {
-      console.log("Start Transaction");
+	 if (transactionType === "usdtoltc") {
+       console.log("Start Transaction");
+	   var result;
       const findSpecWallet = wallets.find((w) => w.currency_type === "LTC");
-      //console.log(findSpecWallet);
-      const address = findSpecWallet.classicAddress;
-      console.log("Address:" + address);
-      if (userReceAmount > 0) {
-        //Buy
-        console.log("Amount:" + userReceAmount.toFixed(8));
-        buyLitecoin(address, userReceAmount.toFixed(8));
-      } else {
-        //Sell
-        console.log("Amount:" + userSendAmount.toFixed(8));
-        sellLitecoin(address, userSendAmount.toFixed(8));
-      }
+	    //console.log(findSpecWallet);
+	  const address = findSpecWallet.classicAddress;
+	  console.log("Address:" + address);
+	  if (userAction == "Buy"){
+		//Buy
+		console.log("Amount:" + userReceAmount.toFixed(8));
+		result = await buyLitecoin(address,userReceAmount.toFixed(8));
+		if (result.status == "OK")
+		{
+			subtractValue(userSendAmount, userAccount);
+		}
+	  } else {
+		 //Sell
+		console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
+		result = await sellLitecoin(address,parseFloat(userSendAmount).toFixed(8));
+		if (result.status == "OK")
+		{
+			addValue(userReceAmount, userAccount);
+		}
+	  }
+	  
+	  console.log("Result" + result.status);
       return 0;
     }
 
