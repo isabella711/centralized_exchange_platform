@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 // importing material UI components
 import Typography from "@mui/material/Typography";
-const { callExternalApi, xrpTx } = require("../api");
+const { callExternalApi } = require("../api");
 
 export default function Header(props) {
   const { loading, user, balance } = useSelector((state) => state.user);

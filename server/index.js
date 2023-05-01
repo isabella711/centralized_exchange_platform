@@ -1,4 +1,4 @@
-const { xrpFetch } = require("./walletGenerater/xrpGen");
+const { xrpFetch, xrpTx } = require("./walletGenerater/xrpGen");
 const { ethersFetch } = require("./walletGenerater/ethGen");
 const { ethTransaction } = require("./cryptoTrans/ethTrans");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
@@ -453,13 +453,27 @@ app.get("/api/getXrpBalance", async (req, res) => {
   }
 });
 
+app.get("/api/getXrpTx", async (req, res) => {
+  const { address } = req.query;
+  try {
+    const call = await xrpTx(address);
+    if (call.type === "response") {
+      res.status(200).send(call);
+    } else {
+      res.status(401).send("Wrong");
+    }
+    return call;
+  } catch (error) {
+    if (error) {
+      res.status(500).send("An internal server error occurred");
+    }
+    console.log("Error", error);
+  }
+});
+
 app.get("/api/getLtcBalance", async (req, res) => {
   const { address } = req.query;
   try {
-    // const etherscanApi = require("etherscan-api").init(
-    //   "4DGSFE9926FZNSQ7TTJDV83KAC8GF41MSC",
-    //   "sepolia"
-    // );
     const call = await getLitecoinBalance(address);
     if (call.message === "OK") {
       res.status(200).send(call.balance);

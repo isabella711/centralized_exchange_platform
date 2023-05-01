@@ -236,6 +236,17 @@ export const callExternalApi = async (address, type) => {
       console.log("Error", error);
     }
   }
+
+  if (type === "xrpTx") {
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/api/getXrpTx?address=${address}`
+      );
+      return result;
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
 };
 
 // export const xrpFetch = async (account) => {
