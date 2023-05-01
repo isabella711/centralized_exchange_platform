@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 const { xrpFetch } = require("../api");
 
-
 const TransactionHistory = () => {
   const userInfo = useSelector((state) => state.user);
   const { transactionHistory } = useSelector((state) => state.user);
@@ -23,7 +22,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       const result = await getUserTransactions(userInfo.user.user_id);
-	  console.log('Result:', result);
+      console.log("Result:", result);
 
       setTransHistory(result.data);
     };
@@ -31,8 +30,6 @@ const TransactionHistory = () => {
     fetchTransactions();
   }, [userInfo.user.user_id]);
 
-   
-   
   //const navigate = useNavigate();
 
   //console.log(`>>>transHistory`, transHistory);
@@ -53,23 +50,34 @@ const TransactionHistory = () => {
       >
         <thead>
           <tr>
-            <th>Type</th>
-            <th>Amount</th>
+            <th>Send Type</th>
+            <th>Receive Type</th>
+            <th>Send Amount</th>
+            <th>Receive Amount</th>
             <th>Time</th>
             <th>TxID</th>
+            <th>TxID_2</th>
           </tr>
         </thead>
-		<tbody>
-         {transHistory.map(row => (
-          <tr key={row.tx_id}>
-            <td>{row.transactioner_A_currency_type}</td>
-            <td>{row.transactioner_A_currency_amount}</td>
-			<td>{row.transaction_date}</td>
-            <td>{row.tx_id}</td>
-          </tr>
-        ))}
-      </tbody>
-      />
+        <tbody>
+          {transHistory.map((row) => (
+            <tr key={row.tx_id}>
+              <td>{row.transactioner_A_currency_type}</td>
+              <td>{row.transactioner_B_currency_type}</td>
+              <td>
+                {row.transactioner_A_currency_amount.toFixed(2)}{" "}
+                {row.transactioner_A_currency_type}
+              </td>
+              <td>
+                {row.transactioner_B_currency_amount.toFixed(2)}{" "}
+                {row.transactioner_B_currency_type}
+              </td>
+              <td>{row.transaction_date}</td>
+              <td>{row.tx_id}</td>
+              <td>{row.tx_id2 !== null ? row.tx_id2 : "--"}</td>
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <div
         style={{
@@ -78,8 +86,8 @@ const TransactionHistory = () => {
         }}
       >
         <button
-          style={{ alignSelf: "center" }}
-          class="button3"
+          style={{ maxWidth: "400px" }}
+          class="button button5"
           onClick={() => navigate(-1)}
         >
           Go Back
@@ -87,7 +95,6 @@ const TransactionHistory = () => {
       </div>
     </div>
   );
-
 };
 
 /*
