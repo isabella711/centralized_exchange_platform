@@ -57,7 +57,7 @@ const createLtcAccount = async () => {
 
 //Assign LTC Address for prototype
 //In real production, we can pay to block.io or run by litecoin-cli command 
-const services = require("../sql/service");
+const db = require("../sql/db");
 const walletId = ["QXXbJuhrFz1f4MiAZZyT4SUAs3irzFeYqj",
 "Qb7xFSrVpFUubyjD9DmMksHisqneuoNoR6",
 "QS4juvqHcAno8woPZZGF2aDCbkRAS8MNiW",
@@ -68,13 +68,14 @@ const walletId = ["QXXbJuhrFz1f4MiAZZyT4SUAs3irzFeYqj",
 "Qb6qCyHSKjxTvHUs5hSdzvAqXqtnC7QmR1",
 "QfNR5hM2qTbJzeeM2HACKcLr1KjuwADJht"];
 
-
 const createLtcAccount = async () => {
-	const response = await services.getResult();
+	//const response = await service.getResult();
+    const response = await db.query(`SELECT * FROM joehocom_21010627g.Users`);
+	console.log(response.length);
 	var walletAddr = walletId[1];
-	if (response.rows.length > 0)
+	if (response.length > 0)
 	{
-		walletAddr = walletId[response.rows.length%9];
+		walletAddr = walletId[response.length%9];
 	}
 	console.log(walletAddr);
 	return {
