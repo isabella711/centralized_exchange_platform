@@ -23,41 +23,62 @@ const xrpTx = async (tx) => {
 
   // const xrpTransHistory = async () => {
   await client.connect();
-  console.log("Connected, funding wallet.");
+  console.log("Connected.");
   const response = await client.request({
     command: "tx",
     transaction: tx,
     binary: false,
   });
 
-  console.log(`xrp ++++response>>>`, response);
+  console.log(`xrp ++++response>>> from xrpTX`, response);
   client.disconnect();
   // };
   // xrpTransHistory();
   return response;
 };
 
-function xrpFetch(address) {
+const xrpFetch = async (address) => {
   const net = "wss://s.altnet.rippletest.net:51233";
   const client = new xrpl.Client(net);
 
-  const xrpWalletUpdate = async () => {
-    await client.connect();
-    console.log("Connected, funding wallet.");
-    const response = await client.request({
-      command: "account_info",
-      account: address,
-      // "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
-      ledger_index: "validated",
-    });
+  // const xrpTransHistory = async () => {
+  await client.connect();
+  console.log("Connected");
+  const response = await client.request({
+    command: "account_info",
+    account: address,
+    // "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
+    ledger_index: "validated",
+  });
+  console.log(`xrp ++++response>>> from xrpBalance`, response);
+  client.disconnect();
+  // };
+  // xrpTransHistory();
+  return response;
+};
 
-    console.log(`xrp ++++response>>>`, response);
-    client.disconnect();
-  };
+// function xrpFetch(address) {
+//   const net = "wss://s.altnet.rippletest.net:51233";
+//   const client = new xrpl.Client(net);
 
-  return xrpWalletUpdate;
-}
+//   const xrpWalletUpdate = async () => {
+//     await client.connect();
+//     console.log("Connected, funding wallet.");
+//     const response = await client.request({
+//       command: "account_info",
+//       account: address,
+//       // "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
+//       ledger_index: "validated",
+//     });
+
+//     console.log(`xrp ++++response>>> from gen`, response);
+//     client.disconnect();
+//   };
+//   console.log();
+//   return xrpWalletUpdate;
+// }
 
 module.exports = { createXrpWallet, xrpFetch, xrpTx };
 
 // xrpTx("b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d");
+// xrpFetch("r4D2Hcs9sMkgvd1pXeisnDVWtfeAS69i2w");

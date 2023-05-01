@@ -45,34 +45,28 @@ const PaymentCont = (props) => {
   const navigate = useNavigate();
   console.log("buysell amount price: " + coinInfo);
   console.log("buysell id: " + id);
-  console.log(userInfo.user.user_id);
-  
+
   var get_transact = "";
-   if(id==="ethusdt@ticker")
-   {
-	   //getCrytotype("usdtoeth");
-	   currencyLabel = "ETH";
-   };
-   if (id==="btcusdt@ticker")
-   {
-	   //getCrytotype("usdtobtc");
-	   currencyLabel = "BTC";
-	};
-   if (id==="solusdt@ticker")
-   {
-	   //getCrytotype("usdtosol");
-	   currencyLabel = "SOL";
-	   };
-  if (id==="xrpusdt@ticker")
-  {
-	  //get_transact ="usdtobtc";
-	  currencyLabel = "XRP";
-   };
-  if (id==="ltcusdt@ticker")
-  {
-	  crytotype = "usdtoltc";
-	  currencyLabel = "LTC";
-   };
+  if (id === "ethusdt@ticker") {
+    //getCrytotype("usdtoeth");
+    currencyLabel = "ETH";
+  }
+  if (id === "btcusdt@ticker") {
+    //getCrytotype("usdtobtc");
+    currencyLabel = "BTC";
+  }
+  if (id === "solusdt@ticker") {
+    //getCrytotype("usdtosol");
+    currencyLabel = "SOL";
+  }
+  if (id === "xrpusdt@ticker") {
+    //get_transact ="usdtobtc";
+    currencyLabel = "XRP";
+  }
+  if (id === "ltcusdt@ticker") {
+    crytotype = "usdtoltc";
+    currencyLabel = "LTC";
+  }
 
   useEffect(() => {
     if (userInfo.balance < inputPrice) {
@@ -86,13 +80,13 @@ const PaymentCont = (props) => {
     e.preventDefault();
     store.dispatch(usersLoading("pending"));
     console.log("press detected");
-	
+
     if (error !== "") {
       return;
     }
-	
-	setAction("bought");
-	
+
+    setAction("bought");
+
     console.log("hi");
 
     const response = axios.post("http://localhost:4000/createTransaction/", {
@@ -108,17 +102,17 @@ const PaymentCont = (props) => {
     console.log(`hi>>>`, response.data);
     console.log("hi");
   };
-  
+
   const pressSell = (e) => {
     e.preventDefault();
     store.dispatch(usersLoading("pending"));
     console.log("press detected");
-	
+
     if (error !== "") {
       return;
     }
-	setAction("sold");
-	
+    setAction("sold");
+
     console.log("sold");
 
     const response = axios.post("http://localhost:4000/createTransaction/", {
@@ -181,7 +175,9 @@ const PaymentCont = (props) => {
             style={{ display: "flex" }}
             class="center"
           />
-          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just {action} some {currencyLabel}</h2>
+          <h2 style={{ marginLeft: 0, marginRight: 0 }}>
+            You just {action} some {currencyLabel}
+          </h2>
           <button
             style={{ maxWidth: "600px", marginLeft: 15 }}
             class="button1"
@@ -311,7 +307,7 @@ const PaymentCont = (props) => {
                             placeholder="Enter the amount"
                             type="number"
                             min="0"
-							step="0.1" 
+                            step="0.1"
                             onChange={(e) => setInputPrice(e.target.value)}
                           />{" "}
                         </div>
@@ -367,38 +363,38 @@ const PaymentCont = (props) => {
                     role="tabpanel"
                     aria-labelledby="faq_tab_2-tab"
                   >
-				  <form onSubmit={pressSell}>
-                    <div className="container p-3">
-                      <div className="input-group mb-3">
-						 <input
+                    <form onSubmit={pressSell}>
+                      <div className="container p-3">
+                        <div className="input-group mb-3">
+                          <input
                             style={{ fontSize: 20 }}
                             className="form-control"
                             placeholder="Enter the amount"
                             type="number"
                             min="0"
-							step="0.000000000000000001" 
+                            step="0.000000000000000001"
                             onChange={(e) => setSellInputPrice(e.target.value)}
                           />{" "}
-                      </div>
+                        </div>
 
-                      <div className="input-group mb-3">
-                        <select
-                          style={{ fontSize: 20 }}
-                          className="form-select form-control"
-                          id="inputGroupSelect02"
-                        >
-                          <option selected>Please choose</option>
-                          <option value="1">
-                            {" "}
-                            {props.id
-                              .split("usdt")[0]
-                              .substring(0, 3)
-                              .toUpperCase()}
-                          </option>
-                        </select>{" "}
+                        <div className="input-group mb-3">
+                          <select
+                            style={{ fontSize: 20 }}
+                            className="form-select form-control"
+                            id="inputGroupSelect02"
+                          >
+                            <option selected>Please choose</option>
+                            <option value="1">
+                              {" "}
+                              {props.id
+                                .split("usdt")[0]
+                                .substring(0, 3)
+                                .toUpperCase()}
+                            </option>
+                          </select>{" "}
+                        </div>
                       </div>
-                    </div>
-                   <div className="mt-4 d-flex justify-content-end">
+                      <div className="mt-4 d-flex justify-content-end">
                         {" "}
                         {userInfo.loading === "pending" ? (
                           <LoadingSpinner />
@@ -412,7 +408,7 @@ const PaymentCont = (props) => {
                           </button>
                         )}
                       </div>
-					</form>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -437,7 +433,6 @@ function Buysell(props) {
   const { loading, user, wallets, balance } = useSelector(
     (state) => state.user
   );
-  console.log(`>>>id`, id);
   <img src={props.image} alt="product-img" className="productImage"></img>;
   return (
     <>

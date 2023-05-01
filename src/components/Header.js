@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 // importing material UI components
 import Typography from "@mui/material/Typography";
-const { xrpFetch, callExternalApi } = require("../api");
+const { callExternalApi, xrpTx } = require("../api");
 
 export default function Header(props) {
   const { loading, user, balance } = useSelector((state) => state.user);
@@ -33,8 +33,8 @@ export default function Header(props) {
       const ltcAddress =
         wallets?.find((wallet) => wallet.currency_type === "LTC")
           ?.classicAddress ?? null;
-      xrpFetch(xrpAddress).then((res) => {
-        let balance = res.result.account_data.Balance;
+      callExternalApi(xrpAddress, "xrp").then((res) => {
+        let balance = res.data;
         setXrpBalance(balance * 0.000001);
       });
       callExternalApi(ethAddress, "eth").then((res) => {

@@ -214,7 +214,7 @@ export const callExternalApi = async (address, type) => {
       console.log("Error", error);
     }
   }
-  
+
   if (type === "ltc") {
     try {
       const result = await axios.get(
@@ -226,98 +226,36 @@ export const callExternalApi = async (address, type) => {
     }
   }
 
-  // if (type === "xrp") {
-  //   try {
-  //     let config = {
-  //       headers: {
-  //         "X-Api-Key": "707430bfc2710166ada57a17c1c0baaf06a8b631",
-  //         Accept: "application/json",
-  //         "Content-Type": "application/x-www-form-urlencoded",
-  //         "Access-Control-Allow-Headers": "*",
-  //       },
-  //       data: {},
-  //     };
-  //     await axios
-  //       .get(
-  //         `http://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}/balance`,
-  //         // "https://rest.cryptoapis.io/blockchain-data/ethereum/goerli/addresses/0x0902a667d6a3f287835e0a4593cae4167384abc6/balance?context=yourExampleString",
-  //         config
-  //       )
-  //       .then((res) => {
-  //         console.log(`....res>>>`, res.data);
-  //       });
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  // }
-};
-
-export const xrpFetch = async (account) => {
-  try {
-    const net = "wss://s.altnet.rippletest.net:51233";
-    const client = new xrpl.Client(net);
-
-    await client.connect();
-    const response = await client.request({
-      command: "account_info",
-      account: account,
-      ledger_index: "validated",
-    });
-    client.disconnect();
-    return response;
-  } catch (error) {
-    console.log("Error", error);
+  if (type === "xrp") {
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/api/getXrpBalance?address=${address}`
+      );
+      return result;
+    } catch (error) {
+      console.log("Error", error);
+    }
   }
-
-  // if (type === "btc") {
-  //   try {
-  //     await axios
-  //       .get(`https://blockstream.info/testnet/api/address/${address}/txs`)
-  //       .then((res) => {
-  //         console.log(res.data);
-  //       });
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   }
-  // }
-
-  // if (type === "xrp") {
-  //   try {
-  //     let config = {
-  //       headers: {
-  //         "X-Api-Key": "707430bfc2710166ada57a17c1c0baaf06a8b631",
-  //         Accept: "application/json",
-  //         "Content-Type": "application/x-www-form-urlencoded",
-  //         "Access-Control-Allow-Headers": "*",
-  //       },
-  //       data: {},
-  //     };
-  //     await axios
-  //       .get(
-  //         `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
-  //         // "https://rest.cryptoapis.io/blockchain-data/ethereum/goerli/addresses/0x0902a667d6a3f287835e0a4593cae4167384abc6/balance?context=yourExampleString",
-  //         config
-  //       )
-  //       .then((res) => {
-  //         console.log(`....res>>>`, res.data);
-  //       });
-
-  //   // fetch(
-  //   //   `https://rest.cryptoapis.io/blockchain-data/xrp-specific/testnet/addresses/${address}`,
-  //   //   config
-  //   // )
-  //   //   .then((response) => {
-  //   //     response.json();
-  //   //     console.log(`response>>>`, response);
-  //   //   }) // one extra step
-  //   //   .then((data) => {
-  //   //     console.log(`>>>>`, data);
-  //   //   });
-  // } catch (error) {
-  //   console.log("Error", error);
-  // }
-  // }
 };
+
+// export const xrpFetch = async (account) => {
+//   try {
+//     const net = "wss://s.altnet.rippletest.net:51233";
+//     const client = new xrpl.Client(net);
+
+//     await client.connect();
+//     const response = await client.request({
+//       command: "account_info",
+//       account: account,
+//       ledger_index: "validated",
+//     });
+//     console.log("xrp", response);
+//     client.disconnect();
+//     return response;
+//   } catch (error) {
+//     console.log("Error", error);
+//   }
+// };
 
 export const xrpTx = async (tx) => {
   const net = "wss://s.altnet.rippletest.net:51233";

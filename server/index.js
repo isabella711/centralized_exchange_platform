@@ -3,9 +3,14 @@ const { ethersFetch } = require("./walletGenerater/ethGen");
 const { ethTransaction } = require("./cryptoTrans/ethTrans");
 const { solanaTrans } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction } = require("./cryptoTrans/btcTrans");
-const { buyLitecoin,sellLitecoin,sendLitecoinTransaction,getLitecoinBalance } = require("./cryptoTrans/ltcTrans");
+const {
+  buyLitecoin,
+  sellLitecoin,
+  sendLitecoinTransaction,
+  getLitecoinBalance,
+} = require("./cryptoTrans/ltcTrans");
 const express = require("express");
-const { addValue,subtractValue } = require("./sql/service");
+const { addValue, subtractValue } = require("./sql/service");
 const { createTransactionRecord } = require("./sql/cex");
 const app = express();
 require("dotenv").config();
@@ -231,7 +236,7 @@ app.post("/createTransaction", async (req, res) => {
       //const walletInfo = await getPrivateKeyByPubkey(
       //  findSpecWallet.wallet_address
       //);
-        const userReceiveBTC = await btcTransaction(
+      const userReceiveBTC = await btcTransaction(
         "mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",
         //findSpecWallet.wallet_address,
         "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD", //which is our company wallet
@@ -278,11 +283,13 @@ app.post("/createTransaction", async (req, res) => {
 
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
-      const wallet_process=subtractValue(userSendAmount, "alice@gmail.com");
-      if (!wallet_process){return Error};
+      const wallet_process = subtractValue(userSendAmount, "alice@gmail.com");
+      if (!wallet_process) {
+        return Error;
+      }
       const userReceiveEth = await ethTransaction({
         senderAddress: "0xc018e39c82584Fb5129081d2677bB4369cE700C3", //which is our company wallet
-        recipientAddress:findSpecWallet.wallet_address,
+        recipientAddress: findSpecWallet.wallet_address,
         //recipientAddress: "0x4C18f2a647a57651D6755a959C988Eb8bf4f5Aaf",
         amount: `${userReceAmount}`,
         senderPrivateKey:
@@ -334,22 +341,22 @@ app.post("/createTransaction", async (req, res) => {
       }
       return userReceiveSol;
     }
-	
-	 if (transactionType === "usdtoltc") {
-       console.log("Start Transaction");
+
+    if (transactionType === "usdtoltc") {
+      console.log("Start Transaction");
       const findSpecWallet = wallets.find((w) => w.currency_type === "LTC");
-	    //console.log(findSpecWallet);
-	  const address = findSpecWallet.classicAddress;
-	  console.log("Address:" + address);
-	  if (userReceAmount>0){
-		  //Buy
-		console.log("Amount:" + userReceAmount.toFixed(8));
-		buyLitecoin(address,userReceAmount.toFixed(8));
-	  } else {
-		  		  //Sell
-		console.log("Amount:" + userSendAmount.toFixed(8));
-		sellLitecoin(address,userSendAmount.toFixed(8));
-	  }
+      //console.log(findSpecWallet);
+      const address = findSpecWallet.classicAddress;
+      console.log("Address:" + address);
+      if (userReceAmount > 0) {
+        //Buy
+        console.log("Amount:" + userReceAmount.toFixed(8));
+        buyLitecoin(address, userReceAmount.toFixed(8));
+      } else {
+        //Sell
+        console.log("Amount:" + userSendAmount.toFixed(8));
+        sellLitecoin(address, userSendAmount.toFixed(8));
+      }
       return 0;
     }
 
@@ -425,6 +432,25 @@ app.post("/api/addvalue", (req, res) => {
       res.status(401).send("Incorrect user account");
     }
   });
+});
+
+app.get("/api/getXrpBalance", async (req, res) => {
+  const { address } = req.query;
+  try {
+    const call = await xrpFetch(address);
+    if (call.type === "response") {
+      const balance = call.result.account_data.Balance;
+      res.status(200).send(balance);
+    } else {
+      res.status(401).send("Wrong");
+    }
+    return call;
+  } catch (error) {
+    if (error) {
+      res.status(500).send("An internal server error occurred");
+    }
+    console.log("Error", error);
+  }
 });
 
 app.get("/api/getLtcBalance", async (req, res) => {
