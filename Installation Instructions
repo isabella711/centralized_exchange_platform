@@ -1,0 +1,27 @@
+1) Download Node JS
+
+https://nodejs.org/en/download
+
+2) Install Node JS
+
+3) Download all Source as Zip File
+
+4) Unzip 
+
+5) Open command prompt
+
+6) Go to your unzip directory
+
+7) npm install
+
+8) cd server
+
+9) npm install
+
+10) node index.js
+
+11) Allow Firewall
+
+12) Open another command prompt
+
+13) npm start
