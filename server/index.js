@@ -334,6 +334,24 @@ app.post("/createTransaction", async (req, res) => {
       }
       return userReceiveSol;
     }
+	
+	 if (transactionType === "usdtoltc") {
+       console.log("Start Transaction");
+      const findSpecWallet = wallets.find((w) => w.currency_type === "LTC");
+	    //console.log(findSpecWallet);
+	  const address = findSpecWallet.classicAddress;
+	  console.log("Address:" + address);
+	  if (userReceAmount>0){
+		  //Buy
+		console.log("Amount:" + userReceAmount.toFixed(8));
+		buyLitecoin(address,userReceAmount.toFixed(8));
+	  } else {
+		  		  //Sell
+		console.log("Amount:" + userSendAmount.toFixed(8));
+		sellLitecoin(address,userSendAmount.toFixed(8));
+	  }
+      return 0;
+    }
 
     res.status(401).send("Internal server error");
   } catch (error) {
@@ -417,7 +435,6 @@ app.get("/api/getLtcBalance", async (req, res) => {
     //   "sepolia"
     // );
     const call = await getLitecoinBalance(address);
-	console.log(call);
     if (call.message === "OK") {
       res.status(200).send(call.balance);
     } else {
