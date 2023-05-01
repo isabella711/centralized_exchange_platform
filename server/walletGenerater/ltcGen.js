@@ -80,7 +80,7 @@ const createLtcAccount = async () => {
 	return {
 		privateKey: "",
 		publicKey: "",
-		address: "QS4juvqHcAno8woPZZGF2aDCbkRAS8MNiW",
+		address: walletAddr,
   };
 };
 
