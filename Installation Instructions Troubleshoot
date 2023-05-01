@@ -1,0 +1,12 @@
+The program should be able to run if you follow our instruction.
+If failed to run, please make sure that the firewall rules are not block our port.
+In our program, we use many irregular network port to connect outside network such as 3000, 4000, 3306, 9443, etc.
+If your firewall only allow regular tcp / udp  port may block the access.
+
+
+Besides network, it may also due to compile or download problem during npm install
+You may also try npm install again, or try npm build or npm rebuild to fix the problem
+
+Please be remind to open both client (npm start) and back-end server ("cd server" then type "node index.js")
+
+Please do not close any windows and command prompt as it will stop the server and services.
