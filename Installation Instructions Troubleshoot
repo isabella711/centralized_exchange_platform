@@ -5,7 +5,7 @@ If your firewall only allow regular tcp / udp  port may block the access.
 
 
 Besides network, it may also due to compile or download problem during npm install
-You may also try npm install again, or try npm build or npm rebuild to fix the problem
+You may also try npm install again, or try to type "npm audit fix" to fix it, then try npm build or npm rebuild to fix the problem
 
 Please be remind to open both client (npm start) and back-end server ("cd server" then type "node index.js")
 
