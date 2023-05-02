@@ -318,7 +318,7 @@ app.post("/createTransaction", async (req, res) => {
         if (result.message === "OK") {
           subtractValue(userSendAmount, userAccount);
 
-          content.tx_id = result.date.tx.hash;
+          content.tx_id = result.signature;
           content.transactioner_A_currency_type = "USD";
           content.transactioner_B_currency_type = "SOL";
           content.transactioner_A_currency_amount = userSendAmount;
@@ -345,7 +345,7 @@ app.post("/createTransaction", async (req, res) => {
         if (result.message === "OK") {
           addValue(userReceAmount, userAccount);
 
-          content.tx_id = result.data.tx.hash;
+          content.tx_id = result.signature;
           content.transactioner_A_currency_type = "SOL";
           content.transactioner_B_currency_type = "USD";
           content.transactioner_A_currency_amount = userSendAmount;
@@ -364,35 +364,81 @@ app.post("/createTransaction", async (req, res) => {
       console.log("Result" + result.status);
       return 0;
     }
-    // SOL/BTC Yet to complete
+    // SOL/BTC Yet to test
     if (transactionType === "btctosol") {
-      const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
-      const walletInfo = await getPrivateKeyByPubkey(
-        findSpecWallet.wallet_address
-      );
-      const userSendBTC = await btcTransaction(
-        findSpecWallet.wallet_address,
-        "n18Mrmav6WpiL7thrfFDany6cMVDEkXsAA", //which is our company wallet
-        walletInfo.wallet_private_key,
-        userSendAmount
-      );
-      const userReceiveSol = await solanaTrans(
-        "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY", //which is our company wallet
-        findSpecWallet.wallet_address,
-        userReceAmount
-      );
-      content.transactioner_A_currency_type = "BTC";
-      content.transactioner_B_currency_type = "SOL";
-      if (userSendBTC) {
-        content.tx_id = userSendBTC;
-        content.status = "success";
-        const call = await createTransactionRecord(content);
-        if (call.affectedRows > 0) {
-          const verify = await getUserTransaction(id);
-          res.status(200).send({ tx_id: userReceiveSol, verify });
+      const findBTCWallet = wallets.find((w) => w.currency_type === "BTC");
+      const btcAddress = findBTCWallet.wallet_address;
+      const btcWallet = await getPrivateKeyByPubkey(btcAddress);
+      const btcPrivateKey = btcWallet.wallet_private_key;
+
+      const findSOLWallet = wallets.find((w) => w.currency_type === "SOL");
+      const solAddress = findSOLWallet.wallet_address;
+      const solWallet = await getPrivateKeyByPubkey(solAddress);
+      const solPrivateKey = solWallet.wallet_private_key;
+
+      let sellResult;
+      let buyResult;
+      if (userAction === "Buy") {
+        // sell btc to buy sol
+        sellResult = await sellBtc(
+          btcAddress,
+          btcPrivateKey,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        buyResult = await buySol(solAddress, userReceAmount);
+        // TODO : add if condition
+        if (sellResult.status === 201 && buyResult.message === "OK") {
+          content.tx_id = sellResult.date.tx.hash;
+          content.tx_id2 = buyResult.signature;
+          content.transactioner_A_currency_type = "BTC";
+          content.transactioner_B_currency_type = "SOL";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res
+              .status(200)
+              .send({ tx_id: content.tx_id, tx_id2: content.tx_id2, verify });
+          }
+        }
+      } else {
+        // sell sol to buy btc
+        sellResult = await sellSol(
+          solAddress,
+          solPrivateKey,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        buyResult = await buyBtc(btcAddress, userReceAmount);
+        // TODO : add if condition
+        if (sellResult.status === 201 && buyResult.message === "OK") {
+          content.tx_id = sellResult.signature;
+          content.tx_id2 = buyResult.date.tx.hash;
+          content.transactioner_A_currency_type = "SOL";
+          content.transactioner_B_currency_type = "BTC";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res
+              .status(200)
+              .send({ tx_id: content.tx_id, tx_id2: content.tx_id2, verify });
+          }
         }
       }
-      return userReceiveSol;
+      console.log(
+        "sellResult" + sellResult.status ??
+          sellResult.message + "buyResult" + buyResult.message ??
+          buyResult.status
+      );
+      return 0;
     }
     // XRP/USD Yet to complete
     if (transactionType === "usdtoxrp") {
