@@ -237,17 +237,32 @@ app.post("/createTransaction", async (req, res) => {
       //  findSpecWallet.wallet_address
       //);
 	  var userReceiveSatoshi = parseInt(userReceAmount*10000000); //For Buy
-	  //var userSendSatoshi = parseInt(userSendAmount*10000000); //For sell
+	  var userSendSatoshi = parseInt(userSendAmount*10000000); //For sell
 	  
+	  //Buy
       const userReceiveBTC = await btcTransaction(
-        "mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",  //From
-        //findSpecWallet.wallet_address,    //From
-		//findSpecWallet.classicAddress,
-        "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD", //which is our company wallet
+	    //"mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD", //which is our company wallet
+        //"mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",  //To
+        findSpecWallet.wallet_address,    //To
+		//findSpecWallet.classicAddress,    //To       
         findSpecWallet.wallet_private_key,  //Key
-        "cMwdvzjAtNpSt2x1KtnMGDgFJaXg6NnLrSzuaoXXt8RgtLEVRNuN",  //Key
+        //"cMwdvzjAtNpSt2x1KtnMGDgFJaXg6NnLrSzuaoXXt8RgtLEVRNuN",  //Key
         userReceiveSatoshi,
       );
+	  
+	  //Sell
+	  /*
+	  const userReceiveBTC = await btcTransaction(
+        //"mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",  //From
+        findSpecWallet.wallet_address,    //From
+		//findSpecWallet.classicAddress,    //From
+        "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD", //which is our company wallet
+        findSpecWallet.wallet_private_key,  //Key
+        //"cMwdvzjAtNpSt2x1KtnMGDgFJaXg6NnLrSzuaoXXt8RgtLEVRNuN",  //Key
+        userSendSatoshi,
+      );*/
+	  
+	  
       console.log(userReceiveBTC);
       content.transactioner_A_currency_type = "USD";
       content.transactioner_B_currency_type = "BTC";
