@@ -232,17 +232,21 @@ app.post("/createTransaction", async (req, res) => {
       tx_id: "",
     };
     if (transactionType === "usdtobtc") {
-      const findSpecWallet = wallets.find((w) => w.currency_type === "SOL");
+      const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
       //const walletInfo = await getPrivateKeyByPubkey(
       //  findSpecWallet.wallet_address
       //);
+	  var userReceiveSatoshi = parseInt(userReceAmount*10000000); //For Buy
+	  //var userSendSatoshi = parseInt(userSendAmount*10000000); //For sell
+	  
       const userReceiveBTC = await btcTransaction(
-        "mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",
-        //findSpecWallet.wallet_address,
+        "mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",  //From
+        //findSpecWallet.wallet_address,    //From
+		//findSpecWallet.classicAddress,
         "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD", //which is our company wallet
-        //walletInfo.wallet_private_key,
-        "cMwdvzjAtNpSt2x1KtnMGDgFJaXg6NnLrSzuaoXXt8RgtLEVRNuN",
-        userSendAmount
+        findSpecWallet.wallet_private_key,  //Key
+        "cMwdvzjAtNpSt2x1KtnMGDgFJaXg6NnLrSzuaoXXt8RgtLEVRNuN",  //Key
+        userReceiveSatoshi,
       );
       console.log(userReceiveBTC);
       content.transactioner_A_currency_type = "USD";
