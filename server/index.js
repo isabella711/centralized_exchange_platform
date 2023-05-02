@@ -440,13 +440,13 @@ app.post("/createTransaction", async (req, res) => {
       );
       return 0;
     }
-    // XRP/USD Yet to complete
+    // XRP/USD Yet to complete @Isabella
     if (transactionType === "usdtoxrp") {
     }
-    // XRP/BTC Yet to complete
+    // XRP/BTC Yet to complete @Isabella
     if (transactionType === "btctoxrp") {
     }
-    // ETH/USD Yet to complete
+    // ETH/USD Yet to complete @Dave
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
       const wallet_process = subtractValue(userSendAmount, "alice@gmail.com");
@@ -477,7 +477,7 @@ app.post("/createTransaction", async (req, res) => {
       console.log("success");
       return userReceiveEth;
     }
-    // ETH/BTC Yet to complete
+    // ETH/BTC Yet to complete @Dave
     if (transactionType === "btctoeth") {
     }
     // LTC/USD
@@ -540,7 +540,7 @@ app.post("/createTransaction", async (req, res) => {
       console.log("Result" + result.status);
       return 0;
     }
-    // LTC/BTC Yet to complete
+    // LTC/BTC Yet to complete @Joe
     if (transactionType === "btctoltc") {
     }
     res.status(401).send("Internal server error");
