@@ -1,0 +1,12 @@
+Prequiste
+1)　Assume you have download and unzip the package
+2) Assume you have run npm install 
+3) Assume you also run npm under server directory
+
+Start Server
+1) Go to server directory, type
+
+"node index.js"
+
+2) Go to root directory of this application you deployed, type
+"npm start"
