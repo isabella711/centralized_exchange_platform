@@ -247,6 +247,7 @@ app.post("/createTransaction", async (req, res) => {
       tx_id: "",
       tx_id2: "",
     };
+    // BTC/USD
     if (transactionType === "usdtobtc") {
       console.log("Start BTC transaction");
       const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
@@ -304,7 +305,7 @@ app.post("/createTransaction", async (req, res) => {
       console.log("Result" + result.status);
       return 0;
     }
-    // SOL
+    // SOL/USD
     if (transactionType === "usdtosol") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "SOL");
       let result;
@@ -363,7 +364,7 @@ app.post("/createTransaction", async (req, res) => {
       console.log("Result" + result.status);
       return 0;
     }
-    //
+    // ETH/USD
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
       const wallet_process = subtractValue(userSendAmount, "alice@gmail.com");
@@ -394,7 +395,7 @@ app.post("/createTransaction", async (req, res) => {
       console.log("success");
       return userReceiveEth;
     }
-    //
+    // BTC/SOL
     if (transactionType === "btctosol") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
       const walletInfo = await getPrivateKeyByPubkey(
@@ -424,7 +425,7 @@ app.post("/createTransaction", async (req, res) => {
       }
       return userReceiveSol;
     }
-
+    // LTC/USD
     if (transactionType === "usdtoltc") {
       console.log("Start Transaction");
       var result;
