@@ -364,7 +364,43 @@ app.post("/createTransaction", async (req, res) => {
       console.log("Result" + result.status);
       return 0;
     }
-    // ETH/USD
+    // SOL/BTC Yet to complete
+    if (transactionType === "btctosol") {
+      const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
+      const walletInfo = await getPrivateKeyByPubkey(
+        findSpecWallet.wallet_address
+      );
+      const userSendBTC = await btcTransaction(
+        findSpecWallet.wallet_address,
+        "n18Mrmav6WpiL7thrfFDany6cMVDEkXsAA", //which is our company wallet
+        walletInfo.wallet_private_key,
+        userSendAmount
+      );
+      const userReceiveSol = await solanaTrans(
+        "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY", //which is our company wallet
+        findSpecWallet.wallet_address,
+        userReceAmount
+      );
+      content.transactioner_A_currency_type = "BTC";
+      content.transactioner_B_currency_type = "SOL";
+      if (userSendBTC) {
+        content.tx_id = userSendBTC;
+        content.status = "success";
+        const call = await createTransactionRecord(content);
+        if (call.affectedRows > 0) {
+          const verify = await getUserTransaction(id);
+          res.status(200).send({ tx_id: userReceiveSol, verify });
+        }
+      }
+      return userReceiveSol;
+    }
+    // XRP/USD Yet to complete
+    if (transactionType === "usdtoxrp") {
+    }
+    // XRP/BTC Yet to complete
+    if (transactionType === "btctoxrp") {
+    }
+    // ETH/USD Yet to complete
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
       const wallet_process = subtractValue(userSendAmount, "alice@gmail.com");
@@ -395,35 +431,8 @@ app.post("/createTransaction", async (req, res) => {
       console.log("success");
       return userReceiveEth;
     }
-    // BTC/SOL
-    if (transactionType === "btctosol") {
-      const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
-      const walletInfo = await getPrivateKeyByPubkey(
-        findSpecWallet.wallet_address
-      );
-      const userSendBTC = await btcTransaction(
-        findSpecWallet.wallet_address,
-        "n18Mrmav6WpiL7thrfFDany6cMVDEkXsAA", //which is our company wallet
-        walletInfo.wallet_private_key,
-        userSendAmount
-      );
-      const userReceiveSol = await solanaTrans(
-        "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY", //which is our company wallet
-        findSpecWallet.wallet_address,
-        userReceAmount
-      );
-      content.transactioner_A_currency_type = "BTC";
-      content.transactioner_B_currency_type = "SOL";
-      if (userSendBTC) {
-        content.tx_id = userSendBTC;
-        content.status = "success";
-        const call = await createTransactionRecord(content);
-        if (call.affectedRows > 0) {
-          const verify = await getUserTransaction(id);
-          res.status(200).send({ tx_id: userReceiveSol, verify });
-        }
-      }
-      return userReceiveSol;
+    // ETH/BTC Yet to complete
+    if (transactionType === "btctoeth") {
     }
     // LTC/USD
     if (transactionType === "usdtoltc") {
@@ -485,7 +494,9 @@ app.post("/createTransaction", async (req, res) => {
       console.log("Result" + result.status);
       return 0;
     }
-
+    // LTC/BTC Yet to complete
+    if (transactionType === "btctoltc") {
+    }
     res.status(401).send("Internal server error");
   } catch (error) {
     if (error) {
