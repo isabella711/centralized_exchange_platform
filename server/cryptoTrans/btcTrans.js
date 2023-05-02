@@ -27,7 +27,11 @@ const btcTransaction = async (from, to, privateKey, amount) => {
     );
     let availableUTXO = (_availableArr) => {
       let chosenUtxo = _availableArr.find((u) =>
-        u.vout.find((v) => v.value > amount)
+        u.vout.find(
+          (v) =>
+            (v.value > amount || v.value === amount) &&
+            v.scriptpubkey_address === from
+        )
       );
       return chosenUtxo;
     };
@@ -70,9 +74,9 @@ const btcTransaction = async (from, to, privateKey, amount) => {
   const tx = bitcore.Transaction();
   tx.from(utxo);
   tx.to(to, amount - 500);
-  // tx.to("mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG", value - amount);
+  // tx.to("mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG", value - amount - 500);
   tx.change(from);
-  console.log(`getFee`, tx.getFee());
+  // console.log(`getFee`, tx.getFee());
   tx.fee(500);
   tx.sign(privateKeyHex);
 
@@ -132,7 +136,7 @@ module.exports = { btcTransaction, buyBtc, sellBtc };
 //   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
 //   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
 //   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa",
-//   3800
+//   1153540
 // );
 
 // btcTransaction(
