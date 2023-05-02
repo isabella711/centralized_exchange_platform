@@ -17,7 +17,7 @@ function xrpTrans() {
   const rcvAddress = "rNKdWCufKPCXc8v9AwtjYkEFtZyRNTkkkp";
   const senderPublicKey = standby_wallet.publicKey;
   const senderWallet = standby_wallet.address;
-
+  console.log(`senderWallet>>>`, senderWallet);
   async function sendPayment() {
     await client.connect();
     console.log("Creating a payment transaction");
@@ -43,6 +43,6 @@ function xrpTrans() {
   return { msg: "success" };
 }
 
-xrpTrans();
+// xrpTrans();
 
 module.exports = { xrpTrans };

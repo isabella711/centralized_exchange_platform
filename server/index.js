@@ -1,8 +1,8 @@
 const { xrpFetch, xrpTx } = require("./walletGenerater/xrpGen");
 const { ethersFetch } = require("./walletGenerater/ethGen");
 const { ethTransaction } = require("./cryptoTrans/ethTrans");
-const { solanaTrans } = require("./cryptoTrans/solanaTrans");
-const { btcTransaction } = require("./cryptoTrans/btcTrans");
+const { solanaTrans, buySol, sellSol } = require("./cryptoTrans/solanaTrans");
+const { btcTransaction, buyBtc, sellBtc } = require("./cryptoTrans/btcTrans");
 const {
   buyLitecoin,
   sellLitecoin,
@@ -214,8 +214,23 @@ app.get("/userTransaction", async (req, res) => {
 });
 
 app.post("/createTransaction", async (req, res) => {
-  const { id, userAccount, transactionType, userReceAmount, userSendAmount, userAction } = req.body;
-  console.log(`req.body`, id, userAccount, transactionType, userReceAmount, userSendAmount, userAction);
+  const {
+    id,
+    userAccount,
+    transactionType,
+    userReceAmount,
+    userSendAmount,
+    userAction,
+  } = req.body;
+  console.log(
+    `req.body`,
+    id,
+    userAccount,
+    transactionType,
+    userReceAmount,
+    userSendAmount,
+    userAction
+  );
   try {
     const wallets = await getUserWalletByUser(id);
     const currentTime = new Date(Date.now());
@@ -230,57 +245,125 @@ app.post("/createTransaction", async (req, res) => {
       transactioner_B_currency_type: "",
       transactioner_B_currency_amount: userReceAmount,
       tx_id: "",
+      tx_id2: "",
     };
     if (transactionType === "usdtobtc") {
-      const findSpecWallet = wallets.find((w) => w.currency_type === "SOL");
-      //const walletInfo = await getPrivateKeyByPubkey(
-      //  findSpecWallet.wallet_address
-      //);
-      const userReceiveBTC = await btcTransaction(
-        "mnpm35NKRwSCTwTfi7fR9Tc3ABZZiZcg7X",
-        //findSpecWallet.wallet_address,
-        "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD", //which is our company wallet
-        //walletInfo.wallet_private_key,
-        "cMwdvzjAtNpSt2x1KtnMGDgFJaXg6NnLrSzuaoXXt8RgtLEVRNuN",
-        userSendAmount
-      );
-      console.log(userReceiveBTC);
-      content.transactioner_A_currency_type = "USD";
-      content.transactioner_B_currency_type = "BTC";
-      if (userReceiveBTC) {
-        content.tx_id = userReceiveBTC;
-        content.status = "OK";
-        const call = await createTransactionRecord(content);
-        if (call.affectedRows > 0) {
-          const verify = await getUserTransaction(id);
-          res.status(200).send({ tx_id: userReceiveBTC, verify });
+      console.log("Start BTC transaction");
+      const findSpecWallet = wallets.find((w) => w.currency_type === "BTC");
+      let result;
+      const address = findSpecWallet.wallet_address;
+      if (userAction === "Buy") {
+        console.log("Amount:" + userReceAmount.toFixed(8));
+        result = await buyBtc(address, userReceAmount.toFixed(8));
+        if (result.status === 201) {
+          subtractValue(userSendAmount, userAccount);
+
+          content.tx_id = result.date.tx.hash;
+          content.transactioner_A_currency_type = "USD";
+          content.transactioner_B_currency_type = "BTC";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
+        }
+      } else {
+        //Sell
+        const walletInfo = await getPrivateKeyByPubkey(address);
+        const privateKey = walletInfo.wallet_private_key;
+        console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
+        result = await sellBtc(
+          address,
+          privateKey,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        if (result.status === 201) {
+          addValue(userReceAmount, userAccount);
+
+          content.tx_id = result.data.tx.hash;
+          content.transactioner_A_currency_type = "BTC";
+          content.transactioner_B_currency_type = "USD";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = 0;
+          content.transactioner_id_B = id;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          console.log(call);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
         }
       }
-      return userReceiveBTC;
+      console.log("Result" + result.status);
+      return 0;
     }
-    //
+    // SOL
     if (transactionType === "usdtosol") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "SOL");
-      const userReceiveSol = await solanaTrans(
-        "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY", //which is our company wallet
-        findSpecWallet.wallet_address,
-        userReceAmount
-      );
-      console.log(userReceiveSol);
-      content.transactioner_A_currency_type = "USD";
-      content.transactioner_B_currency_type = "SOL";
-      if (userReceiveSol) {
-        content.tx_id = userReceiveSol;
-        content.status = "success";
-        const call = await createTransactionRecord(content);
-        if (call.affectedRows > 0) {
-          const verify = await getUserTransaction(id);
-          res.status(200).send({ tx_id: userReceiveSol, verify });
+      let result;
+      const address = findSpecWallet.wallet_address;
+      if (userAction === "Buy") {
+        console.log("Amount:" + userReceAmount.toFixed(8));
+        result = await buySol(address, userReceAmount);
+        content.transactioner_A_currency_type = "USD";
+        content.transactioner_B_currency_type = "SOL";
+        if (result.message === "OK") {
+          subtractValue(userSendAmount, userAccount);
+
+          content.tx_id = result.date.tx.hash;
+          content.transactioner_A_currency_type = "USD";
+          content.transactioner_B_currency_type = "SOL";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
+        }
+      } else {
+        //Sell
+        const walletInfo = await getPrivateKeyByPubkey(address);
+        const privateKey = walletInfo.wallet_private_key;
+        console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
+        result = await sellSol(
+          privateKey,
+          address,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        if (result.message === "OK") {
+          addValue(userReceAmount, userAccount);
+
+          content.tx_id = result.data.tx.hash;
+          content.transactioner_A_currency_type = "SOL";
+          content.transactioner_B_currency_type = "USD";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = 0;
+          content.transactioner_id_B = id;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          console.log(call);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
         }
       }
-      return userReceiveSol;
+      console.log("Result" + result.status);
+      return 0;
     }
-
+    //
     if (transactionType === "usdtoeth") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "ETH");
       const wallet_process = subtractValue(userSendAmount, "alice@gmail.com");
@@ -342,64 +425,63 @@ app.post("/createTransaction", async (req, res) => {
       return userReceiveSol;
     }
 
-	 if (transactionType === "usdtoltc") {
-       console.log("Start Transaction");
-	   var result;
+    if (transactionType === "usdtoltc") {
+      console.log("Start Transaction");
+      var result;
       const findSpecWallet = wallets.find((w) => w.currency_type === "LTC");
-	    //console.log(findSpecWallet);
-	  const address = findSpecWallet.classicAddress;
-	  console.log("Address:" + address);
-	  if (userAction == "Buy"){
-		//Buy
-		console.log("Amount:" + userReceAmount.toFixed(8));
-		result = await buyLitecoin(address,userReceAmount.toFixed(8));
-		if (result.status == "OK")
-		{
-			subtractValue(userSendAmount, userAccount);
+      //console.log(findSpecWallet);
+      const address = findSpecWallet.classicAddress;
+      console.log("Address:" + address);
+      if (userAction === "Buy") {
+        //Buy
+        console.log("Amount:" + userReceAmount.toFixed(8));
+        result = await buyLitecoin(address, userReceAmount.toFixed(8));
+        if (result.status === "OK") {
+          subtractValue(userSendAmount, userAccount);
 
+          content.transactioner_A_currency_type = "USD";
+          content.transactioner_B_currency_type = "LTC";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          content.tx_id = result.message;
+          const call = await createTransactionRecord(content);
+          console.log(call);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
+        }
+      } else {
+        //Sell
+        console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
+        result = await sellLitecoin(
+          address,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        if (result.status == "OK") {
+          addValue(userReceAmount, userAccount);
 
-			content.transactioner_A_currency_type = "USD";
-			content.transactioner_B_currency_type = "LTC";
-			content.transactioner_A_currency_amount = userSendAmount;
-			content.transactioner_B_currency_amount = userReceAmount;
-			content.transactioner_id_A = id;
-			content.transactioner_id_B = 0;
-			content.status = "OK";
-			content.tx_id = result.message;
-			const call = await createTransactionRecord(content);
-			console.log(call);
-			if (call.affectedRows > 0) {
-			  const verify = await getUserTransaction(id);
-			  res.status(200).send({ tx_id: content.tx_id, verify });
-			}
-	  
-		}
-	  } else {
-		 //Sell
-		console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
-		result = await sellLitecoin(address,parseFloat(userSendAmount).toFixed(8));
-		if (result.status == "OK")
-		{
-			addValue(userReceAmount, userAccount);
-			
-			content.transactioner_A_currency_type = "LTC";
-			content.transactioner_B_currency_type = "USD";
-			content.transactioner_A_currency_amount = userSendAmount;
-			content.transactioner_B_currency_amount = userReceAmount;
-			content.transactioner_id_A = 0;
-			content.transactioner_id_B = id;
-			content.status = "OK";
-			content.tx_id = result.message;
-			const call = await createTransactionRecord(content);
-			console.log(call);
-			if (call.affectedRows > 0) {
-			  const verify = await getUserTransaction(id);
-			  res.status(200).send({ tx_id: content.tx_id, verify });
-			}
-		}
-	  }
-	  
-	  console.log("Result" + result.status);
+          content.transactioner_A_currency_type = "LTC";
+          content.transactioner_B_currency_type = "USD";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = 0;
+          content.transactioner_id_B = id;
+          content.status = "OK";
+          content.tx_id = result.message;
+          const call = await createTransactionRecord(content);
+          console.log(call);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
+        }
+      }
+
+      console.log("Result" + result.status);
       return 0;
     }
 

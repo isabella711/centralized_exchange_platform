@@ -1,5 +1,8 @@
 const web3 = require("@solana/web3.js");
 const bs58 = require("bs58");
+const centralPrivateKey =
+  "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY";
+const centralAddress = "4gL6TNJti8wNmsDJko4qmSeHwhqvp6Vg1YDpU2Qkj2AG";
 
 const solanaTrans = async (secretKey, recevierAddress, amount) => {
   const from = web3.Keypair.fromSecretKey(bs58.decode(secretKey));
@@ -23,19 +26,38 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
   );
 
   // Sign transaction, broadcast, and confirm
-  const signature = await web3.sendAndConfirmTransaction(
-    connection,
-    transaction,
-    [web3.Keypair.fromSecretKey(bs58.decode(secretKey))]
-  );
+  const signature = await web3
+    .sendAndConfirmTransaction(connection, transaction, [
+      web3.Keypair.fromSecretKey(bs58.decode(secretKey)),
+    ])
+    .catch((err) => {
+      console.log(`show err`, err);
+    });
+  if (signature === undefined) {
+    console.log("FAIL");
+    return { message: "FAIL" };
+  }
   console.log("SIGNATURE", signature);
-  return signature;
+  return { signature: signature, message: "OK" };
 };
 
-module.exports = { solanaTrans };
+const buySol = async (toAddress, sendamount) => {
+  return solanaTrans(centralPrivateKey, toAddress, sendamount);
+};
+const sellSol = async (clientPrivateKey, centralAddress, sendamount) => {
+  return solanaTrans(clientPrivateKey, centralAddress, sendamount);
+};
+
+module.exports = { solanaTrans, sellSol, buySol };
 
 // solanaTrans(
 //   "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
 //   "4o11uYWA1ihtcBnAbSF6ZmY94s3Vh3gtZkfCu6hS2wUq",
 //   1
+// );
+
+// solanaTrans(
+//   "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
+//   "GYfiUDTAeXd7idzp3edHdXfP1Bf8eJuMBzJ6q1zqotgH",
+//   0.0854
 // );

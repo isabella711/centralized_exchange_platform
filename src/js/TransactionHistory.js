@@ -65,11 +65,11 @@ const TransactionHistory = () => {
               <td>{row.transactioner_A_currency_type}</td>
               <td>{row.transactioner_B_currency_type}</td>
               <td>
-                {row.transactioner_A_currency_amount.toFixed(2)}{" "}
+                {row.transactioner_A_currency_amount.toFixed(5)}{" "}
                 {row.transactioner_A_currency_type}
               </td>
               <td>
-                {row.transactioner_B_currency_amount.toFixed(2)}{" "}
+                {row.transactioner_B_currency_amount.toFixed(5)}{" "}
                 {row.transactioner_B_currency_type}
               </td>
               <td>{row.transaction_date}</td>
@@ -104,7 +104,7 @@ export default function TransactionHistory() {
   const navigate = useNavigate();
 
   console.log(`>>>transHistory`, transHistory);
-  console.log(`<<<moment().format(`);
+  console.log(`<<<moment().format(`, Date("Apr-30-2023 03:16:48 PM +UTC"));
   return (
     <div>
       <h1 style={{ fontSize: 40 }}>Transaction History</h1>
@@ -169,6 +169,7 @@ function TransactionTable(props) {
     }
     return element.time;
   };
+
   const tableRows = transHistory.map((element) => {
     return (
       <tr>

@@ -1,7 +1,9 @@
 const axios = require("axios");
 const bitcore = require("bitcore-lib");
 // let address ='mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD'
-
+const centralAddress = ' "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD"';
+const centralAddressPrivateKey =
+  "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa";
 const btcTransaction = async (from, to, privateKey, amount) => {
   const searchAvailableUTXO = (allOutputArry) => {
     let unspentOutputArr = allOutputArry.filter((utxo) =>
@@ -23,7 +25,6 @@ const btcTransaction = async (from, to, privateKey, amount) => {
     let availableArr = unspentOutputArr.filter((u) =>
       availableTxid.includes(u.txid)
     );
-    console.log(`availableArr>>>`, availableArr);
     let availableUTXO = (_availableArr) => {
       let chosenUtxo = _availableArr.find((u) =>
         u.vout.find((v) => v.value > amount)
@@ -68,9 +69,11 @@ const btcTransaction = async (from, to, privateKey, amount) => {
 
   const tx = bitcore.Transaction();
   tx.from(utxo);
-  tx.to(to, amount - 200);
+  tx.to(to, amount - 500);
+  // tx.to("mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG", value - amount);
   tx.change(from);
-  tx.fee(200);
+  console.log(`getFee`, tx.getFee());
+  tx.fee(500);
   tx.sign(privateKeyHex);
 
   console.log(`toObject`, tx.toObject());
@@ -89,9 +92,27 @@ const btcTransaction = async (from, to, privateKey, amount) => {
       console.log(tx.serialize());
     });
   return result;
+  // return;
 };
 
-module.exports = { btcTransaction };
+const buyBtc = async (toAddress, sendamount) => {
+  return btcTransaction(
+    centralAddress,
+    toAddress,
+    centralAddressPrivateKey,
+    sendamount
+  );
+};
+const sellBtc = async (sellAddress, clientPrivateKey, sendamount) => {
+  return btcTransaction(
+    sellAddress,
+    centralAddress,
+    clientPrivateKey,
+    sendamount
+  );
+};
+
+module.exports = { btcTransaction, buyBtc, sellBtc };
 
 // btcTransaction(
 //   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
@@ -111,14 +132,14 @@ module.exports = { btcTransaction };
 //   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
 //   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
 //   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa",
-//   4000
+//   3800
 // );
 
 // btcTransaction(
 //   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
 //   "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG",
 //   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa",
-//   4500
+//   11100
 // );
 
 // btcTransaction(
