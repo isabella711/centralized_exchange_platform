@@ -17,6 +17,7 @@ const TransactionHistory = () => {
   const userInfo = useSelector((state) => state.user);
   const { transactionHistory } = useSelector((state) => state.user);
   const [transHistory, setTransHistory] = useState([]);
+  const { externalTransHistory } = useGetTrans(transactionHistory);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -529,24 +529,6 @@ app.post("/api/sendltcaddress", async (req, res) => {
   }
 });
 
-// app.post("/addvalue", (req, res) => {
-//   const { email, value } = req.body;
-
-//   // Check if the user exists and the password matches
-//   const query = "UPDATE users SET balance = balance + ? WHERE email = ?";
-//   connection.query(query, [value, email], (err, result) => {
-//     if (err) {
-//       res.status(500).send("An internal server error occurred");
-//     } else {
-//       if (result.affectedRows > 0) {
-//         res.status(200).send("Updated");
-//       } else {
-//         res.status(401).send("Incorrect email");
-//       }
-//     }
-//   });
-// });
-
 app.post("/api/addvalue", (req, res) => {
   const { email, value } = req.body;
   // Insert a new user into the MySQL database
