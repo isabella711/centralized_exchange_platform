@@ -1,4 +1,4 @@
-//rcvAddress:rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe
+//Address:rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt
 const RippleAPI = require("ripple-lib");
 const { Client, xrpToDrops, dropsToXrp } = require("xrpl");
 const xrpl = require("xrpl");
@@ -25,7 +25,7 @@ async function xrpTrans(rcvAddress, senderPrivateKey, amount) {
     const prepared = await client.autofill({
       TransactionType: "Payment",
       Account: senderWallet,
-      Amount: xrpToDrops(amount),
+      Amount: xrpToDrops(amount.toFixed(6)),
       Destination: rcvAddress,
     });
     console.log(`prepared rcvAddress is: `, rcvAddress);
@@ -47,11 +47,11 @@ async function xrpTrans(rcvAddress, senderPrivateKey, amount) {
 }
 
 const buyXrp = async (rcvAddress, amount) => {
-  xrpTrans(rcvAddress, centralPrivateKey, amount);
+  return xrpTrans(rcvAddress, centralPrivateKey, amount);
 };
 
 const sellXrp = async (senderPrivateKey, amount) => {
-  xrpTrans(centralAddress, senderPrivateKey, amount);
+  return xrpTrans(centralAddress, senderPrivateKey, amount);
 };
 
 // xrpTrans();

@@ -3,6 +3,8 @@ const { ethersFetch } = require("./walletGenerater/ethGen");
 const { ethTransaction } = require("./cryptoTrans/ethTrans");
 const { solanaTrans, buySol, sellSol } = require("./cryptoTrans/solanaTrans");
 const { btcTransaction, buyBtc, sellBtc } = require("./cryptoTrans/btcTrans");
+const { xrpTransaction, buyXrp, sellXrp } = require("./cryptoTrans/xrpTrans");
+
 const {
   buyLitecoin,
   sellLitecoin,
@@ -442,9 +444,137 @@ app.post("/createTransaction", async (req, res) => {
     }
     // XRP/USD Yet to complete @Isabella
     if (transactionType === "usdtoxrp") {
+      const findSpecWallet = wallets.find((w) => w.currency_type === "XRP");
+      let result;
+      const address = findSpecWallet.classicAddress;
+      if (userAction === "Buy") {
+        console.log("Amount:" + userReceAmount.toFixed(8));
+        result = await buyXrp(address, userReceAmount);
+        content.transactioner_A_currency_type = "USD";
+        content.transactioner_B_currency_type = "XRP";
+        console.log("result.message: " + result.msg);
+        if (result.msg === "OK") {
+          subtractValue(userSendAmount, userAccount);
+
+          content.tx_id = result.tx;
+          content.transactioner_A_currency_type = "USD";
+          content.transactioner_B_currency_type = "XRP";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
+        }
+      } else {
+        //Sell
+        const walletInfo = await getPrivateKeyByPubkey(address);
+        const privateKey = walletInfo.wallet_private_key;
+        console.log("Amount:" + parseFloat(userSendAmount).toFixed(6));
+        result = await sellXrp(
+          privateKey,
+          parseFloat(userSendAmount).toFixed(6)
+        );
+        if (result.msg === "OK") {
+          addValue(userReceAmount, userAccount);
+
+          content.tx_id = result.signature;
+          content.transactioner_A_currency_type = "XRP";
+          content.transactioner_B_currency_type = "USD";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = 0;
+          content.transactioner_id_B = id;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          console.log(call);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res.status(200).send({ tx_id: content.tx_id, verify });
+          }
+        }
+      }
+      console.log("Result" + result.status);
+      return 0;
     }
     // XRP/BTC Yet to complete @Isabella
     if (transactionType === "btctoxrp") {
+      const findBTCWallet = wallets.find((w) => w.currency_type === "BTC");
+      const btcAddress = findBTCWallet.wallet_address;
+      const btcWallet = await getPrivateKeyByPubkey(btcAddress);
+      const btcPrivateKey = btcWallet.wallet_private_key;
+
+      const findXRPWallet = wallets.find((w) => w.currency_type === "XRP");
+      const xrpAddress = findXRPWallet.wallet_address;
+      const xrpWallet = await getPrivateKeyByPubkey(xrpAddress);
+      const xrpPrivateKey = xrpWallet.wallet_private_key;
+
+      let sellResult;
+      let buyResult;
+      if (userAction === "Buy") {
+        // sell btc to buy xrp
+        sellResult = await sellBtc(
+          btcAddress,
+          btcPrivateKey,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        buyResult = await buyXrp(xrpAddress, userReceAmount);
+        // TODO : add if condition
+        if (sellResult.status === 201 && buyResult.msg === "OK") {
+          content.tx_id = sellResult.date.tx.hash;
+          content.tx_id2 = buyResult.signature;
+          content.transactioner_A_currency_type = "BTC";
+          content.transactioner_B_currency_type = "XRP";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res
+              .status(200)
+              .send({ tx_id: content.tx_id, tx_id2: content.tx_id2, verify });
+          }
+        }
+      } else {
+        // sell xrp to buy btc
+        sellResult = await sellXrp(
+          xrpPrivateKey,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        buyResult = await buyBtc(btcAddress, userReceAmount);
+        // TODO : add if condition
+        if (sellResult.status === 201 && buyResult.msg === "OK") {
+          content.tx_id = sellResult.signature;
+          content.tx_id2 = buyResult.date.tx.hash;
+          content.transactioner_A_currency_type = "XRP";
+          content.transactioner_B_currency_type = "BTC";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res
+              .status(200)
+              .send({ tx_id: content.tx_id, tx_id2: content.tx_id2, verify });
+          }
+        }
+      }
+      console.log(
+        "sellResult" + sellResult.status ??
+          sellResult.message + "buyResult" + buyResult.message ??
+          buyResult.status
+      );
+      return 0;
     }
     // ETH/USD Yet to complete @Dave
     if (transactionType === "usdtoeth") {
