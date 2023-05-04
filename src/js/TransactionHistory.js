@@ -61,7 +61,7 @@ const TransactionHistory = () => {
           </tr>
         </thead>
         <tbody>
-          {transHistory.map((row) => (
+          {transHistory?.map((row) => (
             <tr key={row.tx_id}>
               <td>{row.transactioner_A_currency_type}</td>
               <td>{row.transactioner_B_currency_type}</td>
@@ -171,7 +171,7 @@ function TransactionTable(props) {
     return element.time;
   };
 
-  const tableRows = transHistory.map((element) => {
+  const tableRows = transHistory?.map((element) => {
     return (
       <tr>
         <td style={{ width: "30px" }}>{element.type.toString()}</td>
