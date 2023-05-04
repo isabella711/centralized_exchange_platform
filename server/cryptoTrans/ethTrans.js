@@ -5,16 +5,16 @@ const centralPrivateKey =
 const centralAddress = "0x4C18f2a647a57651D6755a959C988Eb8bf4f5Aaf";
 
 const ethTransaction = async (
-  senderAddress,
+  {senderAddress,
   recipientAddress,
   amount,
-  senderPrivateKey
+  senderPrivateKey}
 ) => {
   // Connect to the Ethereum network
   const web3 = new Web3(
     "https://sepolia.infura.io/v3/40745b7b9da3492dbeb0cd9dff114a2d"
   );
-  console.log(amount);
+  console.log("Amount",amount);
 
   // Create a transaction
   const txObject = {
@@ -41,19 +41,19 @@ const ethTransaction = async (
 
 const buyEth = async (clientAddress, sendamount) => {
   return ethTransaction(
-    centralAddress,
-    clientAddress,
-    sendamount,
-    centralPrivateKey
+    {senderAddress:centralAddress,
+    recipientAddress:clientAddress,
+    amount:sendamount,
+    senderPrivateKey:centralPrivateKey}
   );
 };
 
-const sellEth = async (clientAddress, sendamount, clientPrivateKey) => {
+const sellEth = async ({clientAddress, sendamount, clientPrivateKey}) => {
   return ethTransaction(
-    clientAddress,
-    centralAddress,
-    sendamount,
-    clientPrivateKey
+    {senderAddress:clientAddress,
+    recipientAddress:centralAddress,
+    amount:sendamount,
+    senderPrivateKey:clientPrivateKey}
   );
 };
 
