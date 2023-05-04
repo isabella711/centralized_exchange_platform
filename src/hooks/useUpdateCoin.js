@@ -2,11 +2,10 @@ import { useState, useCallback } from "react";
 
 export const useUpdateCoin = (coinType) => {
   let ws = new WebSocket(`wss://stream.binance.com:9443/ws/${coinType}`);
-  const [coinInfo, setCoinInfo] = useState();
+  const [btcCurrent, setBtcCurrent] = useState();
   ws.onmessage = (event) => {
-    setCoinInfo(JSON.parse(event.data).p);
-    //console.log(JSON.parse(event.data));
+    setBtcCurrent(JSON.parse(event.data).a);
   };
   //console.log(coinInfo);
-  return coinInfo;
+  return btcCurrent;
 };
