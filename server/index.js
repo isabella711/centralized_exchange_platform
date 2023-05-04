@@ -261,7 +261,7 @@ app.post("/createTransaction", async (req, res) => {
         if (result.status === 201) {
           subtractValue(userSendAmount, userAccount);
 
-          content.tx_id = result.date.tx.hash;
+          content.tx_id = result.data.tx.hash;
           content.transactioner_A_currency_type = "USD";
           content.transactioner_B_currency_type = "BTC";
           content.transactioner_A_currency_amount = userSendAmount;
@@ -337,7 +337,7 @@ app.post("/createTransaction", async (req, res) => {
       } else {
         //Sell
         const walletInfo = await getPrivateKeyByPubkey(address);
-        const privateKey = walletInfo.wallet_private_key;
+        const privateKey = walletInfo[0].wallet_private_key;
         console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
         result = await sellSol(
           privateKey,
@@ -390,7 +390,7 @@ app.post("/createTransaction", async (req, res) => {
         buyResult = await buySol(solAddress, userReceAmount);
         // TODO : add if condition
         if (sellResult.status === 201 && buyResult.message === "OK") {
-          content.tx_id = sellResult.date.tx.hash;
+          content.tx_id = sellResult.data.tx.hash;
           content.tx_id2 = buyResult.signature;
           content.transactioner_A_currency_type = "BTC";
           content.transactioner_B_currency_type = "SOL";
@@ -418,7 +418,7 @@ app.post("/createTransaction", async (req, res) => {
         // TODO : add if condition
         if (sellResult.status === 201 && buyResult.message === "OK") {
           content.tx_id = sellResult.signature;
-          content.tx_id2 = buyResult.date.tx.hash;
+          content.tx_id2 = buyResult.data.tx.hash;
           content.transactioner_A_currency_type = "SOL";
           content.transactioner_B_currency_type = "BTC";
           content.transactioner_A_currency_amount = userSendAmount;
@@ -446,17 +446,16 @@ app.post("/createTransaction", async (req, res) => {
     if (transactionType === "usdtoxrp") {
       const findSpecWallet = wallets.find((w) => w.currency_type === "XRP");
       let result;
-      const address = findSpecWallet.classicAddress;
+      const address = findSpecWallet.wallet_address;
       if (userAction === "Buy") {
         console.log("Amount:" + userReceAmount.toFixed(8));
         result = await buyXrp(address, userReceAmount);
         content.transactioner_A_currency_type = "USD";
         content.transactioner_B_currency_type = "XRP";
-        console.log("result.message: " + result.msg);
         if (result.msg === "OK") {
           subtractValue(userSendAmount, userAccount);
 
-          content.tx_id = result.tx;
+          content.tx_id = result.tx.result.hash;
           content.transactioner_A_currency_type = "USD";
           content.transactioner_B_currency_type = "XRP";
           content.transactioner_A_currency_amount = userSendAmount;
@@ -473,16 +472,18 @@ app.post("/createTransaction", async (req, res) => {
       } else {
         //Sell
         const walletInfo = await getPrivateKeyByPubkey(address);
-        const privateKey = walletInfo.wallet_private_key;
+        const privateKey = walletInfo[0].seed;
         console.log("Amount:" + parseFloat(userSendAmount).toFixed(6));
+        console.log(`privateKey>>>`, privateKey, `walletInfo`, walletInfo);
         result = await sellXrp(
           privateKey,
           parseFloat(userSendAmount).toFixed(6)
         );
+        console.log(`result>>>`, result);
         if (result.msg === "OK") {
           addValue(userReceAmount, userAccount);
 
-          content.tx_id = result.signature;
+          content.tx_id = result.tx.result.hash;
           content.transactioner_A_currency_type = "XRP";
           content.transactioner_B_currency_type = "USD";
           content.transactioner_A_currency_amount = userSendAmount;
@@ -509,9 +510,13 @@ app.post("/createTransaction", async (req, res) => {
       const btcPrivateKey = btcWallet.wallet_private_key;
 
       const findXRPWallet = wallets.find((w) => w.currency_type === "XRP");
-      const xrpAddress = findXRPWallet.wallet_address;
+      const xrpAddress = findXRPWallet.seed;
+
       const xrpWallet = await getPrivateKeyByPubkey(xrpAddress);
-      const xrpPrivateKey = xrpWallet.wallet_private_key;
+
+      console.log(`xrpWallet>>>`, xrpWallet);
+
+      const xrpPrivateKey = xrpWallet.seed;
 
       let sellResult;
       let buyResult;
@@ -525,7 +530,7 @@ app.post("/createTransaction", async (req, res) => {
         buyResult = await buyXrp(xrpAddress, userReceAmount);
         // TODO : add if condition
         if (sellResult.status === 201 && buyResult.msg === "OK") {
-          content.tx_id = sellResult.date.tx.hash;
+          content.tx_id = sellResult.tx.result.hash;
           content.tx_id2 = buyResult.signature;
           content.transactioner_A_currency_type = "BTC";
           content.transactioner_B_currency_type = "XRP";
@@ -552,7 +557,7 @@ app.post("/createTransaction", async (req, res) => {
         // TODO : add if condition
         if (sellResult.status === 201 && buyResult.msg === "OK") {
           content.tx_id = sellResult.signature;
-          content.tx_id2 = buyResult.date.tx.hash;
+          content.tx_id2 = buyResult.tx.result.hash;
           content.transactioner_A_currency_type = "XRP";
           content.transactioner_B_currency_type = "BTC";
           content.transactioner_A_currency_amount = userSendAmount;
