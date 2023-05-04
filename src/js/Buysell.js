@@ -109,10 +109,23 @@ const PaymentCont = (props) => {
     if (error !== "") {
       return;
     }
-
+    if (
+      selectedBuyCryto ===
+      `btcto${props.id.split("usdt")[0].substring(0, 3).toLowerCase()}`
+    ) {
+      crytotype = `btcto${props.id
+        .split("usdt")[0]
+        .substring(0, 3)
+        .toLowerCase()}`;
+    }
     setAction("bought");
-
-    console.log("hi");
+    const userReceAmount =
+      selectedBuyCryto ===
+      `btcto${props.id.split("usdt")[0].substring(0, 3).toLowerCase()}`
+        ? inputPrice * btcCurrent
+        : inputPrice / coinTrim;
+    const userSendAmount = inputPrice;
+    console.log("buy");
 
     const response = await axios.post(
       "http://localhost:4000/createTransaction/",
@@ -120,8 +133,8 @@ const PaymentCont = (props) => {
         id: userInfo.user?.user_id,
         userAccount: userInfo.user.email_address,
         transactionType: crytotype,
-        userReceAmount: inputPrice / coinTrim,
-        userSendAmount: inputPrice,
+        userReceAmount: userReceAmount,
+        userSendAmount: userSendAmount,
         userAction: "Buy",
       }
     );
@@ -141,6 +154,22 @@ const PaymentCont = (props) => {
       return;
     }
     setAction("sold");
+    if (
+      selectedSellCryto ===
+      `btcto${props.id.split("usdt")[0].substring(0, 3).toLowerCase()}`
+    ) {
+      crytotype = `btcto${props.id
+        .split("usdt")[0]
+        .substring(0, 3)
+        .toLowerCase()}`;
+    }
+    setAction("bought");
+    const userReceAmount =
+      selectedSellCryto ===
+      `btcto${props.id.split("usdt")[0].substring(0, 3).toLowerCase()}`
+        ? (sellInputPrice * coinTrim) / btcCurrent
+        : sellInputPrice * coinTrim;
+    const userSendAmount = sellInputPrice;
 
     console.log("sold");
 
@@ -150,8 +179,8 @@ const PaymentCont = (props) => {
         id: userInfo.user?.user_id,
         userAccount: userInfo.user.email_address,
         transactionType: crytotype,
-        userReceAmount: sellInputPrice * coinTrim,
-        userSendAmount: sellInputPrice,
+        userReceAmount: userReceAmount,
+        userSendAmount: userSendAmount,
         userAction: "Sell",
       }
     );
