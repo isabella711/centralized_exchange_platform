@@ -633,6 +633,77 @@ app.post("/createTransaction", async (req, res) => {
     }
     // ETH/BTC Yet to complete @Dave
     if (transactionType === "btctoeth") {
+      const findBTCWallet = wallets.find((w) => w.currency_type === "BTC");
+      const btcAddress = findBTCWallet.wallet_address;
+      const btcWallet = await getPrivateKeyByPubkey(btcAddress);
+      const btcPrivateKey = btcWallet.wallet_private_key;
+
+      const findETHWallet = wallets.find((w) => w.currency_type === "ETH");
+      const ethAddress = findETHWallet.wallet_address;
+      const ethWallet = await getPrivateKeyByPubkey(ethAddress);
+      const ethPrivateKey = ethWallet.wallet_private_key;
+
+      let sellResult;
+      let buyResult;
+      if (userAction === "Buy") {
+        // sell btc to buy xrp
+        sellResult = await sellBtc(
+          btcAddress,
+          btcPrivateKey,
+          parseFloat(userSendAmount).toFixed(8)
+        );
+        buyResult = await buyEth(ethAddress,userReceAmount.toFixed(8));
+        // TODO : add if condition
+        if (sellResult.status === 201 && buyResult.msg === "OK") {
+          content.tx_id = sellResult.date.tx.hash;
+          content.tx_id2 = buyResult.txHash.blockHash;
+          content.transactioner_A_currency_type = "BTC";
+          content.transactioner_B_currency_type = "ETH";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res
+              .status(200)
+              .send({ tx_id: content.tx_id, tx_id2: content.tx_id2, verify });
+          }
+        }
+      } else {
+        // sell xrp to buy btc
+        sellResult = await sellEth(
+          {clientAddress:ethAddress, sendamount:parseFloat(userSendAmount).toFixed(8), clientPrivateKey:ethPrivateKey}
+        );
+        buyResult = await buyBtc(btcAddress, userReceAmount);
+        // TODO : add if condition
+        if (sellResult.status === 201 && buyResult.msg === "OK") {
+          content.tx_id = sellResult.txHash.blockHash;
+          content.tx_id2 = buyResult.date.tx.hash;
+          content.transactioner_A_currency_type = "ETH";
+          content.transactioner_B_currency_type = "BTC";
+          content.transactioner_A_currency_amount = userSendAmount;
+          content.transactioner_B_currency_amount = userReceAmount;
+          content.transactioner_id_A = id;
+          content.transactioner_id_B = 0;
+          content.status = "OK";
+          const call = await createTransactionRecord(content);
+          if (call.affectedRows > 0) {
+            const verify = await getUserTransaction(id);
+            res
+              .status(200)
+              .send({ tx_id: content.tx_id, tx_id2: content.tx_id2, verify });
+          }
+        }
+      }
+      console.log(
+        "sellResult" + sellResult.status ??
+          sellResult.message + "buyResult" + buyResult.message ??
+          buyResult.status
+      );
+      return 0;
     }
     // LTC/USD
     if (transactionType === "usdtoltc") {
