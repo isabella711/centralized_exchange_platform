@@ -299,7 +299,7 @@ const PaymentCont = (props) => {
                           {inputPrice ?? 0} ={" "}
                           {selectedBuyCryto.includes("usd")
                             ? inputPrice / coinTrim
-                            : coinTrim / btcCurrent}{" "}
+                            : (btcCurrent * inputPrice) / coinTrim}{" "}
                           {selectedBuyCryto.includes("usd")
                             ? props.id
                                 .split("usdt")[0]
