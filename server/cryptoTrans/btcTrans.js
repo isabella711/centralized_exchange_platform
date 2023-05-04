@@ -4,6 +4,10 @@ const bitcore = require("bitcore-lib");
 const centralAddress = ' "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD"';
 const centralAddressPrivateKey =
   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa";
+const spareAddressPrivateKey =
+  "ed595f2318c5fd44c5643a11f06442f20104eb218e8099bc6280605f9550a6bd";
+const spareAddress = "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG";
+
 const btcTransaction = async (from, to, privateKey, amount) => {
   const searchAvailableUTXO = (allOutputArry) => {
     let unspentOutputArr = allOutputArry.filter((utxo) =>
@@ -74,27 +78,28 @@ const btcTransaction = async (from, to, privateKey, amount) => {
   const tx = bitcore.Transaction();
   tx.from(utxo);
   tx.to(to, amount - 500);
-  // tx.to("mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG", value - amount - 500);
   tx.change(from);
   // console.log(`getFee`, tx.getFee());
   tx.fee(500);
   tx.sign(privateKeyHex);
 
   console.log(`toObject`, tx.toObject());
-  tx.serialize();
+  // tx.serialize();
 
-  console.log(`tx.serialize`, tx.serialize());
+  // console.log(`tx.serialize`, tx.serialize());
 
   // push rawtransaction:
   const result = await axios
     .post(
       `https://api.blockcypher.com/v1/btc/test3/txs/push?token=242062db6a9044d3a7c63e7cc8fbb35a`,
-      { tx: tx.serialize() }
+      { tx: tx.toString() }
     )
     .then((res) => {
       console.log(`res>>>>`, res);
-      console.log(tx.serialize());
+      // console.log(tx.serialize());
+      return res;
     });
+
   return result;
   // return;
 };
@@ -129,7 +134,7 @@ module.exports = { btcTransaction, buyBtc, sellBtc };
 //   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
 //   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
 //   "8ef01556f6fffbd5dd7f45ef6bcfe947781df25a92f5412661f1e35b2272aed0",
-//   5000
+//   68852
 // );
 
 // btcTransaction(
