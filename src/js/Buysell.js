@@ -25,7 +25,8 @@ const PaymentCont = (props) => {
   const [sellInputPrice, setSellInputPrice] = useState(0);
   const [error, setError] = useState("");
   const [action, setAction] = useState("");
-  //const [crytotype, getCrytotype] = useState("");
+  const [selectedBuyCryto, setSelectedBuyCryto] = useState("");
+  const [selectedSellCryto, setSelectedSellCryto] = useState("");
   var crytotype = "";
   var currencyLabel = "";
 
@@ -37,7 +38,6 @@ const PaymentCont = (props) => {
   const chooseCoin = props.id.split("usdt")[0].substring(0, 3);
   // if (coinInfo) {
   // console.log(`{ l, h, P }`, coinInfo?.l, coinInfo?.h, coinInfo?.P);
-
   const lowPrice = Number(coinInfo?.l ?? 0).toFixed(2) ?? "-.--";
   const highPrice = Number(coinInfo?.h ?? 0).toFixed(2) ?? "-.--";
   const priceChange = Number(coinInfo?.P ?? 0).toFixed(2) ?? "-.--";
@@ -330,11 +330,15 @@ const PaymentCont = (props) => {
                             style={{ fontSize: 20 }}
                             className="form-select form-control"
                             id="inputGroupSelect02"
+                            value={selectedBuyCryto}
+                            onChange={(e) =>
+                              setSelectedBuyCryto(e.target.value)
+                            }
                           >
                             <option selected>
                               Please choose coin for exchange
                             </option>
-                            <option value="1">USD</option>
+                            <option value={crytotype}>USD</option>
                             <option value="2">Bitcoin</option>
                           </select>{" "}
                         </div>
@@ -409,9 +413,13 @@ const PaymentCont = (props) => {
                             style={{ fontSize: 20 }}
                             className="form-select form-control"
                             id="inputGroupSelect02"
+                            value={selectedSellCryto}
+                            onChange={(e) =>
+                              setSelectedSellCryto(e.target.value)
+                            }
                           >
                             <option selected>Please choose</option>
-                            <option value="1">
+                            <option value={crytotype}>
                               {" "}
                               {props.id
                                 .split("usdt")[0]
