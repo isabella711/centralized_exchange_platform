@@ -29,6 +29,7 @@ import Deposit from "./components/DStripeContainer";
 import Payment from "./js/Payment";
 import Transaction from "./js/Transaction";
 import { createBrowserRouter } from "react-router-dom";
+import ProtectedLayout from "./components/ProtectedLayout";
 
 export default function App() {
   const { login, user, authenticated } = useAuth();
@@ -62,10 +63,12 @@ export default function App() {
             </div>
           }
         />
-        <Route path="/transactionHistory" element={<TransactionHistory />} />
-        <Route path="/deposit" element={<Deposit />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/buysell/:id" element={<Buysell />} />
+        <Route element={<ProtectedLayout userInfo={userInfo} />}>
+          <Route path="/transactionHistory" element={<TransactionHistory />} />
+          <Route path="/deposit" element={<Deposit />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/buysell/:id" element={<Buysell />} />
+        </Route>
       </Route>
     )
   );
