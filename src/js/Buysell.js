@@ -21,6 +21,7 @@ const PaymentCont = (props) => {
   console.log(`>>>`, coinInfo);
   const userInfo = useSelector((state) => state.user);
   const [inputPrice, setInputPrice] = useState(0);
+  const [coinNumber, setCoinNumber] = useState(0);
   const [sellInputPrice, setSellInputPrice] = useState(0);
   const [error, setError] = useState("");
   const [action, setAction] = useState("");
@@ -45,34 +46,29 @@ const PaymentCont = (props) => {
   const navigate = useNavigate();
   console.log("buysell amount price: " + coinInfo);
   console.log("buysell id: " + id);
-  console.log(userInfo.user.user_id);
-  
+  console.log(userInfo.user?.user_id);
+
   var get_transact = "";
-   if(id==="ethusdt@ticker")
-   {	   
-	   crytotype = "usdtoeth";
-	   currencyLabel = "ETH";
-   };
-   if (id==="btcusdt@ticker")
-   {
-	   crytotype = "usdtobtc";
-	   currencyLabel = "BTC";
-	};
-   if (id==="solusdt@ticker")
-   {
-	   crytotype = "usdtosol";
-	   currencyLabel = "SOL";
-	   };
-  if (id==="xrpusdt@ticker")
-  {
-	  crytotype = "usdtoxrp";
-	  currencyLabel = "XRP";
-   };
-  if (id==="ltcusdt@ticker")
-  {
-	  crytotype = "usdtoltc";
-	  currencyLabel = "LTC";
-   };
+  if (id === "ethusdt@ticker") {
+    crytotype = "usdtoeth";
+    currencyLabel = "ETH";
+  }
+  if (id === "btcusdt@ticker") {
+    crytotype = "usdtobtc";
+    currencyLabel = "BTC";
+  }
+  if (id === "solusdt@ticker") {
+    crytotype = "usdtosol";
+    currencyLabel = "SOL";
+  }
+  if (id === "xrpusdt@ticker") {
+    crytotype = "usdtoxrp";
+    currencyLabel = "XRP";
+  }
+  if (id === "ltcusdt@ticker") {
+    crytotype = "usdtoltc";
+    currencyLabel = "LTC";
+  }
 
   useEffect(() => {
     if (userInfo.balance < inputPrice) {
@@ -82,60 +78,65 @@ const PaymentCont = (props) => {
     setError("");
   }, [inputPrice]);
 
-  const pressBuy = (e) => {
+  const pressBuy = async (e) => {
     e.preventDefault();
     store.dispatch(usersLoading("pending"));
     console.log("press detected");
-	
+
     if (error !== "") {
       return;
     }
-	
-	setAction("bought");
-	
+
+    setAction("bought");
+
     console.log("hi");
 
-    const response = axios.post("http://localhost:4000/createTransaction/", {
-      id: userInfo.user.user_id,
-	  userAccount: userInfo.user.email_address,
-      transactionType: crytotype,
-      userReceAmount: inputPrice / coinTrim,
-      userSendAmount: inputPrice,
-	  userAction: "Buy",
-    });
+    const response = await axios.post(
+      "http://localhost:4000/createTransaction/",
+      {
+        id: userInfo.user?.user_id,
+        userAccount: userInfo.user.email_address,
+        transactionType: crytotype,
+        userReceAmount: inputPrice / coinTrim,
+        userSendAmount: inputPrice,
+        userAction: "Buy",
+      }
+    );
     setTimeout(() => {
       store.dispatch(stopLoading("idle"));
       props.setSuccess(true);
     }, [5000]);
-    console.log(`hi>>>`, response.data);
+    console.log(`hi>>>`, response);
     console.log("hi");
   };
-  
-  const pressSell = (e) => {
+  const pressSell = async (e) => {
     e.preventDefault();
     store.dispatch(usersLoading("pending"));
     console.log("press detected");
-	
+
     if (error !== "") {
       return;
     }
-	setAction("sold");
-	
+    setAction("sold");
+
     console.log("sold");
 
-    const response = axios.post("http://localhost:4000/createTransaction/", {
-      id: userInfo.user.user_id,
-	  userAccount: userInfo.user.email_address,
-      transactionType: crytotype,
-      userReceAmount: sellInputPrice * coinTrim,
-      userSendAmount: sellInputPrice,
-	  userAction: "Sell"
-    });
+    const response = await axios.post(
+      "http://localhost:4000/createTransaction/",
+      {
+        id: userInfo.user?.user_id,
+        userAccount: userInfo.user.email_address,
+        transactionType: crytotype,
+        userReceAmount: sellInputPrice * coinTrim,
+        userSendAmount: sellInputPrice,
+        userAction: "Sell",
+      }
+    );
     setTimeout(() => {
       store.dispatch(stopLoading("idle"));
       props.setSuccess(true);
     }, [5000]);
-    console.log(`hi>>>`, response.data);
+    console.log(`hi>>>`, response);
     console.log("hi");
   };
 
@@ -185,7 +186,9 @@ const PaymentCont = (props) => {
             style={{ display: "flex" }}
             class="center"
           />
-          <h2 style={{ marginLeft: 0, marginRight: 0 }}>You just {action} some {currencyLabel}</h2>
+          <h2 style={{ marginLeft: 0, marginRight: 0 }}>
+            You just {action} some {currencyLabel}
+          </h2>
           <button
             style={{ maxWidth: "600px", marginLeft: 15 }}
             class="button1"
@@ -294,14 +297,16 @@ const PaymentCont = (props) => {
                     aria-labelledby="faq_tab_1-tab"
                   >
                     {inputPrice ? (
-                      <p>
-                        Exchange Rate: $ {inputPrice ?? 0} ={" "}
-                        {inputPrice / coinTrim}{" "}
-                        {props.id
-                          .split("usdt")[0]
-                          .substring(0, 3)
-                          .toUpperCase()}
-                      </p>
+                      <>
+                        <p>
+                          Buy Rate: $ {inputPrice ?? 0} ={" "}
+                          {inputPrice / coinTrim}{" "}
+                          {props.id
+                            .split("usdt")[0]
+                            .substring(0, 3)
+                            .toUpperCase()}
+                        </p>
+                      </>
                     ) : (
                       <p></p>
                     )}
@@ -315,7 +320,7 @@ const PaymentCont = (props) => {
                             placeholder="Enter the amount"
                             type="number"
                             min="0"
-							step="0.1" 
+                            step="0.1"
                             onChange={(e) => setInputPrice(e.target.value)}
                           />{" "}
                         </div>
@@ -371,38 +376,52 @@ const PaymentCont = (props) => {
                     role="tabpanel"
                     aria-labelledby="faq_tab_2-tab"
                   >
-				  <form onSubmit={pressSell}>
-                    <div className="container p-3">
-                      <div className="input-group mb-3">
-						 <input
+                    <form onSubmit={pressSell}>
+                      <div className="container p-3">
+                        <>
+                          {sellInputPrice ? (
+                            <p>
+                              Sell Rate: {sellInputPrice ?? 0}{" "}
+                              {props.id
+                                .split("usdt")[0]
+                                .substring(0, 3)
+                                .toUpperCase()}{" "}
+                              = {sellInputPrice * coinTrim} USD
+                            </p>
+                          ) : (
+                            <p></p>
+                          )}
+                        </>
+                        <div className="input-group mb-3">
+                          <input
                             style={{ fontSize: 20 }}
                             className="form-control"
                             placeholder="Enter the amount"
                             type="number"
                             min="0"
-							step="0.000000000000000001" 
+                            step="0.000000000000000001"
                             onChange={(e) => setSellInputPrice(e.target.value)}
                           />{" "}
-                      </div>
+                        </div>
 
-                      <div className="input-group mb-3">
-                        <select
-                          style={{ fontSize: 20 }}
-                          className="form-select form-control"
-                          id="inputGroupSelect02"
-                        >
-                          <option selected>Please choose</option>
-                          <option value="1">
-                            {" "}
-                            {props.id
-                              .split("usdt")[0]
-                              .substring(0, 3)
-                              .toUpperCase()}
-                          </option>
-                        </select>{" "}
+                        <div className="input-group mb-3">
+                          <select
+                            style={{ fontSize: 20 }}
+                            className="form-select form-control"
+                            id="inputGroupSelect02"
+                          >
+                            <option selected>Please choose</option>
+                            <option value="1">
+                              {" "}
+                              {props.id
+                                .split("usdt")[0]
+                                .substring(0, 3)
+                                .toUpperCase()}
+                            </option>
+                          </select>{" "}
+                        </div>
                       </div>
-                    </div>
-                   <div className="mt-4 d-flex justify-content-end">
+                      <div className="mt-4 d-flex justify-content-end">
                         {" "}
                         {userInfo.loading === "pending" ? (
                           <LoadingSpinner />
@@ -416,7 +435,7 @@ const PaymentCont = (props) => {
                           </button>
                         )}
                       </div>
-					</form>
+                    </form>
                   </div>
                 </div>
               </div>
