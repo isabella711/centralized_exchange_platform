@@ -31,7 +31,7 @@ async function getUserWalletByUser(id) {
 
 async function getPrivateKeyByPubkey(pubkey) {
   const walletInfo = await db.query(
-    `SELECT wallet_id , currency_type, wallet_address, wallet_private_key, classicAddress FROM joehocom_21010627g.Wallets WHERE wallet_address=?`,
+    `SELECT wallet_id , currency_type, wallet_address, wallet_private_key, classicAddress, seed FROM joehocom_21010627g.Wallets WHERE wallet_address=?`,
     [pubkey]
   );
   console.log(walletInfo);
@@ -265,7 +265,7 @@ module.exports = {
   getUserTransaction,
   login,
   addValue,
-  subtractValue
+  subtractValue,
 };
 
 // getPrivateKeyByPubkey("mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc");
