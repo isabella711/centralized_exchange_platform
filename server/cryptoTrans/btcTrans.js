@@ -77,10 +77,11 @@ const btcTransaction = async (from, to, privateKey, amount) => {
 
   const tx = bitcore.Transaction();
   tx.from(utxo);
-  tx.to(to, amount - 500);
+  tx.to(to, amount - 250);
+  tx.to(from, value - amount);
   tx.change(from);
   // console.log(`getFee`, tx.getFee());
-  tx.fee(500);
+  tx.fee(250);
   tx.sign(privateKeyHex);
 
   console.log(`toObject`, tx.toObject());
@@ -155,7 +156,7 @@ module.exports = { btcTransaction, buyBtc, sellBtc };
 //   "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG",
 //   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
 //   "ed595f2318c5fd44c5643a11f06442f20104eb218e8099bc6280605f9550a6bd",
-//   5000
+//   2000
 // );
 
 // btcTransaction(
