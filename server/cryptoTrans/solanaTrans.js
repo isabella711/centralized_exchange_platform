@@ -14,13 +14,12 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
     web3.clusterApiUrl("devnet"),
     "confirmed"
   );
-
   // Add transfer instruction to transaction
   const transaction = new web3.Transaction().add(
     web3.SystemProgram.transfer({
       fromPubkey: from.publicKey,
       toPubkey: to,
-      lamports: web3.LAMPORTS_PER_SOL * amount,
+      lamports: (web3.LAMPORTS_PER_SOL * amount).toFixed(0),
       // web3.LAMPORTS_PER_SOL / 100
     })
   );
