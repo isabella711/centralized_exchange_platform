@@ -14,22 +14,26 @@ import axios from "axios";
 import { store } from "../store/store";
 import { usersLoading, stopLoading } from "../reducers/usersReducer";
 import LoadingSpinner from "./Spinner";
+import useGetBalance from "../hooks/useGetBalance";
+import { useUpdateCoin } from "../hooks/useUpdateCoin";
 
 const PaymentCont = (props) => {
   const { coinInfo } = useWebSocket(props.id);
   const { id } = props;
-  console.log(`>>>`, coinInfo);
   const userInfo = useSelector((state) => state.user);
+  const { xrpBalance, ethBalance, solBalance, btcBalance, ltcBalance } =
+    useGetBalance(userInfo.wallets);
+  const btcCurrent = useUpdateCoin("btcusdt@ticker");
   const [inputPrice, setInputPrice] = useState(0);
-  const [coinNumber, setCoinNumber] = useState(0);
   const [sellInputPrice, setSellInputPrice] = useState(0);
   const [error, setError] = useState("");
+  const [sellErr, setSellErr] = useState("");
   const [action, setAction] = useState("");
   const [selectedBuyCryto, setSelectedBuyCryto] = useState("");
   const [selectedSellCryto, setSelectedSellCryto] = useState("");
   var crytotype = "";
   var currencyLabel = "";
-
+  let coinBalance;
   const imgPick = contents.find(
     (c) =>
       c.ticket.substring(0, 3).toLowerCase() ===
@@ -44,39 +48,58 @@ const PaymentCont = (props) => {
   const amount = Number(coinInfo?.v ?? 0).toFixed(2) ?? "-.--";
   const coinTrim = Number(coinInfo?.a ?? 0).toFixed(2) ?? "-.--";
   const navigate = useNavigate();
-  console.log("buysell amount price: " + coinInfo);
-  console.log("buysell id: " + id);
-  console.log(userInfo.user?.user_id);
-
+  console.log(
+    `selectedBuyCryto>>>`,
+    selectedBuyCryto,
+    `selectedSellCryto<<<`,
+    selectedSellCryto,
+    btcCurrent
+  );
   var get_transact = "";
   if (id === "ethusdt@ticker") {
     crytotype = "usdtoeth";
     currencyLabel = "ETH";
+    coinBalance = ethBalance;
   }
   if (id === "btcusdt@ticker") {
     crytotype = "usdtobtc";
     currencyLabel = "BTC";
+    coinBalance = btcBalance;
   }
   if (id === "solusdt@ticker") {
     crytotype = "usdtosol";
     currencyLabel = "SOL";
+    coinBalance = solBalance;
   }
   if (id === "xrpusdt@ticker") {
     crytotype = "usdtoxrp";
     currencyLabel = "XRP";
+    coinBalance = xrpBalance;
   }
   if (id === "ltcusdt@ticker") {
     crytotype = "usdtoltc";
     currencyLabel = "LTC";
+    coinBalance = ltcBalance;
   }
-
+  console.log(crytotype, `  `, coinBalance);
   useEffect(() => {
-    if (userInfo.balance < inputPrice) {
+    if (
+      (userInfo.balance < inputPrice && selectedBuyCryto === crytotype) ||
+      (inputPrice > btcBalance && selectedBuyCryto !== crytotype)
+    ) {
       setError("Your balance is not enough");
       return Error;
     }
     setError("");
-  }, [inputPrice]);
+  }, [inputPrice, userInfo.balance]);
+
+  useEffect(() => {
+    if (coinBalance < sellInputPrice) {
+      setSellErr("Your balance is not enough");
+      return Error;
+    }
+    setSellErr("");
+  }, [coinBalance, sellInputPrice]);
 
   const pressBuy = async (e) => {
     e.preventDefault();
@@ -114,7 +137,7 @@ const PaymentCont = (props) => {
     store.dispatch(usersLoading("pending"));
     console.log("press detected");
 
-    if (error !== "") {
+    if (sellErr !== "") {
       return;
     }
     setAction("sold");
@@ -139,34 +162,6 @@ const PaymentCont = (props) => {
     console.log(`hi>>>`, response);
     console.log("hi");
   };
-
-  //useEffect(() => {
-  //  console.log(
-  //    "press detected"
-  //  )
-  //  if (userInfo.balance < inputPrice) {
-  //    setError("Your balance is not enough");
-  //    return Error;
-  //  }
-  //  //setError("");
-  //  else{
-  //      const response_v2 = axios.post(
-  //      "http://localhost:4000/createTransaction/",
-  //      {
-  //        id: userInfo.user.user_id,
-  //        transactionType: get_transact,
-  //        userReceAmount: inputPrice / coinTrim ,
-  //        userSendAmount: inputPrice,
-  //
-  //       }
-  //
-  //      ).then((response)=>console.log(response));
-  //    console.log(response_v2.data);
-  //    console.log("hi");
-  //  };
-  //}, []);
-
-  // const coinExchangeArr = (type) => {};
 
   return (
     <>
@@ -299,12 +294,21 @@ const PaymentCont = (props) => {
                     {inputPrice ? (
                       <>
                         <p>
-                          Buy Rate: $ {inputPrice ?? 0} ={" "}
-                          {inputPrice / coinTrim}{" "}
-                          {props.id
-                            .split("usdt")[0]
-                            .substring(0, 3)
-                            .toUpperCase()}
+                          Buy Rate:{" "}
+                          {selectedBuyCryto.includes("usd") ? "$" : "BTC"}{" "}
+                          {inputPrice ?? 0} ={" "}
+                          {selectedBuyCryto.includes("usd")
+                            ? inputPrice / coinTrim
+                            : coinTrim / btcCurrent}{" "}
+                          {selectedBuyCryto.includes("usd")
+                            ? props.id
+                                .split("usdt")[0]
+                                .substring(0, 3)
+                                .toUpperCase()
+                            : props.id
+                                .split("usdt")[0]
+                                .substring(0, 3)
+                                .toUpperCase()}{" "}
                         </p>
                       </>
                     ) : (
@@ -339,23 +343,17 @@ const PaymentCont = (props) => {
                               Please choose coin for exchange
                             </option>
                             <option value={crytotype}>USD</option>
-                            <option value="2">Bitcoin</option>
+                            {crytotype !== "usdtobtc" && (
+                              <option
+                                value={`btcto${props.id
+                                  .split("usdt")[0]
+                                  .substring(0, 3)}`}
+                              >
+                                Bitcoin
+                              </option>
+                            )}
                           </select>{" "}
                         </div>
-
-                        {/* <div className="input-group mb-3">
-                    <select
-                      className="form-select form-control"
-                      id="inputGroupSelect02"
-                    >
-                      <option selected>Please choose coin to buy</option>
-                      <option value="1">Bitcoin</option>
-                      <option value="2">Ehereum</option>
-                      <option value="3">Solana</option>
-                      <option value="4">XRP</option>
-                      <option value="5">LTC</option>
-                    </select>{" "}
-                  </div> */}
                       </div>
 
                       <div className="mt-4 d-flex justify-content-end">
@@ -385,12 +383,20 @@ const PaymentCont = (props) => {
                         <>
                           {sellInputPrice ? (
                             <p>
-                              Sell Rate: {sellInputPrice ?? 0}{" "}
-                              {props.id
-                                .split("usdt")[0]
-                                .substring(0, 3)
-                                .toUpperCase()}{" "}
-                              = {sellInputPrice * coinTrim} USD
+                              Sell Rate:{" "}
+                              {sellInputPrice.includes("usd")
+                                ? "$"
+                                : props.id
+                                    .split("usdt")[0]
+                                    .substring(0, 3)
+                                    .toUpperCase()}{" "}
+                              {sellInputPrice ?? 0} ={" "}
+                              {selectedSellCryto.includes("usd")
+                                ? coinTrim * sellInputPrice
+                                : (coinTrim * sellInputPrice) / btcCurrent}{" "}
+                              {selectedSellCryto.includes("usd")
+                                ? "USD"
+                                : "BTC"}
                             </p>
                           ) : (
                             <p></p>
@@ -407,6 +413,7 @@ const PaymentCont = (props) => {
                             onChange={(e) => setSellInputPrice(e.target.value)}
                           />{" "}
                         </div>
+                        <p style={{ color: "red" }}>{sellErr}</p>
 
                         <div className="input-group mb-3">
                           <select
@@ -419,13 +426,16 @@ const PaymentCont = (props) => {
                             }
                           >
                             <option selected>Please choose</option>
-                            <option value={crytotype}>
-                              {" "}
-                              {props.id
-                                .split("usdt")[0]
-                                .substring(0, 3)
-                                .toUpperCase()}
-                            </option>
+                            {crytotype !== "usdtobtc" && (
+                              <option
+                                value={`btcto${props.id
+                                  .split("usdt")[0]
+                                  .substring(0, 3)}`}
+                              >
+                                Bitcoin
+                              </option>
+                            )}
+                            <option value={crytotype}> USD</option>
                           </select>{" "}
                         </div>
                       </div>
