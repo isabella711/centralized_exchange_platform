@@ -1,7 +1,7 @@
 const axios = require("axios");
 const bitcore = require("bitcore-lib");
 // let address ='mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD'
-const centralAddress = ' "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD"';
+const centralAddress = "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD";
 const centralAddressPrivateKey =
   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa";
 const spareAddressPrivateKey =
@@ -106,24 +106,31 @@ const btcTransaction = async (from, to, privateKey, amount) => {
 };
 
 const buyBtc = async (toAddress, sendamount) => {
+  console.log(`toAddressBTC>>>`, {
+    centralAddress,
+    toAddress,
+    centralAddressPrivateKey,
+    sendamount,
+  });
   return btcTransaction(
     centralAddress,
     toAddress,
     centralAddressPrivateKey,
-    sendamount
+    Number((sendamount * 100000000).toFixed(0))
   );
 };
 const sellBtc = async (sellAddress, clientPrivateKey, sendamount) => {
+  console.log(`sendamount>>> sat`, Number((sendamount * 100000000).toFixed(0)));
   return btcTransaction(
     sellAddress,
     centralAddress,
     clientPrivateKey,
-    sendamount
+    Number((sendamount * 100000000).toFixed(0))
   );
 };
 
 module.exports = { btcTransaction, buyBtc, sellBtc };
-
+// buyBtc("mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc", 535483);
 // btcTransaction(
 //   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
 //   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
