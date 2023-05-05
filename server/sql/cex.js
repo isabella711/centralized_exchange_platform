@@ -11,8 +11,8 @@ async function createTransactionRecord(content) {
         transactioner_A_currency_type,
         transactioner_A_currency_amount,
         transactioner_B_currency_type,
-        transactioner_B_currency_amount, tx_id ) VALUES 
-      (?,?,?,?,?,?,?,?,?)`,
+        transactioner_B_currency_amount, tx_id,tx_id2 ) VALUES 
+      (?,?,?,?,?,?,?,?,?,?)`,
     [
       content.transactioner_id_A,
       content.transaction_date,
@@ -23,6 +23,7 @@ async function createTransactionRecord(content) {
       content.transactioner_B_currency_type,
       content.transactioner_B_currency_amount,
       content.tx_id,
+      content.tx_id2,
     ]
   );
   return result;
