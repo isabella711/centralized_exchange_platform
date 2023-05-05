@@ -20,7 +20,7 @@ async function xrpTrans(rcvAddress, senderPrivateKey, amount) {
     const prepared = await client.autofill({
       TransactionType: "Payment",
       Account: senderWallet,
-      Amount: xrpToDrops(Number(amount)),
+      Amount: xrpToDrops(amount),
       Destination: rcvAddress,
     });
     console.log(`prepared rcvAddress is: `, rcvAddress);
@@ -42,13 +42,14 @@ async function xrpTrans(rcvAddress, senderPrivateKey, amount) {
 }
 
 const buyXrp = async (rcvAddress, amount) => {
-  return xrpTrans(rcvAddress, centralPrivateKey, amount);
+  return xrpTrans(rcvAddress, centralPrivateKey, Number(amount).toFixed(4));
 };
 
 const sellXrp = async (senderPrivateKey, amount) => {
-  return xrpTrans(centralAddress, senderPrivateKey, amount);
+  return xrpTrans(centralAddress, senderPrivateKey, parseInt(amount));
 };
 
+// sellXrp("sEd7VZB9Tie9VXowLyv5o7g3gjm3NEt", 20);
 // xrpTrans();
 // console.log(
 //   `centralAddress>>>`,
@@ -56,4 +57,5 @@ const sellXrp = async (senderPrivateKey, amount) => {
 //   `centralPubkey>>>`,
 //   xrpl.Wallet.fromSeed(centralPrivateKey).publicKey
 // );
+
 module.exports = { xrpTrans, buyXrp, sellXrp };
