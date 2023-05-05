@@ -119,12 +119,12 @@ const PaymentCont = (props) => {
         .toLowerCase()}`;
     }
     setAction("bought");
-    const userReceAmount =
+    let userReceAmount =
       selectedBuyCryto ===
       `btcto${props.id.split("usdt")[0].substring(0, 3).toLowerCase()}`
         ? inputPrice * btcCurrent
         : inputPrice / coinTrim;
-    const userSendAmount = inputPrice;
+    let userSendAmount = inputPrice;
     console.log("buy");
 
     const response = await axios.post(
@@ -145,10 +145,11 @@ const PaymentCont = (props) => {
     console.log(`hi>>>`, response);
     console.log("hi");
   };
+
   const pressSell = async (e) => {
     e.preventDefault();
     store.dispatch(usersLoading("pending"));
-    console.log("press detected");
+    console.log("sell press detected");
 
     if (sellErr !== "") {
       return;
@@ -163,15 +164,15 @@ const PaymentCont = (props) => {
         .substring(0, 3)
         .toLowerCase()}`;
     }
-    setAction("bought");
-    const userReceAmount =
+    console.log(`selected type`, selectedSellCryto, crytotype);
+    let userReceAmount =
       selectedSellCryto ===
       `btcto${props.id.split("usdt")[0].substring(0, 3).toLowerCase()}`
         ? (sellInputPrice * coinTrim) / btcCurrent
         : sellInputPrice * coinTrim;
-    const userSendAmount = sellInputPrice;
+    let userSendAmount = Number(sellInputPrice);
 
-    console.log("sold");
+    console.log("sold price>>>", sellInputPrice);
 
     const response = await axios.post(
       "http://localhost:4000/createTransaction/",
@@ -351,7 +352,7 @@ const PaymentCont = (props) => {
                             style={{ fontSize: 20 }}
                             className="form-control"
                             placeholder="Enter the amount"
-                            type="number"
+                            type="float"
                             min="0"
                             step="0.1"
                             onChange={(e) => setInputPrice(e.target.value)}
