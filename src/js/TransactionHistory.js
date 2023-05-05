@@ -19,7 +19,14 @@ const TransactionHistory = () => {
   const [transHistory, setTransHistory] = useState([]);
   const { externalTransHistory } = useGetTrans(transactionHistory);
   const navigate = useNavigate();
-
+  
+  var BTCExplorerPrefix = "https://blockstream.info/testnet/tx/";
+  var ETHExplorerPrefix = "https://blockchair.com/ethereum/testnet/transaction/";
+  var SolanaExplorerPrefix = "https://explorer.solana.com/tx/";
+  var XRPExplorerPrefix = "https://blockexplorer.one/xrp/testnet/tx/";
+  var LTCExplorerPrefix = "https://sochain.com/address/LTCTEST/"
+  var SolanaExplorerPostfix = "?cluster=testnet";  
+  
   useEffect(() => {
     const fetchTransactions = async () => {
       const result = await getUserTransactions(userInfo.user.user_id);
@@ -58,6 +65,7 @@ const TransactionHistory = () => {
             <th>Time</th>
             <th>TxID</th>
             <th>TxID_2</th>
+			<th>Blockchain Explorer</th>
           </tr>
         </thead>
         <tbody>
@@ -76,6 +84,21 @@ const TransactionHistory = () => {
               <td>{row.transaction_date}</td>
               <td>{row.tx_id}</td>
               <td>{row.tx_id2 !== null ? row.tx_id2 : "--"}</td>
+			  <td>
+				  {row.transactioner_B_currency_type === "BTC" ? (
+					<a href={BTCExplorerPrefix + row.tx_id}>Click here</a>
+				  ) : row.transactioner_B_currency_type === "ETH" ? (
+					<a href={ETHExplorerPrefix + row.tx_id}>Click here</a>
+				  ) : row.transactioner_B_currency_type === "LTC" ? (
+					<a href={LTCExplorerPrefix + row.tx_id}>Click here</a>
+				  ) : row.transactioner_B_currency_type === "XRP" ? (
+					<a href={XRPExplorerPrefix + row.tx_id}>Click here</a>
+				  ) : row.transactioner_B_currency_type === "SOL" ? (
+					<a href={SolanaExplorerPrefix + row.tx_id + SolanaExplorerPostfix}>Click here</a>
+				  ) :(
+					"---"
+				  )}
+				</td>
             </tr>
           ))}
         </tbody>
