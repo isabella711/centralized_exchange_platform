@@ -39,8 +39,8 @@ export default function useGetBalance(wallets) {
         setLtcBalance(res.data);
       });
       callExternalApi(btcAddress, "btc").then((res) => {
-        console.log(`res.data.length>>>`, res.data);
-        if (res.data.length === 0) {
+        console.log(`res.data.length>>>`, res);
+        if (!res) {
           setBtcBalance(0 * 0.00000001);
           return;
         }
@@ -54,30 +54,30 @@ export default function useGetBalance(wallets) {
         //   (v) => v.scriptpubkey_address === btcAddress
         // )?.scriptpubkey;
 
-        data.forEach((tx) => {
-          let fromVin = tx.vin.find(
-            (v) => v.prevout.scriptpubkey_address === btcAddress
-          )?.prevout.value;
-          let fromVout = tx.vout.find(
-            (v) => v.scriptpubkey_address === btcAddress
-          )?.value;
-          arr.push(fromVout ?? fromVin);
-        });
-        Array.prototype.getUnique = function () {
-          var uniques = [];
-          for (var i = 0, l = this.length; i < l; ++i) {
-            if (this.lastIndexOf(this[i]) == this.indexOf(this[i])) {
-              uniques.push(this[i]);
-            }
-          }
-          return uniques;
-        };
-        console.log(`arr`, arr);
-        const sum = arr
-          .getUnique()
-          .reduce((partialSum, a) => partialSum + a, 0);
-        console.log(`arr`, sum);
-        setBtcBalance(sum * 0.00000001);
+        // data.forEach((tx) => {
+        //   let fromVin = tx.vin.find(
+        //     (v) => v.prevout.scriptpubkey_address === btcAddress
+        //   )?.prevout.value;
+        //   let fromVout = tx.vout.find(
+        //     (v) => v.scriptpubkey_address === btcAddress
+        //   )?.value;
+        //   arr.push(fromVout ?? fromVin);
+        // });
+        // Array.prototype.getUnique = function () {
+        //   var uniques = [];
+        //   for (var i = 0, l = this.length; i < l; ++i) {
+        //     if (this.lastIndexOf(this[i]) == this.indexOf(this[i])) {
+        //       uniques.push(this[i]);
+        //     }
+        //   }
+        //   return uniques;
+        // };
+        // console.log(`BTC,arr>>>>>`, arr);
+        // const sum = arr
+        //   .getUnique()
+        //   .reduce((partialSum, a) => partialSum + a, 0);
+        // console.log(`arr`, sum);
+        setBtcBalance(res * 0.00000001);
       });
     }
   }, []);
