@@ -12,6 +12,7 @@ import Register from "./js/Register";
 import Login from "./js/Login";
 import Buysell from "./js/Buysell";
 import TransactionHistory from "./js/TransactionHistory";
+import WalletInformation from "./js/WalletInformation";
 import Deposits from "./components/DepositForm";
 import { MenuAppBar } from "./js/AppBar";
 import { useSelector } from "react-redux";
@@ -20,6 +21,7 @@ import { getUserWallets } from "./api";
 import {
   fetchUser,
   fetchTransactionHistory,
+  fetchWalletInformation,
   fetchUserWallets,
   useWallet,
   usersLoading,
@@ -45,6 +47,7 @@ export default function App() {
       store.dispatch(fetchUserWallets(user_id));
       store.dispatch(fetchUser(user_id));
       store.dispatch(fetchTransactionHistory(user_id));
+	  store.dispatch(fetchWalletInformation(user_id));
     }
   }, [userInfo.user]);
   const router = createBrowserRouter(
@@ -64,6 +67,7 @@ export default function App() {
           }
         />
         <Route element={<ProtectedLayout userInfo={userInfo} />}>
+		<Route path="/walletinformation" element={<WalletInformation />} />
           <Route path="/transactionHistory" element={<TransactionHistory />} />
           <Route path="/deposit" element={<Deposit />} />
           <Route path="/payment" element={<Payment />} />
