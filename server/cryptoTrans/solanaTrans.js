@@ -7,7 +7,7 @@ const centralAddress = "4gL6TNJti8wNmsDJko4qmSeHwhqvp6Vg1YDpU2Qkj2AG";
 const solanaTrans = async (secretKey, recevierAddress, amount) => {
   const from = web3.Keypair.fromSecretKey(bs58.decode(secretKey));
   const to = new web3.PublicKey(recevierAddress);
-  // console.log(`see to key`, from.publicKey,);
+  console.log(`see to key`, from.publicKey);
   // Connect to cluster
   console.log(web3.clusterApiUrl("devnet"));
   const connection = new web3.Connection(
@@ -15,6 +15,7 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
     "confirmed"
   );
   // Add transfer instruction to transaction
+  console.log(`start sol trans...`, amount);
   const transaction = new web3.Transaction().add(
     web3.SystemProgram.transfer({
       fromPubkey: from.publicKey,
@@ -23,7 +24,7 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
       // web3.LAMPORTS_PER_SOL / 100
     })
   );
-
+  console.log(`start sig...`);
   // Sign transaction, broadcast, and confirm
   const signature = await web3
     .sendAndConfirmTransaction(connection, transaction, [
@@ -53,6 +54,12 @@ module.exports = { solanaTrans, sellSol, buySol };
 //   "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
 //   "4o11uYWA1ihtcBnAbSF6ZmY94s3Vh3gtZkfCu6hS2wUq",
 //   1
+// );
+
+// sellSol(
+//   "BzzvjmEdKriMNjaktZZRMPbFgWifJ96Da9ZjGh9kiF7rufNBTYECK8rRn3U7Y5EB6uT5KySrmURvmR4izxzBZCm",
+//   "4gL6TNJti8wNmsDJko4qmSeHwhqvp6Vg1YDpU2Qkj2AG",
+//   0.2
 // );
 
 // solanaTrans(
