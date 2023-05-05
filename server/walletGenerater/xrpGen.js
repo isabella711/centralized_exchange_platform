@@ -1,84 +1,61 @@
+//Address:rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt
+const RippleAPI = require("ripple-lib");
+const { Client, xrpToDrops, dropsToXrp } = require("xrpl");
 const xrpl = require("xrpl");
+const centralPrivateKey = "sEd7VZB9Tie9VXowLyv5o7g3gjm3NEt"; // here is actually seed
+const centralAddress = xrpl.Wallet.fromSeed(centralPrivateKey).classicAddress;
+async function xrpTrans(rcvAddress, senderPrivateKey, amount) {
+  // const [serverInfo, setServerInfo] = useState({ "buildVersion:": "0.0.0" });
 
-const createXrpWallet = async () => {
   const net = "wss://s.altnet.rippletest.net:51233";
-  const client = new xrpl.Client(net);
-  let faucetHost = null;
-  let amount = "100";
-  await client.connect();
-  console.log("Connected, funding wallet.");
-  const my_wallet = (await client.fundWallet(null, { amount, faucetHost }))
-    .wallet;
-  console.log("Got a wallet.");
-  console.log(my_wallet.address);
-  console.log(my_wallet.privateKey, `publicKey`, my_wallet.publicKey);
-  client.disconnect();
-  console.log(`xrp`, my_wallet);
-  return my_wallet;
+  // const paidAmount = 100;
+  const client = new Client(net);
+
+  const standby_wallet = xrpl.Wallet.fromSeed(senderPrivateKey);
+
+  const senderWallet = standby_wallet.classicAddress;
+  async function sendPayment() {
+    await client.connect();
+    console.log("Creating a payment transaction");
+    const prepared = await client.autofill({
+      TransactionType: "Payment",
+      Account: senderWallet,
+      Amount: xrpToDrops(amount),
+      Destination: rcvAddress,
+    });
+    console.log(`prepared rcvAddress is: `, rcvAddress);
+    // console.log("Creating a payment transaction", prepared);
+
+    const signed = standby_wallet.sign(prepared);
+
+    // -------------------------------------------------------- Submit signed blob
+    const tx = await client.submitAndWait(signed.tx_blob);
+    // console.log(`tx`, tx);
+    console.log("Identifying hash:", signed.hash);
+    console.log("Signed blob:", signed.tx_blob);
+    client.disconnect();
+    return tx;
+  }
+  const tx = await sendPayment();
+  console.log(`txxx`, tx);
+  return { tx: tx, msg: "OK" };
+}
+
+const buyXrp = async (rcvAddress, amount) => {
+  return xrpTrans(rcvAddress, centralPrivateKey, Number(amount).toFixed(4));
 };
 
-const xrpTx = async (tx) => {
-  const net = "wss://s.altnet.rippletest.net:51233";
-  const client = new xrpl.Client(net);
-
-  // const xrpTransHistory = async () => {
-  await client.connect();
-  console.log("Connected.");
-  const response = await client.request({
-    command: "tx",
-    transaction: tx,
-    binary: false,
-  });
-
-  console.log(`xrp ++++response>>> from xrpTX`, response);
-  client.disconnect();
-  // };
-  // xrpTransHistory();
-  return response;
+const sellXrp = async (senderPrivateKey, amount) => {
+  return xrpTrans(centralAddress, senderPrivateKey, parseInt(amount));
 };
 
-const xrpFetch = async (address) => {
-  const net = "wss://s.altnet.rippletest.net:51233";
-  const client = new xrpl.Client(net);
+// sellXrp("sEd7VZB9Tie9VXowLyv5o7g3gjm3NEt", 20);
+// xrpTrans();
+// console.log(
+//   `centralAddress>>>`,
+//   centralAddress,
+//   `centralPubkey>>>`,
+//   xrpl.Wallet.fromSeed(centralPrivateKey).publicKey
+// );
 
-  // const xrpTransHistory = async () => {
-  await client.connect();
-  console.log("Connected");
-  const response = await client.request({
-    command: "account_info",
-    account: address,
-    // "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
-    ledger_index: "validated",
-  });
-  console.log(`xrp ++++response>>> from xrpBalance`, response);
-  client.disconnect();
-  // };
-  // xrpTransHistory();
-  return response;
-};
-
-// function xrpFetch(address) {
-//   const net = "wss://s.altnet.rippletest.net:51233";
-//   const client = new xrpl.Client(net);
-
-//   const xrpWalletUpdate = async () => {
-//     await client.connect();
-//     console.log("Connected, funding wallet.");
-//     const response = await client.request({
-//       command: "account_info",
-//       account: address,
-//       // "rsL5E12SuMh5DiJMFQBrpFcokjQ8bEbrYt",
-//       ledger_index: "validated",
-//     });
-
-//     console.log(`xrp ++++response>>> from gen`, response);
-//     client.disconnect();
-//   };
-//   console.log();
-//   return xrpWalletUpdate;
-// }
-
-module.exports = { createXrpWallet, xrpFetch, xrpTx };
-
-// xrpTx("b9f3a0ca419220940a83f4fe73428d8e6dcb8b0ca7d572017d73bcf4180fa70d");
-// xrpFetch("r4D2Hcs9sMkgvd1pXeisnDVWtfeAS69i2w");
+module.exports = { xrpTrans, buyXrp, sellXrp };
