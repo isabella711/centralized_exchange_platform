@@ -4,6 +4,7 @@ import {
   getUserInfo,
   getUserWallets,
   getUserTransactions,
+  getWalletInformation,
 } from "../api";
 
 export const fetchSolBalance = createAsyncThunk(
@@ -26,6 +27,14 @@ export const fetchTransactionHistory = createAsyncThunk(
   "user/transactions",
   async (userId, dispatch) => {
     const response = await getUserTransactions(userId);
+    return response;
+  }
+);
+
+export const fetchWalletInformation = createAsyncThunk(
+  "user/walletInformation",
+  async (userId, dispatch) => {
+    const response = await getUserWallets(userId);
     return response;
   }
 );
@@ -93,6 +102,12 @@ const user = createSlice({
       }
     });
     builder.addCase(fetchTransactionHistory.fulfilled, (state, action) => {
+      if (isFulfilled(action)) {
+        state.transactionHistory = action.payload.data;
+        state.loading = "idle";
+      }
+    });
+	builder.addCase(fetchWalletInformation.fulfilled, (state, action) => {
       if (isFulfilled(action)) {
         state.transactionHistory = action.payload.data;
         state.loading = "idle";
