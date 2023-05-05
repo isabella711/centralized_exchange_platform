@@ -24,7 +24,9 @@ async function getUser(id) {
 
 async function getUserWalletByUser(id) {
   const wallet = await db.query(
-    `SELECT wallet_id , currency_type, wallet_address, classicAddress FROM joehocom_21010627g.Wallets WHERE user_id=${id}`
+    `SELECT wallet_id , currency_type, wallet_address, classicAddress, 
+	case when (classicAddress is null or trim(classicAddress) = '') then (case when wallet_address is null then '' else wallet_address end) else classicAddress end as realAddress 
+	FROM joehocom_21010627g.Wallets WHERE user_id=${id}`
   );
   return wallet;
 }
