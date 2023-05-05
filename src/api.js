@@ -207,9 +207,10 @@ export const callExternalApi = async (address, type) => {
   if (type === "btc") {
     try {
       const result = await axios.get(
-        `https://blockstream.info/testnet/api/address/${address}/txs`
+        `https://api.blockcypher.com/v1/btc/test3/addrs/${address}/balance`
       );
-      return result;
+      console.log(`result API>>>`, result);
+      return result.data.final_balance;
     } catch (error) {
       console.log("Error", error);
     }
