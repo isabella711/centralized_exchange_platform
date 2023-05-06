@@ -24,7 +24,7 @@ const WalletInformation = () => {
   var SolanaExplorerPrefix = "https://explorer.solana.com/address/";
   var XRPExplorerPrefix = "https://blockexplorer.one/xrp/testnet/address/";
   var LTCExplorerPrefix = "https://sochain.com/address/LTCTEST/";
-  var SolanaExplorerPostfix = "?cluster=testnet";
+  var SolanaExplorerPostfix = "?cluster=devnet";
 
   useEffect(() => {
     const fetchTransactions = async () => {
