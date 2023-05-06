@@ -278,7 +278,7 @@ app.post("/createTransaction", async (req, res) => {
       } else {
         //Sell
         const walletInfo = await getPrivateKeyByPubkey(address);
-        const privateKey = walletInfo.wallet_private_key;
+        const privateKey = walletInfo[0].wallet_private_key;
         console.log("Amount:" + parseFloat(userSendAmount).toFixed(8));
         result = await sellBtc(
           address,
@@ -651,12 +651,12 @@ app.post("/createTransaction", async (req, res) => {
       const findBTCWallet = wallets.find((w) => w.currency_type === "BTC");
       const btcAddress = findBTCWallet.wallet_address;
       const btcWallet = await getPrivateKeyByPubkey(btcAddress);
-      const btcPrivateKey = btcWallet.wallet_private_key;
+      const btcPrivateKey = btcWallet[0].wallet_private_key;
 
       const findETHWallet = wallets.find((w) => w.currency_type === "ETH");
       const ethAddress = findETHWallet.wallet_address;
       const ethWallet = await getPrivateKeyByPubkey(ethAddress);
-      const ethPrivateKey = ethWallet.wallet_private_key;
+      const ethPrivateKey = ethWallet[0].wallet_private_key;
 
       let sellResult;
       let buyResult;
