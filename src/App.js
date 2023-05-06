@@ -47,7 +47,7 @@ export default function App() {
       store.dispatch(fetchUserWallets(user_id));
       store.dispatch(fetchUser(user_id));
       store.dispatch(fetchTransactionHistory(user_id));
-	  store.dispatch(fetchWalletInformation(user_id));
+      store.dispatch(fetchWalletInformation(user_id));
     }
   }, [userInfo.user]);
   const router = createBrowserRouter(
@@ -67,7 +67,7 @@ export default function App() {
           }
         />
         <Route element={<ProtectedLayout userInfo={userInfo} />}>
-		<Route path="/walletinformation" element={<WalletInformation />} />
+          <Route path="/walletinformation" element={<WalletInformation />} />
           <Route path="/transactionHistory" element={<TransactionHistory />} />
           <Route path="/deposit" element={<Deposit />} />
           <Route path="/payment" element={<Payment />} />

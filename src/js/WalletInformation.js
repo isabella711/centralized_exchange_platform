@@ -17,14 +17,14 @@ const WalletInformation = () => {
   const userInfo = useSelector((state) => state.user);
   const { WalletInformation } = useSelector((state) => state.user);
   const [walletInfo, setwalletInfo] = useState([]);
-  const { externalwalletInfo } = useGetTrans(WalletInformation);
+  // const { externalwalletInfo } = useGetTrans(WalletInformation);
   const navigate = useNavigate();
   var BTCExplorerPrefix = "https://blockstream.info/testnet/address/";
   var ETHExplorerPrefix = "https://blockchair.com/ethereum/testnet/address/";
   var SolanaExplorerPrefix = "https://explorer.solana.com/address/";
   var XRPExplorerPrefix = "https://blockexplorer.one/xrp/testnet/address/";
   var LTCExplorerPrefix = "https://sochain.com/address/LTCTEST/";
-  var SolanaExplorerPostfix = "?cluster=testnet";  
+  var SolanaExplorerPostfix = "?cluster=testnet";
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -59,7 +59,7 @@ const WalletInformation = () => {
           <tr>
             <th>Currency Type</th>
             <th>Address</th>
-			<th>Blockchain Explorer</th>
+            <th>Blockchain Explorer</th>
           </tr>
         </thead>
         <tbody>
@@ -67,21 +67,29 @@ const WalletInformation = () => {
             <tr key={row.tx_id}>
               <td>{row.currency_type}</td>
               <td>{row.realAddress}</td>
-			  <td>
-				  {row.currency_type === "BTC" ? (
-					<a href={BTCExplorerPrefix + row.realAddress}>Click here</a>
-				  ) : row.currency_type === "ETH" ? (
-					<a href={ETHExplorerPrefix + row.realAddress}>Click here</a>
-				  ) : row.currency_type === "LTC" ? (
-					<a href={LTCExplorerPrefix + row.realAddress}>Click here</a>
-				  ) : row.currency_type === "XRP" ? (
-					<a href={XRPExplorerPrefix + row.realAddress}>Click here</a>
-				  ) : row.currency_type === "SOL" ? (
-					<a href={SolanaExplorerPrefix + row.realAddress + SolanaExplorerPostfix}>Click here</a>
-				  ) :(
-					""
-				  )}
-				</td>
+              <td>
+                {row.currency_type === "BTC" ? (
+                  <a href={BTCExplorerPrefix + row.realAddress}>Click here</a>
+                ) : row.currency_type === "ETH" ? (
+                  <a href={ETHExplorerPrefix + row.realAddress}>Click here</a>
+                ) : row.currency_type === "LTC" ? (
+                  <a href={LTCExplorerPrefix + row.realAddress}>Click here</a>
+                ) : row.currency_type === "XRP" ? (
+                  <a href={XRPExplorerPrefix + row.realAddress}>Click here</a>
+                ) : row.currency_type === "SOL" ? (
+                  <a
+                    href={
+                      SolanaExplorerPrefix +
+                      row.realAddress +
+                      SolanaExplorerPostfix
+                    }
+                  >
+                    Click here
+                  </a>
+                ) : (
+                  ""
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -103,6 +111,5 @@ const WalletInformation = () => {
     </div>
   );
 };
-
 
 export default WalletInformation;

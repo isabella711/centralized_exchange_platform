@@ -346,7 +346,7 @@ app.post("/createTransaction", async (req, res) => {
           `>>privateKey`,
           privateKey
         );
-        result = await sellSol(privateKey, address, userSendAmount);
+        result = await sellSol(privateKey, userSendAmount);
         if (result.message === "OK") {
           addValue(userReceAmount, userAccount);
 
@@ -374,12 +374,12 @@ app.post("/createTransaction", async (req, res) => {
       const findBTCWallet = wallets.find((w) => w.currency_type === "BTC");
       const btcAddress = findBTCWallet.wallet_address;
       const btcWallet = await getPrivateKeyByPubkey(btcAddress);
-      const btcPrivateKey = btcWallet.wallet_private_key;
+      const btcPrivateKey = btcWallet[0].wallet_private_key;
 
       const findSOLWallet = wallets.find((w) => w.currency_type === "SOL");
       const solAddress = findSOLWallet.wallet_address;
       const solWallet = await getPrivateKeyByPubkey(solAddress);
-      const solPrivateKey = solWallet.wallet_private_key;
+      const solPrivateKey = solWallet[0].wallet_private_key;
 
       let sellResult;
       let buyResult;
@@ -412,12 +412,9 @@ app.post("/createTransaction", async (req, res) => {
         }
       } else {
         // sell sol to buy btc
-        sellResult = await sellSol(
-          solAddress,
-          solPrivateKey,
-          parseFloat(userSendAmount).toFixed(8)
-        );
+        sellResult = await sellSol(solPrivateKey, userSendAmount);
         buyResult = await buyBtc(btcAddress, userReceAmount);
+
         // TODO : add if condition
         if (sellResult.status === 201 && buyResult.message === "OK") {
           content.tx_id = sellResult.signature;

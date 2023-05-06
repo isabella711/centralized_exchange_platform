@@ -44,26 +44,8 @@ const solanaTrans = async (secretKey, recevierAddress, amount) => {
 const buySol = async (toAddress, sendamount) => {
   return solanaTrans(centralPrivateKey, toAddress, sendamount);
 };
-const sellSol = async (clientPrivateKey, centralAddress, sendamount) => {
+const sellSol = async (clientPrivateKey, sendamount) => {
   return solanaTrans(clientPrivateKey, centralAddress, sendamount);
 };
 
 module.exports = { solanaTrans, sellSol, buySol };
-
-// solanaTrans(
-//   "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
-//   "4o11uYWA1ihtcBnAbSF6ZmY94s3Vh3gtZkfCu6hS2wUq",
-//   1
-// );
-
-// sellSol(
-//   "BzzvjmEdKriMNjaktZZRMPbFgWifJ96Da9ZjGh9kiF7rufNBTYECK8rRn3U7Y5EB6uT5KySrmURvmR4izxzBZCm",
-//   "4gL6TNJti8wNmsDJko4qmSeHwhqvp6Vg1YDpU2Qkj2AG",
-//   0.2
-// );
-
-// solanaTrans(
-//   "ZUFbNAu5oRGj796Dy6MMtvospxQAf1Jr5cLaoaiiFdJLos8SEqojsNYrPdhCzumcN5kUju6mbNssxqUrdVAdPQY",
-//   "GYfiUDTAeXd7idzp3edHdXfP1Bf8eJuMBzJ6q1zqotgH",
-//   0.0854
-// );

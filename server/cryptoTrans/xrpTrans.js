@@ -49,13 +49,4 @@ const sellXrp = async (senderPrivateKey, amount) => {
   return xrpTrans(centralAddress, senderPrivateKey, parseInt(amount));
 };
 
-// sellXrp("sEd7VZB9Tie9VXowLyv5o7g3gjm3NEt", 20);
-// xrpTrans();
-// console.log(
-//   `centralAddress>>>`,
-//   centralAddress,
-//   `centralPubkey>>>`,
-//   xrpl.Wallet.fromSeed(centralPrivateKey).publicKey
-// );
-
 module.exports = { xrpTrans, buyXrp, sellXrp };

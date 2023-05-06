@@ -1,7 +1,7 @@
 import { callExternalApi } from "../api";
 import { useEffect, useRef, useState } from "react";
 export default function useGetTrans(transIdArr) {
-  const [transHistory, setTransHistory] = useState([]);
+  const [externalTransHistory, setExternalTransHistory] = useState([]);
   const [transXrpHistory, setXrpTransHistory] = useState([]);
 
   const searchXrpTx = async () => {
@@ -55,7 +55,7 @@ export default function useGetTrans(transIdArr) {
       }
     });
 
-    setTransHistory(tArr);
+    setExternalTransHistory(tArr);
     return;
   };
 
@@ -64,5 +64,5 @@ export default function useGetTrans(transIdArr) {
     searchXrpTx();
   }, []);
 
-  return { transHistory, transXrpHistory };
+  return { externalTransHistory, transXrpHistory };
 }

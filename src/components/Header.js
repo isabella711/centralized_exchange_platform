@@ -21,9 +21,7 @@ export default function Header(props) {
   }
   return (
     <div style={{ flexDirection: "column" }}>
-      <p style={{ fontSize: 30 }}>
-        Hi, wellcome {user?.user_name}. 
-      </p>
+      <p style={{ fontSize: 30 }}>Hi, wellcome {user?.user_name}.</p>
       <div style={{ flexDirection: "row", display: "flex", padding: 5 }}>
         <EachBalance
           balanceArr={[

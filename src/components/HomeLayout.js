@@ -8,11 +8,11 @@ import useGetTrans from "../hooks/useGetTrans";
 import { Table } from "react-bootstrap";
 
 export default function HomeLayout({ children, userInfo }) {
-  const { transHistory, transXrpHistory } = useGetTrans(
-    userInfo?.transactionHistory
-  );
+  // const { transHistory, transXrpHistory } = useGetTrans(
+  //   userInfo?.transactionHistory
+  // );
 
-  console.log(`userInfo>>>`, transHistory, transXrpHistory);
+  // console.log(`userInfo>>>`, transHistory, transXrpHistory);
 
   return (
     <>

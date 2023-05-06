@@ -1,12 +1,12 @@
 const axios = require("axios");
 const bitcore = require("bitcore-lib");
 // let address ='mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD'
-const centralAddress = "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD";
+const centralAddress = "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG";
 const centralAddressPrivateKey =
-  "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa";
-const spareAddressPrivateKey =
   "ed595f2318c5fd44c5643a11f06442f20104eb218e8099bc6280605f9550a6bd";
-const spareAddress = "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG";
+const spareAddressPrivateKey =
+  "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa";
+const spareAddress = "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD";
 
 const btcTransaction = async (from, to, privateKey, amount) => {
   const searchAvailableUTXO = (allOutputArry) => {
@@ -59,6 +59,7 @@ const btcTransaction = async (from, to, privateKey, amount) => {
       voutIndex = availableUTXO.vout.findIndex(
         (v) => v.scriptpubkey_address === from
       );
+      console.log(`voutIndex>>`, voutIndex);
       value = availableUTXO.vout.find(
         (v) => v.scriptpubkey_address === from
       ).value;
@@ -130,45 +131,3 @@ const sellBtc = async (sellAddress, clientPrivateKey, sendamount) => {
 };
 
 module.exports = { btcTransaction, buyBtc, sellBtc };
-// buyBtc("mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc", 535483);
-// btcTransaction(
-//   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
-//   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
-//   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa",
-//   69352
-// );
-
-// btcTransaction(
-//   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
-//   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
-//   "8ef01556f6fffbd5dd7f45ef6bcfe947781df25a92f5412661f1e35b2272aed0",
-//   68852
-// );
-
-// btcTransaction(
-//   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
-//   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
-//   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa",
-//   1153540
-// );
-
-// btcTransaction(
-//   "mmHAHPcPBkT9GFeQrz7EhFLJtbtQL9CToD",
-//   "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG",
-//   "fd8063c335d80db72a4b99da0cb49ceda5021b5673c565bedad98fa6f57fb8aa",
-//   11100
-// );
-
-// btcTransaction(
-//   "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG",
-//   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
-//   "ed595f2318c5fd44c5643a11f06442f20104eb218e8099bc6280605f9550a6bd",
-//   2000
-// );
-
-// btcTransaction(
-//   "mwFXkwtotyQ5GxZQ9upC8VcNANB6PkE1Zc",
-//   "mhnJkZVKvmvLRan2RJpWHQaSHDjrkWsagG",
-//   "8ef01556f6fffbd5dd7f45ef6bcfe947781df25a92f5412661f1e35b2272aed0",
-//   6666
-// );
